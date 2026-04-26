@@ -1,0 +1,50 @@
+a,b,peso
+Guatemala,Sacatepequez,1.0
+Guatemala,Chimaltenango,1.0
+Guatemala,El Progreso,1.0
+Guatemala,Jalapa,1.0
+Guatemala,Santa Rosa,1.0
+Guatemala,Escuintla,1.0
+Sacatepequez,Chimaltenango,1.0
+Sacatepequez,Escuintla,1.0
+Chimaltenango,Sololá,1.0
+Chimaltenango,Quiché,1.0
+Chimaltenango,Escuintla,1.0
+Escuintla,Santa Rosa,1.0
+Escuintla,Suchitepéquez,1.0
+Santa Rosa,Jutiapa,1.0
+Santa Rosa,Jalapa,1.0
+Sololá,Totonicapán,1.0
+Sololá,Quetzaltenango,1.0
+Sololá,Suchitepéquez,1.0
+Sololá,Chimaltenango,1.0
+Totonicapán,Quetzaltenango,1.0
+Totonicapán,Quiché,1.0
+Quetzaltenango,San Marcos,1.0
+Quetzaltenango,Retalhuleu,1.0
+Quetzaltenango,Suchitepéquez,1.0
+Suchitepéquez,Retalhuleu,1.0
+Suchitepéquez,Escuintla,1.0
+Retalhuleu,San Marcos,1.0
+San Marcos,Huehuetenango,1.0
+Huehuetenango,Quiché,1.0
+Huehuetenango,San Marcos,1.0
+Quiché,Alta Verapaz,1.0
+Quiché,Baja Verapaz,1.0
+Quiché,Totonicapán,1.0
+Baja Verapaz,Alta Verapaz,1.0
+Baja Verapaz,El Progreso,1.0
+Baja Verapaz,Quiché,1.0
+Alta Verapaz,Petén,1.0
+Alta Verapaz,Izabal,1.0
+Alta Verapaz,Baja Verapaz,1.0
+Petén,Izabal,1.0
+Izabal,Zacapa,1.0
+Zacapa,Chiquimula,1.0
+Zacapa,El Progreso,1.0
+Zacapa,Izabal,1.0
+Chiquimula,Jalapa,1.0
+Chiquimula,Jutiapa,1.0
+El Progreso,Jalapa,1.0
+El Progreso,Zacapa,1.0
+Jalapa,Jutiapa,1.0

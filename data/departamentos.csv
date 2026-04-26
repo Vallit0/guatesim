@@ -1,0 +1,23 @@
+departamento,region,pobreza,pct_indigena,sequia_spi,homicidios_100k,presencia_estatal,rural
+Guatemala,Central,32,13,0.0,24,85,15
+Sacatepequez,Central,41,52,0.1,10,75,50
+Chimaltenango,Central,66,78,0.2,9,55,70
+Escuintla,Pacifico,50,7,0.1,38,60,60
+Santa Rosa,Oriente,52,2,0.6,21,55,75
+Sololá,Occidente,80,96,0.3,8,50,85
+Totonicapán,Occidente,74,97,0.2,5,50,80
+Quetzaltenango,Occidente,52,54,0.2,12,65,55
+Suchitepéquez,Pacifico,57,46,0.1,18,55,65
+Retalhuleu,Pacifico,53,20,0.1,22,55,55
+San Marcos,Occidente,66,32,0.2,10,45,85
+Huehuetenango,Occidente,75,65,0.2,9,40,90
+Quiché,Occidente,75,89,0.2,8,40,85
+Baja Verapaz,Norte,67,59,0.4,6,40,80
+Alta Verapaz,Norte,83,93,0.2,7,35,90
+Petén,Petén,55,32,0.1,28,30,85
+Izabal,Atlantico,62,23,0.0,35,45,70
+Zacapa,Oriente,55,2,0.7,30,50,65
+Chiquimula,Oriente,71,20,0.8,20,40,80
+El Progreso,Oriente,53,1,0.5,25,60,55
+Jalapa,Oriente,67,19,0.5,18,45,75
+Jutiapa,Oriente,62,2,0.4,22,55,70
