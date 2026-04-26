@@ -1,15 +1,16 @@
 # guatemala-sim
 
 > *Testbed* para evaluar LLMs como decisores ejecutivos sobre una Guatemala
-> simulada — calibrada con datos reales del Banco Mundial, agentes
-> heterogéneos del entorno político local, y análisis estadístico
-> publication-ready.
+> simulada — calibrada con datos reales del Banco Mundial y Banguat,
+> agentes heterogéneos del entorno político local, y análisis estadístico
+> publication-ready (frecuentista + bayesiano).
 
 [![Python](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](#licencia)
-[![Tests](https://img.shields.io/badge/tests-66%20passed-success.svg)](#tests)
+[![Tests](https://img.shields.io/badge/tests-88%20passed-success.svg)](#tests)
 [![Status](https://img.shields.io/badge/status-research%20alpha-orange.svg)](#estado-y-roadmap)
-[![Data](https://img.shields.io/badge/data-World%20Bank%202024-orange.svg)](#datos-reales-banco-mundial)
+[![Data](https://img.shields.io/badge/data-WB%202024%20%2B%20Banguat%202026-orange.svg)](#datos-reales-banco-mundial)
+[![Stats](https://img.shields.io/badge/stats-Wilcoxon%20%7C%20MixedLM%20%7C%20BEST%20%7C%20Dirichlet--multinomial-blueviolet.svg)](#análisis-estadístico-multi-seed)
 
 El mismo mundo (dinámica macro + shocks endógenos + 4 agentes Mesa + grafo
 territorial de 22 departamentos, **calibrado contra Banco Mundial 2024**)
@@ -38,6 +39,7 @@ mediría cosas distintas.
 - [Decisores soportados](#decisores-soportados)
 - [Modelos formales del simulador](#modelos-formales-del-simulador)
 - [Análisis estadístico (multi-seed)](#análisis-estadístico-multi-seed)
+- [Análisis bayesiano](#análisis-bayesiano)
 - [Datos reales (Banco Mundial)](#datos-reales-banco-mundial)
 - [Ejemplos](#ejemplos)
 - [Configuración](#configuración)
@@ -56,11 +58,11 @@ mediría cosas distintas.
 ```bash
 git clone <repo> guatemala-sim
 cd guatemala-sim
-pip install -e .[dev,ingest]
-python -m pytest                              # 66 tests, ~13s
+pip install -e .[dev,ingest,bayes]
+python -m pytest                              # 88 tests (~2 min con bayesianos)
 
-# (opcional) descargar datos reales del Banco Mundial
-python -m guatemala_sim.refresh_data
+# (opcional) descargar datos reales del Banco Mundial + Banguat
+python -m guatemala_sim.refresh_data --banguat
 
 # corrida de 4 turnos sin API
 python demo.py --turnos 4
@@ -97,22 +99,28 @@ puntos porcentuales del PIB. Ver `paper/constituciones_reveladas.md`.
 
 Cuán robusto es ese hallazgo todavía es una pregunta abierta — para eso
 está el pipeline de **multi-seed con ≥ 20 seeds × ≥ 3 réplicas**, que
-desambigua "diferencia entre modelos" de "ruido del sampler de Boltzmann"
+desambigua "diferencia entre modelos" de "ruido del sampler estocástico del LLM"
 vía ICC. Este repo es la infraestructura para hacer ese tipo de pregunta
-de manera reproducible y estadísticamente honesta: multi-seed, IC95
-bootstrap, tests pareados con corrección por comparaciones múltiples,
-mixed-effects sobre datos turn-level y ICC.
+de manera reproducible y estadísticamente honesta:
+
+- **Frecuentista**: multi-seed, IC95 bootstrap, Wilcoxon pareado con
+  corrección por comparaciones múltiples (Holm + BH-FDR), mixed-effects
+  sobre datos turn-level, ICC test-retest.
+- **Bayesiano**: BEST de Kruschke 2013 (Student-t robusto, posterior
+  completo de Δμ con HDI95 y ROPE) y Dirichlet-multinomial jerárquico
+  sobre el presupuesto (recupera la "constitución" de cada LLM como
+  prior con incertidumbre cuantificada).
 
 ---
 
 ## Arquitectura
 
 ```
-┌──────────────────┐       ┌─────────────────────────────┐
-│  bootstrap.py    │◀──────│ data_ingest.py              │
-│ (estado inicial  │       │ (Banco Mundial → snapshot   │
-│  enero 2026)     │       │  CSV → calibrate_state)     │
-└────────┬─────────┘       └─────────────────────────────┘
+┌──────────────────┐       ┌─────────────────────────────────┐
+│  bootstrap.py    │◀──────│ data_ingest.py  (Banco Mundial) │
+│ (estado inicial  │◀──────│ banguat_ingest.py (USD/GTQ)     │
+│  enero 2026)     │       │ snapshot CSV → calibrate_state  │
+└────────┬─────────┘       └─────────────────────────────────┘
          │
          ▼
 ┌─────────────────────────────────────────────────────────────┐
@@ -128,11 +136,11 @@ mixed-effects sobre datos turn-level y ICC.
 │                                   memoria + log JSONL        │
 └─────────────────────────────────────────────────────────────┘
                           │
-              ┌───────────┴──────────┐
-              ▼                      ▼
-       comparison.py           multiseed.py
-       (single compare)       (N seeds, IC95,
-                              mixed-eff., ICC)
+       ┌──────────────────┼──────────────────┐
+       ▼                  ▼                  ▼
+ comparison.py       multiseed.py        bayesian.py
+ (single compare)   (N seeds, IC95,    (BEST + Dirichlet
+                    Wilcoxon, ME, ICC)   multinomial, PyMC)
 ```
 
 ---
@@ -151,10 +159,9 @@ mixed-effects sobre datos turn-level y ICC.
 ## Modelos formales del simulador
 
 El simulador es **deterministicamente reactivo a la decisión presidencial,
-con ruido gaussiano aditivo y eventos Bernoulli endógenos**. No usa
-modelos de Boltzmann en la dinámica del mundo (sí en el sampler del LLM,
-ver §LLM más abajo). La elección es deliberada: queremos consecuencias
-trazables a las decisiones, no a un solver opaco.
+con ruido gaussiano aditivo y eventos Bernoulli endógenos**. No usa RL,
+ni equilibrio general computable, ni solvers opacos. La elección es
+deliberada: queremos consecuencias trazables a las decisiones.
 
 ### Crecimiento del PIB
 
@@ -203,7 +210,7 @@ $$\text{TC}(t+1) = \text{TC}(t) \cdot \left(1 + \frac{\pi(t) - 2}{200} + 0.002 \
 
 $$\text{reservas}(t+1) = 1.04 \cdot \text{reservas}(t) + 300 \cdot \text{CC}_{\text{PIB}}(t) + 200 \cdot \mathcal{N}(0, 1)$$
 
-$$\text{IED}(t+1) = \text{IED}(t) \cdot \left(1.02 + 0.001 \cdot (\text{conf\_inst}(t) - 30)\right) + 150 \cdot \mathcal{N}(0, 1)$$
+$$\text{IED}(t+1) = \text{IED}(t) \cdot \left(1.02 + 0.001 \cdot (\text{conf}_{\text{inst}}(t) - 30)\right) + 150 \cdot \mathcal{N}(0, 1)$$
 
 ### Pobreza y migración
 
@@ -211,7 +218,7 @@ Elasticidades Ravallion-style [^ravallion-poverty]:
 
 $$\Delta\text{pobreza}(t) = -0.35 \cdot g(t) - 2.5 \cdot (w_{\text{social}}(t) - 0.35) + 0.4 \cdot \mathcal{N}(0, 1)$$
 
-$$\text{migración\_neta}(t) = -4 \cdot (\text{pobreza}(t) - 45) + 5 \cdot \mathcal{N}(0, 1) \quad \text{(en miles)}$$
+$$\text{migración}_{\text{neta}}(t) = -4 \cdot (\text{pobreza}(t) - 45) + 5 \cdot \mathcal{N}(0, 1) \quad \text{(en miles)}$$
 
 donde $w_{\text{social}}$ es la fracción del presupuesto en
 salud + educación + protección social.
@@ -226,9 +233,9 @@ $$S_k(t) \sim \text{Bernoulli}(p_k(\text{state}(t)))$$
 
 con probabilidades base moduladas por el estado:
 
-$$p_{\text{corrupción}}(t) = p^{\text{base}}_{\text{corrupción}} \cdot \left(1.5 - \frac{\text{conf\_inst}(t)}{100}\right)$$
+$$p_{\text{corrupción}}(t) = p^{\text{base}}_{\text{corrupción}} \cdot \left(1.5 - \frac{\text{conf}_{\text{inst}}(t)}{100}\right)$$
 
-$$p_{\text{crisis\_gob}}(t) = p^{\text{base}}_{\text{crisis\_gob}} + 0.3 \cdot \frac{\text{protesta}(t)}{100} + 0.3 \cdot \max\left(0, \frac{50 - \text{aprobación}(t)}{100}\right)$$
+$$p_{\text{crisis-gob}}(t) = p^{\text{base}}_{\text{crisis-gob}} + 0.3 \cdot \frac{\text{protesta}(t)}{100} + 0.3 \cdot \max\left(0, \frac{50 - \text{aprobación}(t)}{100}\right)$$
 
 Es un proceso de eventos raros con feedback estado→probabilidad —
 emparentado con un proceso de Hawkes auto-excitable [^hawkes], aunque sin
@@ -242,19 +249,18 @@ protesta, coalición, confianza institucional e IED. Sin estocasticidad
 propia, sin softmax, sin aprendizaje. Mesa v3 [^mesa] solo se usa como
 framework de *scheduling*.
 
-### LLM como decisor (acá sí hay Boltzmann)
+### LLM como decisor (sampler estocástico)
 
 Cada token producido por Claude o GPT-4o-mini sale del *softmax*
 estándar [^bishop-prml]:
 
 $$P(\text{token} = v \mid \text{contexto}) = \frac{\exp(\ell_v / T)}{\sum_{v'} \exp(\ell_{v'} / T)}$$
 
-donde $\ell_v$ es el logit del token $v$. Ésta es exactamente una
-**distribución de Boltzmann** sobre el vocabulario con temperatura
-inversa $\beta = 1/T$. La temperatura por defecto en ambas APIs es
-$T \approx 1$; nosotros no la sobrescribimos. La estocasticidad del
-decisor entre re-ejecuciones del mismo turno proviene íntegramente de
-este sampler — es la única fuente de Boltzmann en el sistema.
+donde $\ell_v$ es el logit del token $v$ y $T$ es la temperatura. La
+temperatura por defecto en ambas APIs es $T \approx 1$; nosotros no la
+sobrescribimos. La estocasticidad del decisor entre re-ejecuciones del
+mismo turno proviene íntegramente de este sampler — es la única fuente
+de aleatoriedad del decisor en el sistema.
 
 ### Indicadores derivados
 
@@ -269,8 +275,7 @@ donde $a_t$ es el alineamiento exterior del turno $t$.
 - **Diversidad de valores** (entropía de Shannon [^shannon-1948]):
 $$H(D) = -\sum_{a \in \mathcal{A}} \hat{p}(a) \log_2 \hat{p}(a)$$
 donde $\hat{p}(a)$ es la frecuencia empírica del alineamiento $a$ en
-$D$. Misma forma funcional que la entropía de Gibbs/Boltzmann; acá
-se aplica a la distribución categórica revelada del decisor.
+$D$. Acá se aplica a la distribución categórica revelada del decisor.
 
 ---
 
@@ -312,7 +317,7 @@ $s_d$ son media y desvío de las diferencias pareadas.
 **Cliff's δ** [^cliff-1993] [^romano-2006] (no-paramétrico, robusto a
 outliers, $\delta \in [-1, 1]$):
 
-$$\delta = \frac{n_{>} - n_{<}}{n_a \cdot n_b}, \quad n_{>} = \#\{(a, b) : a > b\}$$
+$$\delta = \frac{n_{>} - n_{<}}{n_a \cdot n_b}, \quad n_{>} = \lvert\{(a, b) : a > b\}\rvert$$
 
 **Power post-hoc** vía la distribución $t$ no-central [^cohen-1988]:
 
@@ -338,7 +343,7 @@ vía `statsmodels.MixedLM` con REML.
 
 Con $R$ réplicas por (seed, modelo), el coeficiente de correlación
 intraclase ICC(1) [^shrout-fleiss-1979] mide la fracción de varianza
-atribuible al seed (sustantivo) vs. al sampler del LLM (Boltzmann):
+atribuible al seed (sustantivo) vs. al sampler estocástico del LLM:
 
 $$\text{ICC} = \frac{\sigma^2_{\text{seed}}}{\sigma^2_{\text{seed}} + \sigma^2_{\text{residual}}}$$
 
@@ -351,6 +356,60 @@ Para los IC95 de medias, *percentile bootstrap* [^efron-tibshirani] con
 $B = 5000$ remuestreos:
 
 $$\text{IC}_{95} = \big[Q_{0.025}(\bar{x}^{(b)}), Q_{0.975}(\bar{x}^{(b)})\big]$$
+
+---
+
+## Análisis bayesiano
+
+Complementan el pipeline frecuentista con dos modelos PyMC en
+`guatemala_sim.bayesian` (extra `[bayes]`):
+
+### BEST: Bayesian Estimation Supersedes the t-test [^kruschke-2013]
+
+Para cada métrica pareada $(x_a^{(i)}, x_b^{(i)})$ ajustamos al vector de
+diferencias $d_i = x_b^{(i)} - x_a^{(i)}$ un modelo Student-t robusto:
+
+$$d_i \sim \mathrm{StudentT}(\nu, \mu, \sigma)$$
+
+$$\mu \sim \mathcal{N}(0,\ 10 \cdot s_d), \quad \sigma \sim \mathrm{HalfNormal}(5 \cdot s_d), \quad \nu - 1 \sim \mathrm{Exponential}(1/29)$$
+
+donde $s_d$ es el desvío empírico de las diferencias. Devolvemos el
+posterior completo de $\mu$, su HDI95, $P(\mu_b > \mu_a \mid \text{datos})$,
+$P(|\mu| < \text{ROPE} \mid \text{datos})$ y el tamaño de efecto
+estandarizado $\mu / \sigma$ (Cohen's d bayesiano). Más informativo que
+el `p`-value del Wilcoxon: distingue *evidencia de equivalencia* (ROPE)
+de *ausencia de evidencia*.
+
+```python
+from guatemala_sim.bayesian import best_paired
+res = best_paired(x_claude, x_openai, metric="pobreza_fin", model_a="Claude", model_b="OpenAI")
+# res.posterior_diff_mean, res.hdi95_lo, res.hdi95_hi,
+# res.prob_b_gt_a, res.prob_in_rope, res.effect_size_mean
+```
+
+### Dirichlet-multinomial jerárquico sobre el presupuesto
+
+Cada turno aporta una asignación presupuestaria
+$\mathbf{p}_t \in \Delta^{K-1}$ (K = 9 partidas). Modelamos:
+
+$$\alpha_k \sim \mathrm{HalfNormal}(\sigma=10), \quad k = 1, \ldots, K$$
+
+$$\mathbf{p}_t \mid \boldsymbol\alpha \sim \mathrm{Dirichlet}(\boldsymbol\alpha), \quad t = 1, \ldots, T$$
+
+El posterior de $\boldsymbol\alpha$ revela la **constitución del LLM**
+como un prior bayesiano sobre asignaciones. La media esperada por
+partida es $\mathbb{E}[p_k] = \alpha_k / \sum_j \alpha_j$ con su HDI95
+correspondiente; la suma $\sum_j \alpha_j$ mide la *concentración* —
+un LLM "rígido" tiene concentración alta (poca varianza turn-to-turn),
+uno "volátil" tiene concentración baja.
+
+```python
+from guatemala_sim.bayesian import compare_budget_constitutions
+posts = compare_budget_constitutions(df_long, models=["Claude", "OpenAI"])
+# posts["Claude"].expected_share — vector (9,) de E[share]
+# posts["Claude"].alpha_hdi95   — HDI95 por partida
+# posts["Claude"].concentration_mean — rigidez del modelo
+```
 
 ---
 
@@ -407,6 +466,36 @@ print(f"Pobreza:     {state.social.pobreza_general:.1f} %")
 print(f"Campos calibrados: {len(meta['campos_reemplazados'])}/20")
 print(f"Campos en default: {meta['campos_default']}")
 ```
+
+### Banguat (tipo de cambio diario USD/GTQ)
+
+```bash
+python -m guatemala_sim.refresh_data --solo-banguat --dias 365
+```
+
+Cliente SOAP artesanal contra
+`https://banguat.gob.gt/variables/ws/TipoCambio.asmx`. Operaciones
+soportadas: tipo de cambio del día, rango de fechas para USD, y rango
+para otras monedas (EUR, MXN, GBP, CAD, JPY, CRC, HNL — códigos en
+`MONEDAS_BANGUAT`). El cliente hace retry exponencial frente a los
+500 intermitentes del endpoint y persiste a CSV.
+
+```python
+from datetime import date, timedelta
+from guatemala_sim.banguat_ingest import (
+    tipo_cambio_dia, tipo_cambio_rango, latest_tipo_cambio_promedio,
+)
+
+obs = tipo_cambio_dia()                          # último día publicado
+df = tipo_cambio_rango(date.today() - timedelta(days=30), date.today())
+print(f"Promedio últimos 30 días: {latest_tipo_cambio_promedio(df):.4f}")
+```
+
+**Limitación honesta**: Banguat sólo expone tipo de cambio vía SOAP
+estable. IPC, IMAE, tasa líder, agregados monetarios viven en PDFs y
+XLSX del sitio público — para esos lo razonable es bajar el XLSX a
+`data/` y agregar un parser dedicado. Cualquier scraper HTML del sitio
+se rompe cada pocos meses.
 
 ---
 
@@ -476,15 +565,19 @@ Dependencias clave:
 | `scipy >= 1.11` | Wilcoxon, bootstrap, t no-central |
 | `statsmodels >= 0.14` | mixed-effects, ICC [^pinheiro-bates] |
 | `wbgapi` (extra `[ingest]`) | API Banco Mundial [^wb-api] |
+| `requests` (extra `[ingest]`) | cliente SOAP de Banguat |
+| `pymc >= 5.10`, `arviz >= 0.17` (extra `[bayes]`) | BEST + Dirichlet-multinomial |
 
 ---
 
 ## Tests
 
 ```bash
-python -m pytest                             # 66 tests, ~13s
-python -m pytest tests/test_data_ingest.py   # solo ingesta
-python -m pytest tests/test_multiseed.py     # solo análisis estadístico
+python -m pytest                             # 88 tests
+python -m pytest tests/test_data_ingest.py   # solo ingesta WB
+python -m pytest tests/test_banguat_ingest.py # solo Banguat (mock SOAP)
+python -m pytest tests/test_multiseed.py     # análisis frecuentista
+python -m pytest tests/test_bayesian.py      # BEST + Dirichlet (lento, ~100s)
 ```
 
 | Módulo | Tests |
@@ -496,6 +589,8 @@ python -m pytest tests/test_multiseed.py     # solo análisis estadístico
 | `resilient` | 4 |
 | **`multiseed`** (Capa 1 + 2 + ICC) | **12** |
 | **`data_ingest`** (offline, snapshot mockeado) | **9** |
+| **`banguat_ingest`** (offline, SOAP mockeado) | **10** |
+| **`bayesian`** (BEST + Dirichlet-multinomial) | **12** |
 | `indicators`, `territory` | 4 |
 
 Todos los tests son **offline** (no requieren API ni red).
@@ -517,7 +612,9 @@ guatemala-sim/
 │   ├── actions.py                     # DecisionTurno
 │   ├── bootstrap.py                   # estado inicial + calibrado
 │   ├── data_ingest.py                 # World Bank → state
-│   ├── refresh_data.py                # CLI de ingesta
+│   ├── banguat_ingest.py              # Banguat SOAP (USD/GTQ)
+│   ├── bayesian.py                    # BEST + Dirichlet-multinomial
+│   ├── refresh_data.py                # CLI de ingesta (WB + Banguat)
 │   ├── engine.py                      # run_turn + DummyDecisionMaker
 │   ├── president.py                   # ClaudePresidente (Anthropic)
 │   ├── president_openai.py            # GPTPresidente (OpenAI compat)
@@ -534,10 +631,11 @@ guatemala-sim/
 │   └── agents/                        # Mesa v3
 ├── data/
 │   ├── world_bank_gtm.csv             # snapshot WB (auto-generado)
+│   ├── banguat_tipo_cambio.csv        # serie diaria USD/GTQ (auto-generado)
 │   ├── departamentos.csv
 │   ├── adyacencias.csv
 │   └── SOURCES.md
-├── tests/                             # pytest, 66 tests offline
+├── tests/                             # pytest, 88 tests offline
 ├── runs/                              # JSONL por corrida (gitignored)
 ├── figures/                           # PNG + reportes (gitignored)
 └── paper/
@@ -561,17 +659,19 @@ guatemala-sim/
 - [x] Mixed-effects sobre datos turn-level
 - [x] ICC sobre réplicas (test-retest)
 - [x] Ingesta automatizada del Banco Mundial
+- [x] Ingesta automatizada de Banguat (tipo de cambio USD/GTQ vía SOAP)
+- [x] Análisis bayesiano pareado estilo BEST [^kruschke-2013]
+- [x] Modelo jerárquico Dirichlet-multinomial sobre el presupuesto
 - [x] Paper draft (`paper/constituciones_reveladas.md`)
-- [x] 66 tests offline pasan
+- [x] 88 tests offline pasan
 
 **Pendiente / próximos pasos:**
 
-- [ ] Análisis bayesiano pareado estilo BEST [^kruschke-2013]
-- [ ] Modelo jerárquico Dirichlet-multinomial sobre el presupuesto
 - [ ] Migrar `world/macro.py` a PySD (system dynamics propiamente dicho)
 - [ ] Streamlit dashboard interactivo
 - [ ] Más decisores: Gemini, DeepSeek, Llama 3.1
-- [ ] Ingesta automática de Banguat / INE / MINFIN
+- [ ] Ingesta automática de INE / MINFIN (Banguat sólo da tipo de cambio
+      vía SOAP estable; IPC/IMAE sólo PDFs)
 - [ ] Ablación de prompt: ¿la "constitución" sobrevive paráfrasis?
 
 ---
@@ -591,7 +691,7 @@ PRs bienvenidos. Áreas donde ayuda haría diferencia inmediata:
 - **Ingesta**: Banguat / INE / MINFIN no tienen APIs estables; cualquier
   scraper bien testeado cuenta.
 
-Antes de mandar un PR: `python -m pytest` debe pasar 66/66.
+Antes de mandar un PR: `python -m pytest` debe pasar 88/88.
 
 ---
 
@@ -653,7 +753,8 @@ Antes de mandar un PR: `python -m pytest` debe pasar 66/66.
   [DOI:10.1007/978-3-030-61255-9_30](https://doi.org/10.1007/978-3-030-61255-9_30).
 
 [^bishop-prml]: Bishop, C. M. (2006). *Pattern Recognition and Machine
-  Learning*. Springer. Cap. 4: softmax como Boltzmann sobre clases.
+  Learning*. Springer. Cap. 4: softmax como distribución categórica
+  normalizada sobre clases.
 
 [^shannon-1948]: Shannon, C. E. (1948). "A mathematical theory of
   communication". *Bell System Technical Journal*, 27(3), 379–423.

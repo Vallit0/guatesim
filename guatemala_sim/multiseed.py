@@ -433,7 +433,7 @@ def compute_icc(df: pd.DataFrame, metric: str, model: str) -> dict:
     Interpretación: ICC alto → la varianza está dominada por diferencias
     entre seeds (sustantivo, mismos shocks → misma respuesta). ICC bajo →
     réplicas del mismo seed difieren tanto como seeds distintos: el sampler
-    de Boltzmann del LLM domina, y las "diferencias entre modelos" son
+    estocástico del LLM domina, y las "diferencias entre modelos" son
     sospechosas.
     """
     import statsmodels.formula.api as smf
@@ -794,7 +794,7 @@ def write_report(
             "ICC alto (→ 1) significa que repetir el mismo seed con el mismo "
             "modelo produce resultados parecidos: la varianza está dominada "
             "por la diferencia entre seeds (mismos shocks → misma respuesta). "
-            "ICC bajo (→ 0) significa que el sampler de Boltzmann del LLM "
+            "ICC bajo (→ 0) significa que el sampler estocástico del LLM "
             "(temperatura ~1) introduce tanta varianza intra-modelo como la que "
             "vemos entre modelos — y entonces las diferencias inter-modelo "
             "deben interpretarse con cuidado."

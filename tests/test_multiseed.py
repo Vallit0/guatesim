@@ -53,7 +53,7 @@ class _FixedBudgetMaker:
     """Decisor con presupuesto custom y resto uniforme.
 
     Si `jitter` > 0 introduce ruido gaussiano pequeño en cada llamada
-    (simula la estocasticidad del sampler de Boltzmann del LLM, útil para
+    (simula la estocasticidad del sampler softmax del LLM, útil para
     ICC < 1 en los tests).
     """
 
@@ -381,4 +381,4 @@ def test_analyze_con_replicas_incluye_icc(runs_with_replicas, tmp_path: Path):
     assert paths["icc"].exists() and paths["icc"].stat().st_size > 0
     md = paths["summary"].read_text(encoding="utf-8")
     assert "ICC" in md
-    assert "Boltzmann" in md or "sampler" in md
+    assert "sampler" in md

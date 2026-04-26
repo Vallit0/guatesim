@@ -182,10 +182,9 @@ auditable. Es relevante porque la "personalidad" revelada por cada modelo se
 mide *contra* este sustrato, y un revisor debe poder reproducirlo.
 
 **El simulador es deterministicamente reactivo a la decisión presidencial,
-con ruido gaussiano aditivo y eventos bernoulli endógenos.** No usa modelos
-de Boltzmann, ni RL, ni equilibrio general computable. La elección es
-deliberada: queremos consecuencias trazables a las decisiones, no a un
-solver opaco.
+con ruido gaussiano aditivo y eventos bernoulli endógenos.** No usa RL,
+ni equilibrio general computable, ni solvers opacos. La elección es
+deliberada: queremos consecuencias trazables a las decisiones.
 
 **1. Crecimiento del PIB (Keynesiano con multiplicador del gasto).** Sea
 `g(t)` la tasa de crecimiento del PIB en el turno `t`:
@@ -298,21 +297,21 @@ proveniente del presupuesto. La dinámica espacial es elemental: difusión
 de primeros vecinos con coeficiente fijo. No es un modelo gravitacional
 ni de potencial; es promedio ponderado con rezago de un turno.
 
-**9. Sampling del LLM (acá sí hay Boltzmann).** Vale la pena nombrarlo
+**9. Sampling del LLM (softmax estocástico).** Vale la pena nombrarlo
 explícitamente: cada token que producen Claude y GPT-4o-mini sale de
-`p(token | contexto) = softmax(logits / T)`, que es exactamente una
-**distribución de Boltzmann** sobre el vocabulario con temperatura inversa
-`β = 1/T`. La temperatura por defecto en ambas APIs es ~ 1; nosotros no la
-sobrescribimos. La estocasticidad del decisor entre re-ejecuciones del
-mismo turno proviene íntegramente de este sampler. Es la única fuente de
-Boltzmann en el sistema, y vive del lado del LLM, no del simulador.
+`p(token | contexto) = softmax(logits / T)`, una **distribución softmax**
+sobre el vocabulario con temperatura `T`. La temperatura por defecto en
+ambas APIs es ~ 1; nosotros no la sobrescribimos. La estocasticidad del
+decisor entre re-ejecuciones del mismo turno proviene íntegramente de
+este sampler. Es la única fuente de aleatoriedad del decisor en el
+sistema, y vive del lado del LLM, no del simulador.
 
 **Resumen.** El simulador es deterministicamente reactivo (ecuaciones
 calibradas + ruido gaussiano + Bernoulli endógeno). El LLM es estocástico
-a nivel de tokens (Boltzmann). La diferencia entre modelos que medimos en
+a nivel de tokens (softmax). La diferencia entre modelos que medimos en
 §5 es por lo tanto la composición de dos efectos: la *política* implícita
-del LLM (qué prefiere asignar) y la *temperatura* de Boltzmann en su
-sampler (cuánto varía entre llamadas idénticas). Correr múltiples seeds
+del LLM (qué prefiere asignar) y la *temperatura* del sampler softmax
+(cuánto varía entre llamadas idénticas). Correr múltiples seeds
 con el mismo modelo (ver §6.4, *trabajo en curso*) ataca el segundo.
 
 ### 3.5. Indicadores derivados

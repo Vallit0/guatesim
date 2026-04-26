@@ -3,7 +3,7 @@
 Itera sobre una lista de seeds; para cada (seed, modelo) corre `--replicas`
 veces. Mismo seed → mismos shocks (la dinámica del mundo es determinista
 dado el seed); las diferencias entre réplicas vienen exclusivamente del
-sampler estocástico del LLM (Boltzmann sobre tokens, T~1).
+sampler estocástico del LLM (softmax sobre tokens, T~1).
 
 Esto habilita ICC (test-retest dentro de modelo): cuánto de la varianza
 del comportamiento del decisor se debe al modelo (entre seeds, sustantivo)

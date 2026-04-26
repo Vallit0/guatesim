@@ -33,12 +33,17 @@ dev = [
 ingest = [
     "wbgapi>=1.0",
     "pandera>=0.18",
+    "requests>=2.31",
 ]
 dashboard = [
     "streamlit>=1.30",
 ]
 sd = [
     "pysd>=3.14",
+]
+bayes = [
+    "pymc>=5.10",
+    "arviz>=0.17",
 ]
 
 [tool.setuptools.packages.find]
