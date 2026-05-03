@@ -42,6 +42,10 @@ class TurnRecord:
     decision: dict
     state_after: dict
     shocks_activos: list[str]
+    menu_choice: dict | None = None
+    """Si el turno corrió en menu-choice mode, dict con
+    `{"chosen_index": int, "candidates": [{"name": str, "presupuesto": dict}]}`.
+    None en modo legacy (composición libre)."""
 
 
 def advance_date(d: date, periodo: str) -> date:
@@ -74,12 +78,23 @@ def run_turn(
     hooks: list[Callable[[TurnRecord], None]] | None = None,
     agentes=None,          # AgentesModel | None
     territorio=None,       # Territory | None
+    menu_mode: bool = False,
+    menu_candidates_provider: Callable[[], list] | None = None,
 ) -> tuple[GuatemalaState, TurnRecord]:
     """Avanza un turno completo y devuelve el nuevo state + el record del turno.
 
     Si `agentes` (AgentesModel) se pasa, las reacciones modifican el state
     post-macro. Si `territorio` (Territory) se pasa, sus shocks climáticos
     se propagan y su resumen se adjunta al record.
+
+    Args:
+        menu_mode: si True, el `decision_maker` debe implementar
+            `choose_from_menu(state, candidates) -> (int, DecisionTurno)`
+            en vez de `decide(state)`. Habilita el flujo de IRL bayesiano
+            sobre elecciones discretas.
+        menu_candidates_provider: callable opcional que devuelve la lista de
+            `Candidate`. Default: `irl.candidates.generate_candidate_menu`.
+            Sólo se usa si `menu_mode=True`.
     """
     hooks = hooks or []
 
@@ -92,8 +107,27 @@ def run_turn(
         territorio.step(state_con_shocks, rng)
         territory_summary = territorio.summary().as_dict()
 
-    # 3. Decisión
-    decision = decision_maker.decide(state_con_shocks)
+    # 3. Decisión (legacy free-composition o nuevo menu-choice)
+    menu_choice_record: dict | None = None
+    if menu_mode:
+        if menu_candidates_provider is None:
+            from .irl.candidates import generate_candidate_menu
+            menu_candidates_provider = generate_candidate_menu
+        candidates_full = menu_candidates_provider()
+        candidate_presupuestos = [c.presupuesto for c in candidates_full]
+        candidate_names = [c.name for c in candidates_full]
+        chosen_idx, decision = decision_maker.choose_from_menu(
+            state_con_shocks, candidate_presupuestos, candidate_names
+        )
+        menu_choice_record = {
+            "chosen_index": int(chosen_idx),
+            "candidates": [
+                {"name": c.name, "presupuesto": c.presupuesto.model_dump()}
+                for c in candidates_full
+            ],
+        }
+    else:
+        decision = decision_maker.decide(state_con_shocks)
 
     # 4. Física del mundo con la decisión
     state_post_macro = step_macro(state_con_shocks, decision, rng, params=params)
@@ -127,6 +161,7 @@ def run_turn(
         decision=decision.model_dump(mode="json"),
         state_after=state_final.model_dump(mode="json"),
         shocks_activos=list(state_con_shocks.shocks_activos),
+        menu_choice=menu_choice_record,
     )
     # campos extra no tipados (territorio / eventos de agentes)
     record_extra = {
@@ -189,3 +224,57 @@ class DummyDecisionMaker:
                 "las familias guatemaltecas."
             ),
         )
+
+
+# --- tomador de decisiones dummy en menu-choice mode (para tests sin API) ---
+
+
+class DummyMenuDecisionMaker:
+    """Análogo de `DummyDecisionMaker` pero para `menu_mode=True`.
+
+    Implementa `choose_from_menu(state, candidates) -> (int, DecisionTurno)`
+    eligiendo siempre el mismo índice configurable. Los demás campos de la
+    decisión (fiscal, exterior, etc.) son neutros y constantes.
+    """
+
+    def __init__(
+        self,
+        rng: np.random.Generator | None = None,
+        selected_index: int = 4,
+    ):
+        self._rng = rng if rng is not None else np.random.default_rng(0)
+        self.selected_index = int(selected_index)
+
+    def choose_from_menu(
+        self,
+        state: GuatemalaState,
+        candidates: list[PresupuestoAnual],
+        candidate_names: list[str] | None = None,
+    ) -> tuple[int, DecisionTurno]:
+        if not candidates:
+            raise ValueError("candidates no puede ser vacío")
+        idx = self.selected_index % len(candidates)
+        from .actions import RespuestaShock
+
+        respuestas = [
+            RespuestaShock(shock=sh, medida="paquete de emergencia", costo_fiscal_pib=0.3)
+            for sh in state.shocks_activos
+        ]
+        decision = DecisionTurno(
+            razonamiento=(
+                f"dummy menu pick (selected_index={self.selected_index}): "
+                f"continuidad operativa con respuesta contracíclica."
+            ),
+            presupuesto=candidates[idx],
+            fiscal=Fiscal(delta_iva_pp=0.0, delta_isr_pp=0.0),
+            exterior=PoliticaExterior(
+                alineamiento_priorizado="multilateral",
+                acciones_diplomaticas=["diálogo con BID"],
+            ),
+            respuestas_shocks=respuestas,
+            reformas=[],
+            mensaje_al_pueblo=(
+                "seguimos trabajando por la estabilidad y el bienestar."
+            ),
+        )
+        return idx, decision

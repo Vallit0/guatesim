@@ -127,3 +127,56 @@ class DecisionTurno(BaseModel):
     respuestas_shocks: list[RespuestaShock] = Field(default_factory=list)
     reformas: conlist(Reforma, max_length=2) = Field(default_factory=list)
     mensaje_al_pueblo: str = Field(min_length=1, max_length=600)
+
+
+class ChosenDecision(BaseModel):
+    """Schema para *menu-choice mode*: el presupuesto NO se compone libremente,
+    se elige un índice del menú de candidatos. El resto de la decisión sí se
+    compone normalmente.
+
+    Habilita el likelihood Boltzmann tractable del IRL bayesiano (ver
+    `guatemala_sim/irl/`). Para construir un `DecisionTurno` regular a partir
+    de una `ChosenDecision` + el candidato elegido, usar `decision_from_choice`.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    razonamiento: str = Field(
+        min_length=1,
+        description="Por qué se eligió ese candidato y se tomaron estas decisiones.",
+    )
+    chosen_index: int = Field(
+        ge=0,
+        le=4,
+        description=(
+            "Índice del candidato presupuestario elegido (0..4). El menú "
+            "está fijo en 5 candidatos (ver guatemala_sim/irl/candidates.py)."
+        ),
+    )
+    fiscal: Fiscal
+    exterior: PoliticaExterior
+    respuestas_shocks: list[RespuestaShock] = Field(default_factory=list)
+    reformas: conlist(Reforma, max_length=2) = Field(default_factory=list)
+    mensaje_al_pueblo: str = Field(min_length=1, max_length=600)
+
+
+def decision_from_choice(
+    chosen: ChosenDecision,
+    presupuesto: PresupuestoAnual,
+) -> DecisionTurno:
+    """Construye un `DecisionTurno` válido desde una `ChosenDecision` + el
+    presupuesto del candidato seleccionado.
+
+    El `presupuesto` debe corresponder a `candidates[chosen.chosen_index]` —
+    el caller es responsable de hacer la indexación. Este helper sólo
+    ensambla los campos.
+    """
+    return DecisionTurno(
+        razonamiento=chosen.razonamiento,
+        presupuesto=presupuesto,
+        fiscal=chosen.fiscal,
+        exterior=chosen.exterior,
+        respuestas_shocks=list(chosen.respuestas_shocks),
+        reformas=list(chosen.reformas),
+        mensaje_al_pueblo=chosen.mensaje_al_pueblo,
+    )

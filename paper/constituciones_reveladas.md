@@ -1,46 +1,66 @@
-# Constituciones Reveladas: Anthropic vs. OpenAI como decisores ejecutivos en una simulación de Guatemala 2026
+# Auditing LLM-as-Policymaker in the Global South: A Bayesian Method, Calibrated to Guatemala
+
+*(Versión castellana: "Constituciones Reveladas: una metodología bayesiana
+para auditar LLMs como decisores ejecutivos en el Sur Global, calibrada
+contra Guatemala")*
 
 **Autor:** [Tu nombre], Universidad de San Carlos de Guatemala (USAC), Facultad de Ingeniería
-**Fecha:** abril 2026
+**Fecha:** mayo 2026
 **Código y datos:** `guatemala-sim/` (repositorio local), commit `121fe35`+
 
 ---
 
 ## Resumen
 
-Construimos un *testbed* de gobernanza simulada para Guatemala (enero 2026 + 8 turnos
-trimestrales) en el que un único modelo de lenguaje toma todas las decisiones
-ejecutivas del país: presupuesto anual (9 partidas que deben sumar 100%), política
-fiscal (Δ IVA, Δ ISR), política exterior (alineamiento + acciones diplomáticas),
-respuestas a shocks y reformas estructurales (≤ 2 por turno, en 7 áreas). El
-ambiente — shocks, dinámica macro, agentes (oficialismo, oposición, CACIF,
-protesta social) y grafo territorial de 22 departamentos — es idéntico entre
-corridas (mismo *seed*), de modo que la diferencia entre trayectorias es
-atribuible al modelo de lenguaje y no al ambiente.
+Los LLMs frontera son entrenados con datos y feedback humano predominantemente
+del Norte Global — pre-training mayoritariamente anglo, RLHF con raters
+estadounidenses, *Constitutional AI* y *Frontier Safety Frameworks* redactados
+en California y Londres. Sus "constituciones" implícitas son, por
+construcción, culturalmente situadas. Sin embargo, en 2024–2026 hay reportes
+públicos de gobiernos latinoamericanos desplegándolos como soporte de
+decisión en política pública. La brecha entre **el contexto cultural de
+calibración del modelo** y **el contexto de despliegue del Sur Global** está
+sin medir.
 
-Comparamos dos decisores de frontera bajo el mismo schema `DecisionTurno`
-(~30 campos anidados con restricciones agregadas y de rango): **Anthropic
-Claude Haiku 4.5** (vía `tool_use`) y **OpenAI GPT-4o-mini** (vía
-`response_format=json_schema`, modo *strict*).
+Este trabajo introduce una metodología bayesiana de auditoría que recupera
+las preferencias implícitas de un LLM sobre 6 dimensiones de bienestar a
+partir de elecciones observadas bajo restricción agregada (presupuesto que
+suma 100 % sobre 9 partidas), validada sintéticamente con escala de error
+$\sim 1/\sqrt{N}$ exacta sobre $d=6$, $K=5$ con 70 ajustes MLE. La pieza
+central es Bayesian Inverse RL (Ramachandran & Amir 2007) + Inverse Reward
+Design (Hadfield-Menell et al. 2017) extendido al caso LLM-as-policymaker.
 
-Dos hallazgos principales:
+La metodología se aplica a un caso calibrado: simulación de Guatemala con
+estado inicial vs Banco Mundial 2024 (14/20 campos), tipo de cambio diario
+vs Banguat 2026 (SOAP), baseline humano de presupuesto vs MINFIN
+Liquidación 2024. Comparamos **Anthropic Claude Haiku 4.5** (tool_use) y
+**OpenAI GPT-4o-mini** (response_format=json_schema strict) sobre 8 turnos
+trimestrales con shocks idénticos.
 
-1. **Bajo idénticos shocks, los modelos producen Guatemalas distintas en cosas
-   que importan.** GPT-4o-mini termina con menor pobreza (43.25 % vs. 45.6 %),
-   mayor aprobación presidencial (39.95 vs. 24.25) y deuda significativamente
-   menor (57.3 % PIB vs. 87.1 %). Claude termina con un PIB nominal
-   marginalmente menor (142 193 vs. 142 323 mm USD) pero con un perfil
-   constitucional muy distinto.
-2. **El presupuesto promedio revela una "constitución" implícita.** Claude
-   asigna 19.25 % al servicio de la deuda y solo 10.62 % a salud; GPT-4o-mini
-   asigna 5.0 % a deuda y 17.75 % a salud, 17.88 % a educación. Es un patrón
-   reproducible (idéntico ranking en dos corridas con seeds y modelos
-   distintos). Los modelos no "responden lo mismo" cuando se les da poder
-   ejecutivo: tienen sesgos sistemáticos de prioridad presupuestaria.
+**Tres contribuciones diferenciadas:**
 
-Más allá de qué modelo "es mejor presidente" (que no es la pregunta), el
-*testbed* documenta que los LLMs de frontera, instruidos idénticamente, sí
-toman decisiones ejecutivas distintas, y esas diferencias son medibles.
+1. **Metodológica** (general): pipeline IRL bayesiano + IRD audit + harm
+   quantification + reasoning consistency check para LLM-as-policymaker en
+   cualquier dominio de asignación compositional bajo restricción.
+2. **Sustantiva** (Sur Global): primera auditoría calibrada empíricamente
+   contra una economía latinoamericana, con threat model operativo para
+   deployment guatemalteco, harm quantification en unidades del país (hogares
+   ENCOVI, mortalidad calibrada vs MSPAS), y prueba empírica de la hipótesis
+   de transfer cultural Norte→Sur.
+3. **Programática** (research agenda): el método se replica para Honduras,
+   Chile, Bolivia con re-calibración local — cada país adicional es un nuevo
+   dataset de calibración, no una nueva metodología. Abre una agenda
+   "AI Safety from the Global South".
+
+**Hallazgo preliminar (N=1, multi-seed pendiente):** bajo idénticos shocks,
+los modelos producen Guatemalas distintas en cosas que importan. GPT-4o-mini
+termina con menor pobreza (43.25 % vs. 45.6 %), mayor aprobación (39.95 vs.
+24.25) y menor deuda (57.3 % vs. 87.1 % PIB). El presupuesto promedio revela
+una "constitución" implícita: Claude asigna 19.25 % al servicio de la deuda
+y 10.62 % a salud; GPT-4o-mini asigna 5.0 % a deuda y 17.75 % a salud,
+17.88 % a educación. **Ambos se desvían del baseline humano MINFIN 2024 en
+direcciones opuestas y medibles.** Multi-seed con ICC para distinguir señal
+de ruido del sampler está pendiente (~USD 15).
 
 ---
 
@@ -48,42 +68,87 @@ toman decisiones ejecutivas distintas, y esas diferencias son medibles.
 
 ### 1.1. Pregunta
 
-¿Qué pasa cuando un modelo de lenguaje grande toma *todas* las decisiones
-ejecutivas de un país durante un horizonte de tiempo? Específicamente: ¿dos
-LLMs de frontera, dado idéntico contexto, idéntico schema de acción e idénticos
-shocks externos, gobiernan igual?
+Los LLMs frontera son entrenados con mecanismos calibrados en el Norte
+Global. Sin embargo, su deployment en política pública latinoamericana ya
+está documentado en 2024–2026. La pregunta operativa de este trabajo:
 
-La pregunta no es "¿pueden los LLMs gobernar?" — esa es una pregunta política,
-no técnica. La pregunta es metodológica: si la respuesta a "qué hacer" se
-delega a un LLM, ¿la elección del modelo se vuelve una decisión política
-implícita? Mostramos que sí.
+> Cuando un LLM frontera entrenado en el Norte Global se delega como decisor
+> en una economía del Sur Global, **¿en qué dirección se desvían sus
+> recomendaciones respecto de las prioridades del país de despliegue?** Y
+> más concreto: si una agencia gubernamental reemplaza Claude Haiku por
+> GPT-4o-mini en un pipeline de recomendación presupuestaria, *¿cuántos
+> hogares cambian de lado de la línea de pobreza?*
 
-### 1.2. Por qué Guatemala
+La pregunta no es "¿pueden los LLMs gobernar?" — esa es una pregunta
+política, no técnica. La pregunta es metodológica: si la respuesta a "qué
+hacer" se delega a un LLM, **¿la elección del modelo se vuelve una decisión
+política implícita?** Y la pregunta más fina: ¿esa decisión política
+implícita está culturalmente sesgada por la geografía del entrenamiento del
+modelo?
 
-Guatemala es un país adecuado para un *testbed* de este tipo por tres razones:
-(i) macro relativamente simple y bien documentado (PIB ~ 115 000 mm USD, deuda
-~ 30 % PIB, remesas 19 % PIB, dependencia de remittances de EE.UU.);
-(ii) tensiones reales y en curso (deportaciones masivas, sequía en el corredor
-seco, escándalos de corrupción institucionales) que producen shocks no
-sintéticos; (iii) heterogeneidad territorial fuerte (22 departamentos,
-~ 40 % población indígena, brechas de pobreza entre 25 % y 70 % por
-departamento) que hace que las decisiones presupuestarias tengan consecuencias
-distributivas observables.
+### 1.2. Por qué LatAm, por qué Guatemala
+
+La gran mayoría del trabajo de AI Safety está calibrado contra contextos
+US/UK/EU: Constitutional AI redactado en Anthropic California, RLHF con
+raters mayoritariamente estadounidenses, threat models con deployment
+scenarios federales US o de la EU Commission. Esto no es neutralidad — es
+una calibración cultural específica que viaja silenciosamente con el modelo
+cuando se lo despliega en el Sur Global.
+
+Tres razones por las que LatAm es contexto AI Safety crítico, no incidental:
+(i) **espacio fiscal restringido** (servicio de deuda significativo, reservas
+finitas) hace que el costo marginal de un fallo de alineamiento sea mayor;
+(ii) **inequality como issue político dominante** (no growth como en
+economías avanzadas) cambia las prioridades sustantivas; (iii) **capacidad
+de oversight humano variable** comprime el gradiente "consulta humana →
+delegación al LLM", aumentando la urgencia de auditorías ex-ante.
+
+Guatemala específicamente es caso adecuado por tres razones técnicas:
+(i) macro relativamente simple y bien documentada (PIB ~ 115 000 mm USD,
+deuda ~ 30 % PIB, remesas 19 % PIB, dependencia documentada de
+remittances de EE.UU.); (ii) tensiones reales y en curso (deportaciones
+masivas, sequía en el corredor seco, escándalos de corrupción
+institucionales) que producen shocks no sintéticos; (iii) heterogeneidad
+territorial fuerte (22 departamentos, ~ 40 % población indígena, brechas
+de pobreza entre 25 % y 70 % por departamento) que hace que las decisiones
+presupuestarias tengan consecuencias distributivas observables; (iv) datos
+públicos accesibles sin barreras institucionales (Banguat vía SOAP, MINFIN
+vía Portal de Transparencia, INE ENCOVI 2014–2023).
 
 El simulador no pretende predecir el futuro de Guatemala. Pretende ser un
-estado-del-mundo lo suficientemente realista como para que las decisiones del
-LLM se enfrenten a *trade-offs* no triviales (deuda vs. social, EE.UU. vs.
-multilateralismo, reforma tributaria vs. costo político).
+estado-del-mundo calibrado contra datos reales, lo suficientemente realista
+como para que las decisiones del LLM se enfrenten a trade-offs no triviales
+(deuda vs. social, EE.UU. vs. multilateralismo, reforma tributaria vs.
+costo político) en el contexto específico que el deployer enfrentaría.
 
 ### 1.3. Contribución
 
-1. **Un testbed reutilizable y reproducible** (`guatemala-sim/`,
-   ~ 3 500 LOC Python, 29 tests) para evaluar modelos como decisores
-   ejecutivos: schema de acción, dinámica macro, multi-agente Mesa, grafo
-   territorial NetworkX, indicadores compuestos, comparativa pareada.
-2. **Una comparación cuantitativa Anthropic vs. OpenAI** sobre 8 turnos con
+1. **Metodológica** (transferible a cualquier país / dominio): pipeline
+   bayesiano de 7 capas para auditar LLM-as-policymaker — simulador
+   calibrado, menú discreto, IRL bayesiano (Ramachandran & Amir 2007), IRD
+   audit (Hadfield-Menell et al. 2017), harm quantification con
+   elasticidades de literatura, reasoning consistency (Lanham et al. 2023),
+   anclaje contra baseline humano. Validación sintética: error escala
+   $\sim 1/\sqrt{N}$ con pendiente $-1/2$ exacta en log-log sobre 70
+   ajustes con $d=6$, $K=5$.
+2. **Sustantiva** (Sur Global / LatAm): primera auditoría calibrada
+   empíricamente contra una economía latinoamericana, con threat model
+   operativo formal NIST SP 800-30 mapeado a Anthropic RSP / DeepMind FSF
+   / UK AISI Inspect / NIST AI RMF + hipótesis testeable de transfer
+   cultural Norte→Sur (H_TC, ver §3.5). Comparación cuantitativa
+   Anthropic Claude Haiku 4.5 vs OpenAI GPT-4o-mini sobre 8 turnos con
    shocks idénticos, en 7 dimensiones de outcome y 5 dimensiones de
-   "constitución revelada" del decisor.
+   "constitución revelada" del decisor, contra baseline humano MINFIN
+   2024.
+3. **Programática** (research agenda): testbed diseñado para que el
+   **método sea reusable y la calibración sea reemplazable**. Cada país
+   LatAm adicional es un nuevo dataset, no una nueva metodología. Hoja
+   de ruta: Honduras (similar deuda externa), Chile (institucionalidad
+   contrastante), Bolivia (estructura productiva distinta). Meta-pregunta
+   del programa: ¿las "constituciones" reveladas de los LLMs frontera son
+   culturalmente específicas o universales? Cualquier respuesta es
+   publicable y opera como input directo al diseño de Constitutional AI
+   regional-aware.
 
 ---
 

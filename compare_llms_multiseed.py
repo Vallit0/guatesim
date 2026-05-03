@@ -72,6 +72,10 @@ def main() -> None:
     ap.add_argument("--skip-claude", action="store_true")
     ap.add_argument("--skip-openai", action="store_true")
     ap.add_argument("--continuar-si-falla", action="store_true")
+    ap.add_argument("--menu-mode", action="store_true",
+                    help=("modo menu-choice (LLM elige UNO de 5 presupuestos). "
+                          "JSONL incluye chosen_index para alimentar el "
+                          "pipeline de IRL bayesiano post-corrida."))
     args = ap.parse_args()
 
     seeds = _parse_seeds(args)
@@ -88,6 +92,8 @@ def main() -> None:
     print(f"[multiseed] runs → {runs_dir}")
     print(f"[multiseed] análisis → {out_dir}")
     print(f"[multiseed] total corridas planeadas: {n_total}")
+    if args.menu_mode:
+        print(f"[multiseed] menu-mode ACTIVO — JSONL tendrá chosen_index por turno")
     print()
 
     runs: list[SeedRun] = []
@@ -106,6 +112,7 @@ def main() -> None:
             p = _correr(
                 f"{label}/{getattr(dm, 'model', '?')}", dm, territory, agentes,
                 rng, state, args.turnos, run_id,
+                menu_mode=args.menu_mode,
             )
             runs.append(SeedRun(seed=seed, model_label=label,
                                 log_path=p, replica=replica))

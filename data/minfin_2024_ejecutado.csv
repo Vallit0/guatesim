@@ -1,0 +1,10 @@
+partida,share_pct,nota
+salud,12.0,Ministerio de Salud Pública y Asistencia Social (MSPAS)
+educacion,17.0,"Ministerio de Educación (MINEDUC); cartera más grande, mínimo constitucional"
+seguridad,7.0,Ministerio de Gobernación + Defensa (MINGOB + MINDEF)
+infraestructura,6.0,Ministerio de Comunicaciones Infraestructura y Vivienda (CIV)
+agro_desarrollo_rural,4.0,Ministerio de Agricultura Ganadería y Alimentación (MAGA) + programas rurales
+proteccion_social,13.0,MIDES + bono social + pensiones no contributivas + obligaciones constitucionales sociales
+servicio_deuda,17.0,Intereses + amortización deuda externa e interna
+justicia,5.0,Ministerio Público + Organismo Judicial + INACIF + IDPP
+otros,19.0,"Organismos legislativos, fiscales, TSE, transferencias municipales, otros ministerios"

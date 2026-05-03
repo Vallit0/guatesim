@@ -21,8 +21,18 @@ import json
 from dataclasses import dataclass, field
 from typing import Any, Literal
 
-from .actions import DecisionTurno
-from .president import SYSTEM_PROMPT, build_context
+from .actions import (
+    ChosenDecision,
+    DecisionTurno,
+    PresupuestoAnual,
+    decision_from_choice,
+)
+from .president import (
+    MENU_SYSTEM_PROMPT,
+    SYSTEM_PROMPT,
+    _format_menu,
+    build_context,
+)
 from .state import GuatemalaState
 
 
@@ -40,6 +50,17 @@ def _openai_schema() -> dict[str, Any]:
     schema = _hardening(schema)
     return {
         "name": "DecisionTurno",
+        "schema": schema,
+        "strict": True,
+    }
+
+
+def _menu_openai_schema() -> dict[str, Any]:
+    """Schema OpenAI strict para `ChosenDecision` (menu-choice mode)."""
+    schema = ChosenDecision.model_json_schema()
+    schema = _hardening(schema)
+    return {
+        "name": "ChosenDecision",
         "schema": schema,
         "strict": True,
     }
@@ -139,10 +160,31 @@ class GPTPresidente:
             )
         return SYSTEM_PROMPT
 
+    def _menu_system_prompt(self) -> str:
+        """System prompt para menu-choice mode. En modo loose inyecta el schema."""
+        if self.structured_mode == "json_object":
+            schema = ChosenDecision.model_json_schema()
+            return (
+                MENU_SYSTEM_PROMPT
+                + "\n\nDEBES responder UN SOLO objeto JSON válido "
+                "(sin texto adicional, sin markdown, sin ```) que respete "
+                "este schema:\n"
+                + json.dumps(schema, ensure_ascii=False)
+                + "\n\nReglas críticas: `chosen_index` ∈ [0, 4]. "
+                "`fiscal.delta_iva_pp` en [-5, 5]. `fiscal.delta_isr_pp` en [-10, 10]. "
+                "`reformas` ≤ 2 ítems. Campo `razonamiento` obligatorio y sustancial."
+            )
+        return MENU_SYSTEM_PROMPT
+
     def _response_format(self) -> dict[str, Any]:
         if self.structured_mode == "json_schema":
             return {"type": "json_schema", "json_schema": _openai_schema()}
         # json_object: acepta cualquier JSON válido, schema va en el prompt
+        return {"type": "json_object"}
+
+    def _menu_response_format(self) -> dict[str, Any]:
+        if self.structured_mode == "json_schema":
+            return {"type": "json_schema", "json_schema": _menu_openai_schema()}
         return {"type": "json_object"}
 
     def decide(self, state: GuatemalaState) -> DecisionTurno:
@@ -181,6 +223,62 @@ class GPTPresidente:
         raise RuntimeError(
             f"{self.label or 'OpenAI-compat'} no devolvió decisión válida tras 3 intentos. "
             f"Último error: {ultimo_err}"
+        )
+
+    def choose_from_menu(
+        self,
+        state: GuatemalaState,
+        candidates: list[PresupuestoAnual],
+        candidate_names: list[str] | None = None,
+    ) -> tuple[int, DecisionTurno]:
+        """Modo menu-choice: presenta candidates y devuelve (idx, decisión)."""
+        if not candidates:
+            raise ValueError("candidates no puede ser vacío")
+        self._ensure_client()
+        ts = self.territory_provider() if callable(self.territory_provider) else None
+        user_msg = (
+            build_context(state, territory_summary=ts, eventos_pasados=self.ultimos_eventos)
+            + _format_menu(candidates, names=candidate_names)
+            + "\nElegí el candidato y completá la decisión."
+        )
+
+        messages = [
+            {"role": "system", "content": self._menu_system_prompt()},
+            {"role": "user", "content": user_msg},
+        ]
+
+        ultimo_err: str = ""
+        for intento in range(3):
+            resp = self._client.chat.completions.create(
+                model=self.model,
+                max_tokens=self.max_tokens,
+                messages=messages,
+                response_format=self._menu_response_format(),
+            )
+            content = resp.choices[0].message.content or ""
+            try:
+                chosen = ChosenDecision.model_validate_json(content)
+                if chosen.chosen_index >= len(candidates):
+                    raise ValueError(
+                        f"chosen_index={chosen.chosen_index} fuera del menú "
+                        f"de {len(candidates)} candidatos"
+                    )
+                decision = decision_from_choice(chosen, candidates[chosen.chosen_index])
+                return chosen.chosen_index, decision
+            except Exception as e:
+                ultimo_err = str(e)[:400]
+                feedback = (
+                    f"Tu JSON no validó: {ultimo_err}. "
+                    f"Verificá: chosen_index ∈ [0, {len(candidates) - 1}], "
+                    f"fiscal rangos, ≤2 reformas. Reenviá UN SOLO objeto JSON."
+                )
+                messages = messages + [
+                    {"role": "assistant", "content": content},
+                    {"role": "user", "content": feedback},
+                ]
+        raise RuntimeError(
+            f"{self.label or 'OpenAI-compat'} no devolvió elección válida tras "
+            f"3 intentos. Último error: {ultimo_err}"
         )
 
 

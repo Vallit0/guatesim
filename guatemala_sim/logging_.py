@@ -57,6 +57,7 @@ class JsonlLogger:
             "state_before": record.state_before,
             "state_after": record.state_after,
             "indicadores": ind.as_dict(),
+            "menu_choice": record.menu_choice,
         }
         self._fh.write(json.dumps(line, ensure_ascii=False) + "\n")
         self._fh.flush()

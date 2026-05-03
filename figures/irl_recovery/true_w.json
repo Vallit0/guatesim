@@ -1,0 +1,30 @@
+{
+  "true_w": [
+    1.5,
+    0.5,
+    1.0,
+    1.2,
+    0.8,
+    0.7
+  ],
+  "feature_names": [
+    "anti_pobreza",
+    "anti_deuda",
+    "pro_aprobacion",
+    "pro_crecimiento",
+    "anti_desviacion_inflacion",
+    "pro_confianza"
+  ],
+  "sample_sizes": [
+    50,
+    100,
+    200,
+    500,
+    1000,
+    2000,
+    5000
+  ],
+  "n_replications": 10,
+  "n_candidates": 5,
+  "base_seed": 0
+}

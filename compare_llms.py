@@ -33,7 +33,7 @@ from guatemala_sim.agents import (
 )
 from guatemala_sim.bootstrap import initial_state
 from guatemala_sim.comparison import CorridaEtiquetada, generar_comparativa
-from guatemala_sim.engine import DummyDecisionMaker, run_turn
+from guatemala_sim.engine import DummyDecisionMaker, DummyMenuDecisionMaker, run_turn
 from guatemala_sim.logging_ import (
     JsonlLogger,
     new_run_id,
@@ -59,10 +59,19 @@ def _nueva_mundo(seed: int):
     return rng, state, agentes, territory
 
 
-def _correr(label, decision_maker, territorio, agentes, rng, state, turnos, run_id):
-    decision_maker.territory_provider = lambda: territorio.summary().as_dict()
+def _correr(label, decision_maker, territorio, agentes, rng, state, turnos, run_id,
+            menu_mode: bool = False):
+    """Corre `turnos` turnos de un decisor sobre el mismo mundo y loguea a JSONL.
+
+    Args:
+        menu_mode: si True, usa el modo menu-choice (`run_turn(menu_mode=True)`).
+            El decisor debe implementar `choose_from_menu(state, candidates)`.
+    """
+    if hasattr(decision_maker, "territory_provider"):
+        decision_maker.territory_provider = lambda: territorio.summary().as_dict()
     log_path = ROOT / "runs" / f"{run_id}.jsonl"
-    print(f"\n=== corrida: {label}  run_id={run_id} ===")
+    print(f"\n=== corrida: {label}  run_id={run_id}"
+          f"{'  [menu-mode]' if menu_mode else ''} ===")
     with JsonlLogger(log_path) as lg:
         def hook(record):
             lg.log(record)
@@ -75,6 +84,7 @@ def _correr(label, decision_maker, territorio, agentes, rng, state, turnos, run_
             state, _rec = run_turn(
                 state, decision_maker, rng,
                 hooks=[hook], agentes=agentes, territorio=territorio,
+                menu_mode=menu_mode,
             )
     return log_path
 
@@ -93,6 +103,10 @@ def main() -> None:
     ap.add_argument("--skip-openai", action="store_true")
     ap.add_argument("--incluir-dummy", action="store_true",
                     help="agrega una corrida con DummyDecisionMaker como baseline")
+    ap.add_argument("--menu-mode", action="store_true",
+                    help=("modo menu-choice: el LLM elige UNO de 5 presupuestos "
+                          "predefinidos en vez de componer libremente. Habilita el "
+                          "pipeline de IRL bayesiano. JSONL incluye chosen_index."))
     args = ap.parse_args()
 
     ts = new_run_id()
@@ -103,44 +117,52 @@ def main() -> None:
         rng, state, agentes, territory = _nueva_mundo(args.seed)
         dm = ClaudePresidente(model=args.claude_modelo)
         p = _correr(f"Claude/{args.claude_modelo}", dm, territory, agentes,
-                    rng, state, args.turnos, f"{ts}_claude")
+                    rng, state, args.turnos, f"{ts}_claude",
+                    menu_mode=args.menu_mode)
         outputs.append(("Claude", p))
 
     if not args.skip_openai:
         rng, state, agentes, territory = _nueva_mundo(args.seed)
         dm = GPTPresidente(model=args.openai_modelo)
         p = _correr(f"OpenAI/{args.openai_modelo}", dm, territory, agentes,
-                    rng, state, args.turnos, f"{ts}_openai")
+                    rng, state, args.turnos, f"{ts}_openai",
+                    menu_mode=args.menu_mode)
         outputs.append(("OpenAI", p))
 
     if args.qwen_url:
-        rng, state, agentes, territory = _nueva_mundo(args.seed)
-        qwen = qwen_via_ollama(
-            model=args.qwen_modelo,
-            base_url=args.qwen_url,
-            api_key=args.qwen_key,
-        )
-        # envuelto en resiliente: si Qwen falla, cae a Dummy para no abortar
-        dm = ResilientDecisionMaker(
-            primario=qwen,
-            fallback=DummyDecisionMaker(rng),
-            label=f"Qwen/{args.qwen_modelo}",
-        )
-        p = _correr(f"Qwen/{args.qwen_modelo}", dm, territory, agentes,
-                    rng, state, args.turnos, f"{ts}_qwen")
-        outputs.append((f"Qwen-{args.qwen_modelo}", p))
-        print(f"\n[qwen] tasa de fallo: {dm.n_fallos}/{dm.n_llamadas} "
-              f"({dm.tasa_fallo:.1f}%)")
-        if dm.fallos:
-            print("[qwen] fallos capturados:")
-            for fl in dm.fallos[:5]:
-                print(f"  - {fl[:180]}")
+        if args.menu_mode:
+            print("[qwen] WARNING: --menu-mode no soportado para Qwen via Resilient. "
+                  "Skipping Qwen en esta corrida.")
+        else:
+            rng, state, agentes, territory = _nueva_mundo(args.seed)
+            qwen = qwen_via_ollama(
+                model=args.qwen_modelo,
+                base_url=args.qwen_url,
+                api_key=args.qwen_key,
+            )
+            # envuelto en resiliente: si Qwen falla, cae a Dummy para no abortar
+            dm = ResilientDecisionMaker(
+                primario=qwen,
+                fallback=DummyDecisionMaker(rng),
+                label=f"Qwen/{args.qwen_modelo}",
+            )
+            p = _correr(f"Qwen/{args.qwen_modelo}", dm, territory, agentes,
+                        rng, state, args.turnos, f"{ts}_qwen")
+            outputs.append((f"Qwen-{args.qwen_modelo}", p))
+            print(f"\n[qwen] tasa de fallo: {dm.n_fallos}/{dm.n_llamadas} "
+                  f"({dm.tasa_fallo:.1f}%)")
+            if dm.fallos:
+                print("[qwen] fallos capturados:")
+                for fl in dm.fallos[:5]:
+                    print(f"  - {fl[:180]}")
 
     if args.incluir_dummy:
         rng, state, agentes, territory = _nueva_mundo(args.seed)
-        dm = DummyDecisionMaker(rng)
+        # En menu-mode el dummy debe usar choose_from_menu; auto-swap.
+        dm = DummyMenuDecisionMaker(rng) if args.menu_mode else DummyDecisionMaker(rng)
         p = _correr("Dummy/baseline", dm, territory, agentes,
-                    rng, state, args.turnos, f"{ts}_dummy")
+                    rng, state, args.turnos, f"{ts}_dummy",
+                    menu_mode=args.menu_mode)
         outputs.append(("Dummy", p))
 
     if len(outputs) < 2:
