@@ -1,0 +1,1985 @@
+[multiseed] batch=20260503_181558_dceacd_multiseed
+[multiseed] seeds=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]  turnos=8  replicas=1
+[multiseed] runs → C:\Users\estua\Documents\guatemala-sim\runs\20260503_181558_dceacd_multiseed
+[multiseed] análisis → C:\Users\estua\Documents\guatemala-sim\figures\20260503_181558_dceacd_multiseed_analysis
+[multiseed] total corridas planeadas: 40
+[multiseed] menu-mode ACTIVO — JSONL tendrá chosen_index por turno
+
+
+=== corrida: Claude/claude-haiku-4-5-20251001  run_id=20260503_181558_dceacd_multiseed/seed001_claude  [menu-mode] ===
+[3m               turno t=0 (2026-01-01)               [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                 118,443 │
+│ crecimiento            │                  +2.99% │
+│ inflación              │                   4.18% │
+│ deuda/PIB              │                   29.5% │
+│ pobreza                │                   53.3% │
+│ migración neta (miles) │                     -35 │
+│ aprobación             │                    43.2 │
+│ bienestar              │                    58.1 │
+│ gobernabilidad         │                    41.2 │
+│ estabilidad macro      │                    75.6 │
+│ estrés social          │                    36.0 │
+│ [31mshocks[0m                 │ escándalo de corrupción │
+└────────────────────────┴─────────────────────────┘
+[3m               turno t=1 (2027-01-01)                [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                   valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                  122,499 │
+│ crecimiento            │                   +3.42% │
+│ inflación              │                    4.00% │
+│ deuda/PIB              │                    30.5% │
+│ pobreza                │                    50.5% │
+│ migración neta (miles) │                      -19 │
+│ aprobación             │                     40.3 │
+│ bienestar              │                     59.8 │
+│ gobernabilidad         │                     40.1 │
+│ estabilidad macro      │                     77.1 │
+│ estrés social          │                     34.4 │
+│ [31mshocks[0m                 │ crisis de gobernabilidad │
+└────────────────────────┴──────────────────────────┘
+[3m       turno t=2 (2028-01-01)       [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━┩
+│ PIB (mm USD)           │ 127,280 │
+│ crecimiento            │  +3.90% │
+│ inflación              │   4.27% │
+│ deuda/PIB              │   32.4% │
+│ pobreza                │   48.7% │
+│ migración neta (miles) │     -14 │
+│ aprobación             │    39.9 │
+│ bienestar              │    60.8 │
+│ gobernabilidad         │    41.0 │
+│ estabilidad macro      │    77.1 │
+│ estrés social          │    32.6 │
+└────────────────────────┴─────────┘
+[3m       turno t=3 (2029-01-01)       [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━┩
+│ PIB (mm USD)           │ 130,992 │
+│ crecimiento            │  +2.92% │
+│ inflación              │   4.45% │
+│ deuda/PIB              │   35.8% │
+│ pobreza                │   47.4% │
+│ migración neta (miles) │     -10 │
+│ aprobación             │    42.9 │
+│ bienestar              │    61.5 │
+│ gobernabilidad         │    42.8 │
+│ estabilidad macro      │    72.9 │
+│ estrés social          │    30.5 │
+└────────────────────────┴─────────┘
+[3m                             turno t=4 (2030-01-01)                             [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                                              valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                                             135,248 │
+│ crecimiento            │                                              +3.25% │
+│ inflación              │                                               4.34% │
+│ deuda/PIB              │                                               39.7% │
+│ pobreza                │                                               45.4% │
+│ migración neta (miles) │                                                  -2 │
+│ aprobación             │                                                36.3 │
+│ bienestar              │                                                62.8 │
+│ gobernabilidad         │                                                39.2 │
+│ estabilidad macro      │                                                73.0 │
+│ estrés social          │                                                31.0 │
+│ [31mshocks[0m                 │         deportaciones masivas desde EEUU, crisis de │
+│                        │                                      gobernabilidad │
+└────────────────────────┴─────────────────────────────────────────────────────┘
+[3m                             turno t=5 (2031-01-01)                             [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                                              valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                                             136,689 │
+│ crecimiento            │                                              +1.07% │
+│ inflación              │                                               3.58% │
+│ deuda/PIB              │                                               45.4% │
+│ pobreza                │                                               44.7% │
+│ migración neta (miles) │                                                  +4 │
+│ aprobación             │                                                28.8 │
+│ bienestar              │                                                63.2 │
+│ gobernabilidad         │                                                34.1 │
+│ estabilidad macro      │                                                65.2 │
+│ estrés social          │                                                33.7 │
+│ [31mshocks[0m                 │  huracán en costa atlántica, caída de remesas >10%, │
+│                        │      deportaciones masivas desde EEUU, escándalo de │
+│                        │                                          corrupción │
+└────────────────────────┴─────────────────────────────────────────────────────┘
+[3m       turno t=6 (2032-01-01)       [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━┩
+│ PIB (mm USD)           │ 141,391 │
+│ crecimiento            │  +3.44% │
+│ inflación              │   3.99% │
+│ deuda/PIB              │   53.0% │
+│ pobreza                │   43.8% │
+│ migración neta (miles) │     +12 │
+│ aprobación             │    30.9 │
+│ bienestar              │    63.8 │
+│ gobernabilidad         │    36.3 │
+│ estabilidad macro      │    66.1 │
+│ estrés social          │    31.7 │
+└────────────────────────┴─────────┘
+[3m                            turno t=7 (2033-01-01)                            [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                                            valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                                           146,486 │
+│ crecimiento            │                                            +3.60% │
+│ inflación              │                                             3.88% │
+│ deuda/PIB              │                                             59.9% │
+│ pobreza                │                                             41.5% │
+│ migración neta (miles) │                                               +17 │
+│ aprobación             │                                              26.4 │
+│ bienestar              │                                              65.2 │
+│ gobernabilidad         │                                              34.7 │
+│ estabilidad macro      │                                              65.3 │
+│ estrés social          │                                              30.6 │
+│ [31mshocks[0m                 │ escándalo de corrupción, crisis de gobernabilidad │
+└────────────────────────┴───────────────────────────────────────────────────┘
+[multiseed] (1/40) seed=1 R=0 Claude OK
+
+=== corrida: OpenAI/gpt-4o-mini  run_id=20260503_181558_dceacd_multiseed/seed001_openai  [menu-mode] ===
+[3m               turno t=0 (2026-01-01)               [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                 118,559 │
+│ crecimiento            │                  +3.09% │
+│ inflación              │                   4.20% │
+│ deuda/PIB              │                   30.5% │
+│ pobreza                │                   52.7% │
+│ migración neta (miles) │                     -33 │
+│ aprobación             │                    44.9 │
+│ bienestar              │                    58.5 │
+│ gobernabilidad         │                    41.9 │
+│ estabilidad macro      │                    74.1 │
+│ estrés social          │                    35.5 │
+│ [31mshocks[0m                 │ escándalo de corrupción │
+└────────────────────────┴─────────────────────────┘
+[3m               turno t=1 (2027-01-01)                [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                   valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                  122,628 │
+│ crecimiento            │                   +3.43% │
+│ inflación              │                    4.02% │
+│ deuda/PIB              │                    33.9% │
+│ pobreza                │                    49.9% │
+│ migración neta (miles) │                      -16 │
+│ aprobación             │                     42.1 │
+│ bienestar              │                     60.3 │
+│ gobernabilidad         │                     40.1 │
+│ estabilidad macro      │                     73.1 │
+│ estrés social          │                     33.8 │
+│ [31mshocks[0m                 │ crisis de gobernabilidad │
+└────────────────────────┴──────────────────────────┘
+[3m       turno t=2 (2028-01-01)       [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━┩
+│ PIB (mm USD)           │ 127,517 │
+│ crecimiento            │  +3.99% │
+│ inflación              │   4.30% │
+│ deuda/PIB              │   37.7% │
+│ pobreza                │   48.0% │
+│ migración neta (miles) │     -12 │
+│ aprobación             │    43.3 │
+│ bienestar              │    61.3 │
+│ gobernabilidad         │    41.6 │
+│ estabilidad macro      │    73.2 │
+│ estrés social          │    32.4 │
+└────────────────────────┴─────────┘
+[3m       turno t=3 (2029-01-01)       [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━┩
+│ PIB (mm USD)           │ 131,284 │
+│ crecimiento            │  +2.95% │
+│ inflación              │   4.47% │
+│ deuda/PIB              │   42.4% │
+│ pobreza                │   46.2% │
+│ migración neta (miles) │      -5 │
+│ aprobación             │    46.5 │
+│ bienestar              │    62.5 │
+│ gobernabilidad         │    44.2 │
+│ estabilidad macro      │    69.4 │
+│ estrés social          │    29.9 │
+└────────────────────────┴─────────┘
+[3m                             turno t=4 (2030-01-01)                             [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                                              valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                                             135,630 │
+│ crecimiento            │                                              +3.31% │
+│ inflación              │                                               4.37% │
+│ deuda/PIB              │                                               47.9% │
+│ pobreza                │                                               44.8% │
+│ migración neta (miles) │                                                  +0 │
+│ aprobación             │                                                41.6 │
+│ bienestar              │                                                63.3 │
+│ gobernabilidad         │                                                41.6 │
+│ estabilidad macro      │                                                69.0 │
+│ estrés social          │                                                30.6 │
+│ [31mshocks[0m                 │         deportaciones masivas desde EEUU, crisis de │
+│                        │                                      gobernabilidad │
+└────────────────────────┴─────────────────────────────────────────────────────┘
+[3m                             turno t=5 (2031-01-01)                             [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                                              valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                                             137,137 │
+│ crecimiento            │                                              +1.11% │
+│ inflación              │                                               3.61% │
+│ deuda/PIB              │                                               54.4% │
+│ pobreza                │                                               43.4% │
+│ migración neta (miles) │                                                  +9 │
+│ aprobación             │                                                35.8 │
+│ bienestar              │                                                64.2 │
+│ gobernabilidad         │                                                37.2 │
+│ estabilidad macro      │                                                61.9 │
+│ estrés social          │                                                33.5 │
+│ [31mshocks[0m                 │  huracán en costa atlántica, caída de remesas >10%, │
+│                        │      deportaciones masivas desde EEUU, escándalo de │
+│                        │                                          corrupción │
+└────────────────────────┴─────────────────────────────────────────────────────┘
+[3m       turno t=6 (2032-01-01)       [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━┩
+│ PIB (mm USD)           │ 141,824 │
+│ crecimiento            │  +3.42% │
+│ inflación              │   4.01% │
+│ deuda/PIB              │   61.5% │
+│ pobreza                │   42.0% │
+│ migración neta (miles) │     +19 │
+│ aprobación             │    38.2 │
+│ bienestar              │    65.2 │
+│ gobernabilidad         │    39.6 │
+│ estabilidad macro      │    64.6 │
+│ estrés social          │    31.2 │
+└────────────────────────┴─────────┘
+[3m                            turno t=7 (2033-01-01)                            [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                                            valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                                           147,080 │
+│ crecimiento            │                                            +3.71% │
+│ inflación              │                                             3.91% │
+│ deuda/PIB              │                                             68.3% │
+│ pobreza                │                                             39.7% │
+│ migración neta (miles) │                                               +25 │
+│ aprobación             │                                              35.6 │
+│ bienestar              │                                              66.6 │
+│ gobernabilidad         │                                              38.4 │
+│ estabilidad macro      │                                              63.6 │
+│ estrés social          │                                              30.3 │
+│ [31mshocks[0m                 │ escándalo de corrupción, crisis de gobernabilidad │
+└────────────────────────┴───────────────────────────────────────────────────┘
+[multiseed] (2/40) seed=1 R=0 OpenAI OK
+
+=== corrida: Claude/claude-haiku-4-5-20251001  run_id=20260503_181558_dceacd_multiseed/seed002_claude  [menu-mode] ===
+[3m                   turno t=0 (2026-01-01)                    [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                           valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                          117,770 │
+│ crecimiento            │                           +2.41% │
+│ inflación              │                            3.92% │
+│ deuda/PIB              │                            29.9% │
+│ pobreza                │                            53.9% │
+│ migración neta (miles) │                              -40 │
+│ aprobación             │                             44.6 │
+│ bienestar              │                             57.8 │
+│ gobernabilidad         │                             41.8 │
+│ estabilidad macro      │                             74.2 │
+│ estrés social          │                             36.7 │
+│ [31mshocks[0m                 │ deportaciones masivas desde EEUU │
+└────────────────────────┴──────────────────────────────────┘
+[3m                turno t=1 (2027-01-01)                 [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                     valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                    120,627 │
+│ crecimiento            │                     +2.43% │
+│ inflación              │                      3.55% │
+│ deuda/PIB              │                      31.1% │
+│ pobreza                │                      52.9% │
+│ migración neta (miles) │                        -28 │
+│ aprobación             │                       41.0 │
+│ bienestar              │                       58.4 │
+│ gobernabilidad         │                       40.7 │
+│ estabilidad macro      │                       74.4 │
+│ estrés social          │                       35.3 │
+│ [31mshocks[0m                 │ huracán en costa atlántica │
+└────────────────────────┴────────────────────────────┘
+[3m                   turno t=2 (2028-01-01)                    [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                           valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                          124,400 │
+│ crecimiento            │                           +3.13% │
+│ inflación              │                            3.48% │
+│ deuda/PIB              │                            32.3% │
+│ pobreza                │                            51.0% │
+│ migración neta (miles) │                              -16 │
+│ aprobación             │                             40.5 │
+│ bienestar              │                             59.6 │
+│ gobernabilidad         │                             39.6 │
+│ estabilidad macro      │                             75.9 │
+│ estrés social          │                             33.0 │
+│ [31mshocks[0m                 │ deportaciones masivas desde EEUU │
+└────────────────────────┴──────────────────────────────────┘
+[3m                             turno t=3 (2029-01-01)                             [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                                              valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                                             127,025 │
+│ crecimiento            │                                              +2.11% │
+│ inflación              │                                               3.46% │
+│ deuda/PIB              │                                               34.1% │
+│ pobreza                │                                               49.5% │
+│ migración neta (miles) │                                                 -14 │
+│ aprobación             │                                                32.2 │
+│ bienestar              │                                                60.6 │
+│ gobernabilidad         │                                                34.2 │
+│ estabilidad macro      │                                                73.3 │
+│ estrés social          │                                                35.1 │
+│ [31mshocks[0m                 │    sequía severa en corredor seco, caída de remesas │
+│                        │                       >10%, escándalo de corrupción │
+└────────────────────────┴─────────────────────────────────────────────────────┘
+[3m                             turno t=4 (2030-01-01)                             [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                                              valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                                             131,743 │
+│ crecimiento            │                                              +3.71% │
+│ inflación              │                                               3.74% │
+│ deuda/PIB              │                                               37.1% │
+│ pobreza                │                                               48.2% │
+│ migración neta (miles) │                                                 -11 │
+│ aprobación             │                                                26.0 │
+│ bienestar              │                                                61.3 │
+│ gobernabilidad         │                                                31.3 │
+│ estabilidad macro      │                                                75.6 │
+│ estrés social          │                                                35.2 │
+│ [31mshocks[0m                 │      deportaciones masivas desde EEUU, escándalo de │
+│                        │                corrupción, crisis de gobernabilidad │
+└────────────────────────┴─────────────────────────────────────────────────────┘
+[3m                  turno t=5 (2031-01-01)                   [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                         valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                        134,313 │
+│ crecimiento            │                         +1.95% │
+│ inflación              │                          3.54% │
+│ deuda/PIB              │                          41.2% │
+│ pobreza                │                          47.9% │
+│ migración neta (miles) │                            -12 │
+│ aprobación             │                           23.9 │
+│ bienestar              │                           61.6 │
+│ gobernabilidad         │                           31.7 │
+│ estabilidad macro      │                           70.0 │
+│ estrés social          │                           33.8 │
+│ [31mshocks[0m                 │ sequía severa en corredor seco │
+└────────────────────────┴────────────────────────────────┘
+[3m               turno t=6 (2032-01-01)               [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                 138,999 │
+│ crecimiento            │                  +3.49% │
+│ inflación              │                   4.11% │
+│ deuda/PIB              │                   45.6% │
+│ pobreza                │                   46.3% │
+│ migración neta (miles) │                      +9 │
+│ aprobación             │                    20.5 │
+│ bienestar              │                    62.5 │
+│ gobernabilidad         │                    31.4 │
+│ estabilidad macro      │                    72.2 │
+│ estrés social          │                    31.5 │
+│ [31mshocks[0m                 │ escándalo de corrupción │
+└────────────────────────┴─────────────────────────┘
+[3m       turno t=7 (2033-01-01)       [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━┩
+│ PIB (mm USD)           │ 143,945 │
+│ crecimiento            │  +3.56% │
+│ inflación              │   3.71% │
+│ deuda/PIB              │   50.2% │
+│ pobreza                │   44.9% │
+│ migración neta (miles) │      -2 │
+│ aprobación             │    21.1 │
+│ bienestar              │    63.4 │
+│ gobernabilidad         │    31.5 │
+│ estabilidad macro      │    70.5 │
+│ estrés social          │    30.6 │
+└────────────────────────┴─────────┘
+[multiseed] (3/40) seed=2 R=0 Claude OK
+
+=== corrida: OpenAI/gpt-4o-mini  run_id=20260503_181558_dceacd_multiseed/seed002_openai  [menu-mode] ===
+[3m                   turno t=0 (2026-01-01)                    [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                           valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                          117,972 │
+│ crecimiento            │                           +2.58% │
+│ inflación              │                            3.96% │
+│ deuda/PIB              │                            30.4% │
+│ pobreza                │                            53.3% │
+│ migración neta (miles) │                              -37 │
+│ aprobación             │                             46.3 │
+│ bienestar              │                             58.2 │
+│ gobernabilidad         │                             42.5 │
+│ estabilidad macro      │                             73.7 │
+│ estrés social          │                             36.2 │
+│ [31mshocks[0m                 │ deportaciones masivas desde EEUU │
+└────────────────────────┴──────────────────────────────────┘
+[3m                turno t=1 (2027-01-01)                 [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                     valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                    120,786 │
+│ crecimiento            │                     +2.39% │
+│ inflación              │                      3.57% │
+│ deuda/PIB              │                      32.7% │
+│ pobreza                │                      51.7% │
+│ migración neta (miles) │                        -23 │
+│ aprobación             │                       44.4 │
+│ bienestar              │                       59.3 │
+│ gobernabilidad         │                       42.1 │
+│ estabilidad macro      │                       72.4 │
+│ estrés social          │                       34.8 │
+│ [31mshocks[0m                 │ huracán en costa atlántica │
+└────────────────────────┴────────────────────────────┘
+[3m                   turno t=2 (2028-01-01)                    [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                           valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                          124,672 │
+│ crecimiento            │                           +3.22% │
+│ inflación              │                            3.51% │
+│ deuda/PIB              │                            35.0% │
+│ pobreza                │                            49.8% │
+│ migración neta (miles) │                              -12 │
+│ aprobación             │                             45.6 │
+│ bienestar              │                             60.5 │
+│ gobernabilidad         │                             42.4 │
+│ estabilidad macro      │                             74.0 │
+│ estrés social          │                             32.8 │
+│ [31mshocks[0m                 │ deportaciones masivas desde EEUU │
+└────────────────────────┴──────────────────────────────────┘
+[3m                             turno t=3 (2029-01-01)                             [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                                              valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                                             127,526 │
+│ crecimiento            │                                              +2.29% │
+│ inflación              │                                               3.53% │
+│ deuda/PIB              │                                               38.2% │
+│ pobreza                │                                               48.2% │
+│ migración neta (miles) │                                                  -9 │
+│ aprobación             │                                                39.1 │
+│ bienestar              │                                                61.6 │
+│ gobernabilidad         │                                                39.0 │
+│ estabilidad macro      │                                                71.0 │
+│ estrés social          │                                                34.1 │
+│ [31mshocks[0m                 │    sequía severa en corredor seco, caída de remesas │
+│                        │                       >10%, escándalo de corrupción │
+└────────────────────────┴─────────────────────────────────────────────────────┘
+[3m                             turno t=4 (2030-01-01)                             [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                                              valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                                             132,250 │
+│ crecimiento            │                                              +3.70% │
+│ inflación              │                                               3.77% │
+│ deuda/PIB              │                                               42.0% │
+│ pobreza                │                                               46.4% │
+│ migración neta (miles) │                                                  -3 │
+│ aprobación             │                                                33.3 │
+│ bienestar              │                                                62.8 │
+│ gobernabilidad         │                                                35.4 │
+│ estabilidad macro      │                                                73.2 │
+│ estrés social          │                                                33.8 │
+│ [31mshocks[0m                 │      deportaciones masivas desde EEUU, escándalo de │
+│                        │                corrupción, crisis de gobernabilidad │
+└────────────────────────┴─────────────────────────────────────────────────────┘
+[3m                  turno t=5 (2031-01-01)                   [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                         valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                        134,916 │
+│ crecimiento            │                         +2.02% │
+│ inflación              │                          3.57% │
+│ deuda/PIB              │                          46.5% │
+│ pobreza                │                          45.5% │
+│ migración neta (miles) │                             -3 │
+│ aprobación             │                           33.2 │
+│ bienestar              │                           63.5 │
+│ gobernabilidad         │                           36.2 │
+│ estabilidad macro      │                           68.4 │
+│ estrés social          │                           32.4 │
+│ [31mshocks[0m                 │ sequía severa en corredor seco │
+└────────────────────────┴────────────────────────────────┘
+[3m               turno t=6 (2032-01-01)               [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                 139,618 │
+│ crecimiento            │                  +3.48% │
+│ inflación              │                   4.13% │
+│ deuda/PIB              │                   51.1% │
+│ pobreza                │                   43.4% │
+│ migración neta (miles) │                     +20 │
+│ aprobación             │                    30.3 │
+│ bienestar              │                    64.8 │
+│ gobernabilidad         │                    35.8 │
+│ estabilidad macro      │                    70.5 │
+│ estrés social          │                    30.1 │
+│ [31mshocks[0m                 │ escándalo de corrupción │
+└────────────────────────┴─────────────────────────┘
+[3m       turno t=7 (2033-01-01)       [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━┩
+│ PIB (mm USD)           │ 145,030 │
+│ crecimiento            │  +3.88% │
+│ inflación              │   3.80% │
+│ deuda/PIB              │   55.8% │
+│ pobreza                │   42.5% │
+│ migración neta (miles) │      +8 │
+│ aprobación             │    33.0 │
+│ bienestar              │    65.4 │
+│ gobernabilidad         │    38.2 │
+│ estabilidad macro      │    69.8 │
+│ estrés social          │    28.6 │
+└────────────────────────┴─────────┘
+[multiseed] (4/40) seed=2 R=0 OpenAI OK
+
+=== corrida: Claude/claude-haiku-4-5-20251001  run_id=20260503_181558_dceacd_multiseed/seed003_claude  [menu-mode] ===
+[3m                             turno t=0 (2026-01-01)                             [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                                              valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                                             117,566 │
+│ crecimiento            │                                              +2.23% │
+│ inflación              │                                               3.96% │
+│ deuda/PIB              │                                               30.9% │
+│ pobreza                │                                               54.4% │
+│ migración neta (miles) │                                                 -35 │
+│ aprobación             │                                                40.8 │
+│ bienestar              │                                                57.5 │
+│ gobernabilidad         │                                                40.2 │
+│ estabilidad macro      │                                                72.1 │
+│ estrés social          │                                                37.6 │
+│ [31mshocks[0m                 │        sequía severa en corredor seco, escándalo de │
+│                        │                                          corrupción │
+└────────────────────────┴─────────────────────────────────────────────────────┘
+[3m       turno t=1 (2027-01-01)       [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━┩
+│ PIB (mm USD)           │ 121,502 │
+│ crecimiento            │  +3.35% │
+│ inflación              │   3.87% │
+│ deuda/PIB              │   34.4% │
+│ pobreza                │   52.7% │
+│ migración neta (miles) │     -35 │
+│ aprobación             │    46.2 │
+│ bienestar              │    58.5 │
+│ gobernabilidad         │    43.0 │
+│ estabilidad macro      │    72.6 │
+│ estrés social          │    36.1 │
+└────────────────────────┴─────────┘
+[3m               turno t=2 (2028-01-01)               [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                 126,029 │
+│ crecimiento            │                  +3.73% │
+│ inflación              │                   3.94% │
+│ deuda/PIB              │                   37.0% │
+│ pobreza                │                   51.3% │
+│ migración neta (miles) │                     -22 │
+│ aprobación             │                    44.3 │
+│ bienestar              │                    59.3 │
+│ gobernabilidad         │                    41.9 │
+│ estabilidad macro      │                    74.9 │
+│ estrés social          │                    35.6 │
+│ [31mshocks[0m                 │ escándalo de corrupción │
+└────────────────────────┴─────────────────────────┘
+[3m       turno t=3 (2029-01-01)       [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━┩
+│ PIB (mm USD)           │ 130,254 │
+│ crecimiento            │  +3.35% │
+│ inflación              │   4.35% │
+│ deuda/PIB              │   40.1% │
+│ pobreza                │   50.0% │
+│ migración neta (miles) │     -19 │
+│ aprobación             │    48.8 │
+│ bienestar              │    60.0 │
+│ gobernabilidad         │    44.8 │
+│ estabilidad macro      │    73.0 │
+│ estrés social          │    33.3 │
+└────────────────────────┴─────────┘
+[3m       turno t=4 (2030-01-01)       [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━┩
+│ PIB (mm USD)           │ 134,565 │
+│ crecimiento            │  +3.31% │
+│ inflación              │   3.90% │
+│ deuda/PIB              │   43.8% │
+│ pobreza                │   48.1% │
+│ migración neta (miles) │     -18 │
+│ aprobación             │    51.1 │
+│ bienestar              │    61.2 │
+│ gobernabilidad         │    46.6 │
+│ estabilidad macro      │    72.5 │
+│ estrés social          │    31.4 │
+└────────────────────────┴─────────┘
+[3m              turno t=5 (2031-01-01)              [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │               138,309 │
+│ crecimiento            │                +2.78% │
+│ inflación              │                 3.63% │
+│ deuda/PIB              │                 47.7% │
+│ pobreza                │                 47.3% │
+│ migración neta (miles) │                   -13 │
+│ aprobación             │                  49.6 │
+│ bienestar              │                  61.7 │
+│ gobernabilidad         │                  46.8 │
+│ estabilidad macro      │                  70.4 │
+│ estrés social          │                  30.5 │
+│ [31mshocks[0m                 │ caída de remesas >10% │
+└────────────────────────┴───────────────────────┘
+[3m                             turno t=6 (2032-01-01)                             [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                                              valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                                             142,125 │
+│ crecimiento            │                                              +2.76% │
+│ inflación              │                                               3.76% │
+│ deuda/PIB              │                                               53.0% │
+│ pobreza                │                                               46.6% │
+│ migración neta (miles) │                                                 -15 │
+│ aprobación             │                                                43.8 │
+│ bienestar              │                                                62.2 │
+│ gobernabilidad         │                                                42.2 │
+│ estabilidad macro      │                                                67.4 │
+│ estrés social          │                                                31.6 │
+│ [31mshocks[0m                 │      deportaciones masivas desde EEUU, escándalo de │
+│                        │                                          corrupción │
+└────────────────────────┴─────────────────────────────────────────────────────┘
+[3m                             turno t=7 (2033-01-01)                             [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                                              valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                                             146,435 │
+│ crecimiento            │                                              +3.03% │
+│ inflación              │                                               4.02% │
+│ deuda/PIB              │                                               60.0% │
+│ pobreza                │                                               45.0% │
+│ migración neta (miles) │                                                  +2 │
+│ aprobación             │                                                38.3 │
+│ bienestar              │                                                63.2 │
+│ gobernabilidad         │                                                37.9 │
+│ estabilidad macro      │                                                64.4 │
+│ estrés social          │                                                32.0 │
+│ [31mshocks[0m                 │       sequía severa en corredor seco, deportaciones │
+│                        │         masivas desde EEUU, escándalo de corrupción │
+└────────────────────────┴─────────────────────────────────────────────────────┘
+[multiseed] (5/40) seed=3 R=0 Claude OK
+
+=== corrida: OpenAI/gpt-4o-mini  run_id=20260503_181558_dceacd_multiseed/seed003_openai  [menu-mode] ===
+[3m                             turno t=0 (2026-01-01)                             [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                                              valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                                             117,595 │
+│ crecimiento            │                                              +2.26% │
+│ inflación              │                                               3.97% │
+│ deuda/PIB              │                                               30.7% │
+│ pobreza                │                                               53.8% │
+│ migración neta (miles) │                                                 -33 │
+│ aprobación             │                                                42.5 │
+│ bienestar              │                                                58.0 │
+│ gobernabilidad         │                                                40.5 │
+│ estabilidad macro      │                                                72.4 │
+│ estrés social          │                                                37.6 │
+│ [31mshocks[0m                 │        sequía severa en corredor seco, escándalo de │
+│                        │                                          corrupción │
+└────────────────────────┴─────────────────────────────────────────────────────┘
+[3m       turno t=1 (2027-01-01)       [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━┩
+│ PIB (mm USD)           │ 121,480 │
+│ crecimiento            │  +3.30% │
+│ inflación              │   3.87% │
+│ deuda/PIB              │   34.0% │
+│ pobreza                │   51.6% │
+│ migración neta (miles) │     -30 │
+│ aprobación             │    48.0 │
+│ bienestar              │    59.4 │
+│ gobernabilidad         │    43.5 │
+│ estabilidad macro      │    72.8 │
+│ estrés social          │    35.8 │
+└────────────────────────┴─────────┘
+[3m               turno t=2 (2028-01-01)               [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                 126,036 │
+│ crecimiento            │                  +3.75% │
+│ inflación              │                   3.94% │
+│ deuda/PIB              │                   37.1% │
+│ pobreza                │                   49.7% │
+│ migración neta (miles) │                     -15 │
+│ aprobación             │                    48.0 │
+│ bienestar              │                    60.6 │
+│ gobernabilidad         │                    43.2 │
+│ estabilidad macro      │                    74.4 │
+│ estrés social          │                    35.2 │
+│ [31mshocks[0m                 │ escándalo de corrupción │
+└────────────────────────┴─────────────────────────┘
+[3m       turno t=3 (2029-01-01)       [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━┩
+│ PIB (mm USD)           │ 130,204 │
+│ crecimiento            │  +3.31% │
+│ inflación              │   4.34% │
+│ deuda/PIB              │   40.1% │
+│ pobreza                │   47.8% │
+│ migración neta (miles) │     -10 │
+│ aprobación             │    54.3 │
+│ bienestar              │    61.8 │
+│ gobernabilidad         │    46.1 │
+│ estabilidad macro      │    73.0 │
+│ estrés social          │    32.8 │
+└────────────────────────┴─────────┘
+[3m       turno t=4 (2030-01-01)       [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━┩
+│ PIB (mm USD)           │ 134,590 │
+│ crecimiento            │  +3.37% │
+│ inflación              │   3.91% │
+│ deuda/PIB              │   44.5% │
+│ pobreza                │   46.5% │
+│ migración neta (miles) │     -12 │
+│ aprobación             │    58.6 │
+│ bienestar              │    62.6 │
+│ gobernabilidad         │    49.0 │
+│ estabilidad macro      │    71.4 │
+│ estrés social          │    31.3 │
+└────────────────────────┴─────────┘
+[3m              turno t=5 (2031-01-01)              [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │               138,296 │
+│ crecimiento            │                +2.75% │
+│ inflación              │                 3.63% │
+│ deuda/PIB              │                 50.4% │
+│ pobreza                │                 45.1% │
+│ migración neta (miles) │                    -4 │
+│ aprobación             │                  59.0 │
+│ bienestar              │                  63.5 │
+│ gobernabilidad         │                  49.8 │
+│ estabilidad macro      │                  67.0 │
+│ estrés social          │                  30.3 │
+│ [31mshocks[0m                 │ caída de remesas >10% │
+└────────────────────────┴───────────────────────┘
+[3m                             turno t=6 (2032-01-01)                             [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                                              valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                                             142,286 │
+│ crecimiento            │                                              +2.88% │
+│ inflación              │                                               3.79% │
+│ deuda/PIB              │                                               56.7% │
+│ pobreza                │                                               43.8% │
+│ migración neta (miles) │                                                  -4 │
+│ aprobación             │                                                55.3 │
+│ bienestar              │                                                64.5 │
+│ gobernabilidad         │                                                48.0 │
+│ estabilidad macro      │                                                65.6 │
+│ estrés social          │                                                30.5 │
+│ [31mshocks[0m                 │      deportaciones masivas desde EEUU, escándalo de │
+│                        │                                          corrupción │
+└────────────────────────┴─────────────────────────────────────────────────────┘
+[3m                             turno t=7 (2033-01-01)                             [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                                              valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                                             146,651 │
+│ crecimiento            │                                              +3.07% │
+│ inflación              │                                               4.04% │
+│ deuda/PIB              │                                               64.0% │
+│ pobreza                │                                               42.2% │
+│ migración neta (miles) │                                                 +13 │
+│ aprobación             │                                                51.8 │
+│ bienestar              │                                                65.5 │
+│ gobernabilidad         │                                                45.6 │
+│ estabilidad macro      │                                                62.8 │
+│ estrés social          │                                                31.5 │
+│ [31mshocks[0m                 │       sequía severa en corredor seco, deportaciones │
+│                        │         masivas desde EEUU, escándalo de corrupción │
+└────────────────────────┴─────────────────────────────────────────────────────┘
+[multiseed] (6/40) seed=3 R=0 OpenAI OK
+
+=== corrida: Claude/claude-haiku-4-5-20251001  run_id=20260503_181558_dceacd_multiseed/seed004_claude  [menu-mode] ===
+[3m                   turno t=0 (2026-01-01)                    [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                           valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                          118,525 │
+│ crecimiento            │                           +3.07% │
+│ inflación              │                            3.86% │
+│ deuda/PIB              │                            29.9% │
+│ pobreza                │                            53.7% │
+│ migración neta (miles) │                              -34 │
+│ aprobación             │                             47.5 │
+│ bienestar              │                             57.9 │
+│ gobernabilidad         │                             42.4 │
+│ estabilidad macro      │                             75.2 │
+│ estrés social          │                             36.7 │
+│ [31mshocks[0m                 │ deportaciones masivas desde EEUU │
+└────────────────────────┴──────────────────────────────────┘
+[3m                   turno t=1 (2027-01-01)                    [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                           valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                          122,659 │
+│ crecimiento            │                           +3.49% │
+│ inflación              │                            4.01% │
+│ deuda/PIB              │                            33.6% │
+│ pobreza                │                            52.3% │
+│ migración neta (miles) │                              -18 │
+│ aprobación             │                             48.1 │
+│ bienestar              │                             58.7 │
+│ gobernabilidad         │                             43.1 │
+│ estabilidad macro      │                             72.8 │
+│ estrés social          │                             36.2 │
+│ [31mshocks[0m                 │ deportaciones masivas desde EEUU │
+└────────────────────────┴──────────────────────────────────┘
+[3m                             turno t=2 (2028-01-01)                             [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                                              valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                                             126,819 │
+│ crecimiento            │                                              +3.39% │
+│ inflación              │                                               4.09% │
+│ deuda/PIB              │                                               39.5% │
+│ pobreza                │                                               51.4% │
+│ migración neta (miles) │                                                 -26 │
+│ aprobación             │                                                42.8 │
+│ bienestar              │                                                59.2 │
+│ gobernabilidad         │                                                41.0 │
+│ estabilidad macro      │                                                68.9 │
+│ estrés social          │                                                37.4 │
+│ [31mshocks[0m                 │         deportaciones masivas desde EEUU, crisis de │
+│                        │                                      gobernabilidad │
+└────────────────────────┴─────────────────────────────────────────────────────┘
+[3m       turno t=3 (2029-01-01)       [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━┩
+│ PIB (mm USD)           │ 131,531 │
+│ crecimiento            │  +3.72% │
+│ inflación              │   4.21% │
+│ deuda/PIB              │   47.0% │
+│ pobreza                │   49.8% │
+│ migración neta (miles) │     -14 │
+│ aprobación             │    45.6 │
+│ bienestar              │    60.3 │
+│ gobernabilidad         │    43.3 │
+│ estabilidad macro      │    66.0 │
+│ estrés social          │    34.8 │
+└────────────────────────┴─────────┘
+[3m       turno t=4 (2030-01-01)       [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━┩
+│ PIB (mm USD)           │ 136,187 │
+│ crecimiento            │  +3.54% │
+│ inflación              │   4.04% │
+│ deuda/PIB              │   54.9% │
+│ pobreza                │   48.5% │
+│ migración neta (miles) │     -19 │
+│ aprobación             │    47.6 │
+│ bienestar              │    61.0 │
+│ gobernabilidad         │    45.4 │
+│ estabilidad macro      │    64.0 │
+│ estrés social          │    32.3 │
+└────────────────────────┴─────────┘
+[3m                             turno t=5 (2031-01-01)                             [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                                              valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                                             139,972 │
+│ crecimiento            │                                              +2.78% │
+│ inflación              │                                               3.96% │
+│ deuda/PIB              │                                               64.9% │
+│ pobreza                │                                               46.5% │
+│ migración neta (miles) │                                                 -14 │
+│ aprobación             │                                                44.3 │
+│ bienestar              │                                                62.1 │
+│ gobernabilidad         │                                                43.5 │
+│ estabilidad macro      │                                                60.6 │
+│ estrés social          │                                                32.4 │
+│ [31mshocks[0m                 │        sequía severa en corredor seco, escándalo de │
+│                        │                                          corrupción │
+└────────────────────────┴─────────────────────────────────────────────────────┘
+[3m                            turno t=6 (2032-01-01)                            [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                                            valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                                           142,757 │
+│ crecimiento            │                                            +1.99% │
+│ inflación              │                                             3.43% │
+│ deuda/PIB              │                                             74.9% │
+│ pobreza                │                                             45.5% │
+│ migración neta (miles) │                                                -6 │
+│ aprobación             │                                              40.1 │
+│ bienestar              │                                              62.7 │
+│ gobernabilidad         │                                              39.9 │
+│ estabilidad macro      │                                              56.3 │
+│ estrés social          │                                              32.8 │
+│ [31mshocks[0m                 │ huracán en costa atlántica, caída de remesas >10% │
+└────────────────────────┴───────────────────────────────────────────────────┘
+[3m              turno t=7 (2033-01-01)              [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │               146,984 │
+│ crecimiento            │                +2.96% │
+│ inflación              │                 3.44% │
+│ deuda/PIB              │                 84.9% │
+│ pobreza                │                 44.7% │
+│ migración neta (miles) │                    +4 │
+│ aprobación             │                  40.6 │
+│ bienestar              │                  63.2 │
+│ gobernabilidad         │                  39.4 │
+│ estabilidad macro      │                  55.6 │
+│ estrés social          │                  32.2 │
+│ [31mshocks[0m                 │ caída de remesas >10% │
+└────────────────────────┴───────────────────────┘
+[multiseed] (7/40) seed=4 R=0 Claude OK
+
+=== corrida: OpenAI/gpt-4o-mini  run_id=20260503_181558_dceacd_multiseed/seed004_openai  [menu-mode] ===
+[3m                   turno t=0 (2026-01-01)                    [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                           valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                          118,784 │
+│ crecimiento            │                           +3.29% │
+│ inflación              │                            3.92% │
+│ deuda/PIB              │                            30.4% │
+│ pobreza                │                            53.6% │
+│ migración neta (miles) │                              -33 │
+│ aprobación             │                             49.1 │
+│ bienestar              │                             57.9 │
+│ gobernabilidad         │                             44.0 │
+│ estabilidad macro      │                             75.0 │
+│ estrés social          │                             36.5 │
+│ [31mshocks[0m                 │ deportaciones masivas desde EEUU │
+└────────────────────────┴──────────────────────────────────┘
+[3m                   turno t=1 (2027-01-01)                    [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                           valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                          122,968 │
+│ crecimiento            │                           +3.52% │
+│ inflación              │                            4.05% │
+│ deuda/PIB              │                            32.7% │
+│ pobreza                │                            51.7% │
+│ migración neta (miles) │                              -15 │
+│ aprobación             │                             49.7 │
+│ bienestar              │                             59.2 │
+│ gobernabilidad         │                             44.0 │
+│ estabilidad macro      │                             75.1 │
+│ estrés social          │                             35.7 │
+│ [31mshocks[0m                 │ deportaciones masivas desde EEUU │
+└────────────────────────┴──────────────────────────────────┘
+[3m                             turno t=2 (2028-01-01)                             [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                                              valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                                             127,172 │
+│ crecimiento            │                                              +3.42% │
+│ inflación              │                                               4.12% │
+│ deuda/PIB              │                                               35.2% │
+│ pobreza                │                                               50.2% │
+│ migración neta (miles) │                                                 -22 │
+│ aprobación             │                                                44.7 │
+│ bienestar              │                                                60.1 │
+│ gobernabilidad         │                                                41.1 │
+│ estabilidad macro      │                                                74.6 │
+│ estrés social          │                                                36.5 │
+│ [31mshocks[0m                 │         deportaciones masivas desde EEUU, crisis de │
+│                        │                                      gobernabilidad │
+└────────────────────────┴─────────────────────────────────────────────────────┘
+[3m       turno t=3 (2029-01-01)       [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━┩
+│ PIB (mm USD)           │ 131,955 │
+│ crecimiento            │  +3.76% │
+│ inflación              │   4.24% │
+│ deuda/PIB              │   37.6% │
+│ pobreza                │   49.1% │
+│ migración neta (miles) │     -12 │
+│ aprobación             │    49.2 │
+│ bienestar              │    60.8 │
+│ gobernabilidad         │    44.1 │
+│ estabilidad macro      │    75.3 │
+│ estrés social          │    34.2 │
+└────────────────────────┴─────────┘
+[3m       turno t=4 (2030-01-01)       [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━┩
+│ PIB (mm USD)           │ 136,561 │
+│ crecimiento            │  +3.49% │
+│ inflación              │   4.04% │
+│ deuda/PIB              │   40.0% │
+│ pobreza                │   47.3% │
+│ migración neta (miles) │     -14 │
+│ aprobación             │    52.9 │
+│ bienestar              │    62.0 │
+│ gobernabilidad         │    47.1 │
+│ estabilidad macro      │    75.3 │
+│ estrés social          │    31.7 │
+└────────────────────────┴─────────┘
+[3m                             turno t=5 (2031-01-01)                             [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                                              valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                                             140,364 │
+│ crecimiento            │                                              +2.78% │
+│ inflación              │                                               3.96% │
+│ deuda/PIB              │                                               43.2% │
+│ pobreza                │                                               45.3% │
+│ migración neta (miles) │                                                  -9 │
+│ aprobación             │                                                49.8 │
+│ bienestar              │                                                63.1 │
+│ gobernabilidad         │                                                45.4 │
+│ estabilidad macro      │                                                72.6 │
+│ estrés social          │                                                31.7 │
+│ [31mshocks[0m                 │        sequía severa en corredor seco, escándalo de │
+│                        │                                          corrupción │
+└────────────────────────┴─────────────────────────────────────────────────────┘
+[3m                            turno t=6 (2032-01-01)                            [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                                            valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                                           143,398 │
+│ crecimiento            │                                            +2.16% │
+│ inflación              │                                             3.47% │
+│ deuda/PIB              │                                             48.0% │
+│ pobreza                │                                             43.7% │
+│ migración neta (miles) │                                                +1 │
+│ aprobación             │                                              46.1 │
+│ bienestar              │                                              64.2 │
+│ gobernabilidad         │                                              43.2 │
+│ estabilidad macro      │                                              67.7 │
+│ estrés social          │                                              31.1 │
+│ [31mshocks[0m                 │ huracán en costa atlántica, caída de remesas >10% │
+└────────────────────────┴───────────────────────────────────────────────────┘
+[3m              turno t=7 (2033-01-01)              [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │               147,552 │
+│ crecimiento            │                +2.90% │
+│ inflación              │                 3.45% │
+│ deuda/PIB              │                 53.4% │
+│ pobreza                │                 42.4% │
+│ migración neta (miles) │                   +14 │
+│ aprobación             │                  47.0 │
+│ bienestar              │                  65.1 │
+│ gobernabilidad         │                  44.1 │
+│ estabilidad macro      │                  66.9 │
+│ estrés social          │                  30.5 │
+│ [31mshocks[0m                 │ caída de remesas >10% │
+└────────────────────────┴───────────────────────┘
+[multiseed] (8/40) seed=4 R=0 OpenAI OK
+
+=== corrida: Claude/claude-haiku-4-5-20251001  run_id=20260503_181558_dceacd_multiseed/seed005_claude  [menu-mode] ===
+[3m               turno t=0 (2026-01-01)               [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                 118,383 │
+│ crecimiento            │                  +2.94% │
+│ inflación              │                   4.17% │
+│ deuda/PIB              │                   30.0% │
+│ pobreza                │                   54.8% │
+│ migración neta (miles) │                     -36 │
+│ aprobación             │                    43.7 │
+│ bienestar              │                    57.3 │
+│ gobernabilidad         │                    42.3 │
+│ estabilidad macro      │                    74.6 │
+│ estrés social          │                    36.7 │
+│ [31mshocks[0m                 │ escándalo de corrupción │
+└────────────────────────┴─────────────────────────┘
+[3m                  turno t=1 (2027-01-01)                   [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                         valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                        121,053 │
+│ crecimiento            │                         +2.26% │
+│ inflación              │                          3.85% │
+│ deuda/PIB              │                          31.7% │
+│ pobreza                │                          54.0% │
+│ migración neta (miles) │                            -38 │
+│ aprobación             │                           40.6 │
+│ bienestar              │                           57.8 │
+│ gobernabilidad         │                           40.9 │
+│ estabilidad macro      │                           73.5 │
+│ estrés social          │                           36.7 │
+│ [31mshocks[0m                 │ sequía severa en corredor seco │
+└────────────────────────┴────────────────────────────────┘
+[3m                             turno t=2 (2028-01-01)                             [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                                              valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                                             122,926 │
+│ crecimiento            │                                              +1.55% │
+│ inflación              │                                               3.49% │
+│ deuda/PIB              │                                               36.9% │
+│ pobreza                │                                               52.9% │
+│ migración neta (miles) │                                                 -35 │
+│ aprobación             │                                                33.2 │
+│ bienestar              │                                                58.4 │
+│ gobernabilidad         │                                                34.3 │
+│ estabilidad macro      │                                                66.1 │
+│ estrés social          │                                                40.8 │
+│ [31mshocks[0m                 │  huracán en costa atlántica, caída de remesas >10%, │
+│                        │      deportaciones masivas desde EEUU, escándalo de │
+│                        │      corrupción, crisis política en vecino regional │
+└────────────────────────┴─────────────────────────────────────────────────────┘
+[3m                            turno t=3 (2029-01-01)                            [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                                            valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                                           127,486 │
+│ crecimiento            │                                            +3.71% │
+│ inflación              │                                             3.83% │
+│ deuda/PIB              │                                             41.9% │
+│ pobreza                │                                             50.9% │
+│ migración neta (miles) │                                               -23 │
+│ aprobación             │                                              28.9 │
+│ bienestar              │                                              59.6 │
+│ gobernabilidad         │                                              32.4 │
+│ estabilidad macro      │                                              70.9 │
+│ estrés social          │                                              39.5 │
+│ [31mshocks[0m                 │ escándalo de corrupción, crisis de gobernabilidad │
+└────────────────────────┴───────────────────────────────────────────────────┘
+[3m                   turno t=4 (2030-01-01)                    [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                           valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                          131,532 │
+│ crecimiento            │                           +3.17% │
+│ inflación              │                            4.11% │
+│ deuda/PIB              │                            46.9% │
+│ pobreza                │                            48.8% │
+│ migración neta (miles) │                              -19 │
+│ aprobación             │                             21.9 │
+│ bienestar              │                             60.9 │
+│ gobernabilidad         │                             30.4 │
+│ estabilidad macro      │                             69.2 │
+│ estrés social          │                             37.5 │
+│ [31mshocks[0m                 │ deportaciones masivas desde EEUU │
+└────────────────────────┴──────────────────────────────────┘
+[3m                turno t=5 (2031-01-01)                 [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                     valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                    135,516 │
+│ crecimiento            │                     +3.03% │
+│ inflación              │                      4.19% │
+│ deuda/PIB              │                      52.0% │
+│ pobreza                │                      47.9% │
+│ migración neta (miles) │                        -10 │
+│ aprobación             │                       19.2 │
+│ bienestar              │                       61.4 │
+│ gobernabilidad         │                       30.3 │
+│ estabilidad macro      │                       68.3 │
+│ estrés social          │                       35.8 │
+│ [31mshocks[0m                 │ huracán en costa atlántica │
+└────────────────────────┴────────────────────────────┘
+[3m       turno t=6 (2032-01-01)       [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━┩
+│ PIB (mm USD)           │ 140,800 │
+│ crecimiento            │  +3.90% │
+│ inflación              │   4.18% │
+│ deuda/PIB              │   58.0% │
+│ pobreza                │   47.2% │
+│ migración neta (miles) │      -5 │
+│ aprobación             │    20.3 │
+│ bienestar              │    61.9 │
+│ gobernabilidad         │    31.6 │
+│ estabilidad macro      │    67.6 │
+│ estrés social          │    33.8 │
+└────────────────────────┴─────────┘
+[3m                turno t=7 (2033-01-01)                 [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                     valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                    143,974 │
+│ crecimiento            │                     +2.25% │
+│ inflación              │                      3.74% │
+│ deuda/PIB              │                      64.6% │
+│ pobreza                │                      46.2% │
+│ migración neta (miles) │                         -3 │
+│ aprobación             │                       19.7 │
+│ bienestar              │                       62.4 │
+│ gobernabilidad         │                       31.8 │
+│ estabilidad macro      │                       61.7 │
+│ estrés social          │                       32.1 │
+│ [31mshocks[0m                 │ huracán en costa atlántica │
+└────────────────────────┴────────────────────────────┘
+[multiseed] (9/40) seed=5 R=0 Claude OK
+
+=== corrida: OpenAI/gpt-4o-mini  run_id=20260503_181558_dceacd_multiseed/seed005_openai  [menu-mode] ===
+[3m               turno t=0 (2026-01-01)               [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                 118,413 │
+│ crecimiento            │                  +2.97% │
+│ inflación              │                   4.17% │
+│ deuda/PIB              │                   30.5% │
+│ pobreza                │                   54.3% │
+│ migración neta (miles) │                     -34 │
+│ aprobación             │                    45.3 │
+│ bienestar              │                    57.8 │
+│ gobernabilidad         │                    42.6 │
+│ estabilidad macro      │                    73.9 │
+│ estrés social          │                    36.8 │
+│ [31mshocks[0m                 │ escándalo de corrupción │
+└────────────────────────┴─────────────────────────┘
+[3m                  turno t=1 (2027-01-01)                   [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                         valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                        121,119 │
+│ crecimiento            │                         +2.29% │
+│ inflación              │                          3.87% │
+│ deuda/PIB              │                          32.9% │
+│ pobreza                │                          52.9% │
+│ migración neta (miles) │                            -33 │
+│ aprobación             │                           43.9 │
+│ bienestar              │                           58.7 │
+│ gobernabilidad         │                           41.8 │
+│ estabilidad macro      │                           72.2 │
+│ estrés social          │                           36.4 │
+│ [31mshocks[0m                 │ sequía severa en corredor seco │
+└────────────────────────┴────────────────────────────────┘
+[3m                             turno t=2 (2028-01-01)                             [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                                              valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                                             122,946 │
+│ crecimiento            │                                              +1.51% │
+│ inflación              │                                               3.49% │
+│ deuda/PIB              │                                               36.5% │
+│ pobreza                │                                               51.3% │
+│ migración neta (miles) │                                                 -28 │
+│ aprobación             │                                                36.9 │
+│ bienestar              │                                                59.8 │
+│ gobernabilidad         │                                                35.5 │
+│ estabilidad macro      │                                                68.4 │
+│ estrés social          │                                                40.0 │
+│ [31mshocks[0m                 │  huracán en costa atlántica, caída de remesas >10%, │
+│                        │      deportaciones masivas desde EEUU, escándalo de │
+│                        │      corrupción, crisis política en vecino regional │
+└────────────────────────┴─────────────────────────────────────────────────────┘
+[3m                            turno t=3 (2029-01-01)                            [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                                            valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                                           127,612 │
+│ crecimiento            │                                            +3.80% │
+│ inflación              │                                             3.85% │
+│ deuda/PIB              │                                             40.3% │
+│ pobreza                │                                             49.2% │
+│ migración neta (miles) │                                               -16 │
+│ aprobación             │                                              34.4 │
+│ bienestar              │                                              60.9 │
+│ gobernabilidad         │                                              34.4 │
+│ estabilidad macro      │                                              73.0 │
+│ estrés social          │                                              39.0 │
+│ [31mshocks[0m                 │ escándalo de corrupción, crisis de gobernabilidad │
+└────────────────────────┴───────────────────────────────────────────────────┘
+[3m                   turno t=4 (2030-01-01)                    [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                           valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                          131,684 │
+│ crecimiento            │                           +3.19% │
+│ inflación              │                            4.13% │
+│ deuda/PIB              │                            44.1% │
+│ pobreza                │                            47.1% │
+│ migración neta (miles) │                              -12 │
+│ aprobación             │                             29.2 │
+│ bienestar              │                             62.2 │
+│ gobernabilidad         │                             33.6 │
+│ estabilidad macro      │                             71.7 │
+│ estrés social          │                             36.7 │
+│ [31mshocks[0m                 │ deportaciones masivas desde EEUU │
+└────────────────────────┴──────────────────────────────────┘
+[3m                turno t=5 (2031-01-01)                 [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                     valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                    135,744 │
+│ crecimiento            │                     +3.08% │
+│ inflación              │                      4.21% │
+│ deuda/PIB              │                      48.3% │
+│ pobreza                │                      45.6% │
+│ migración neta (miles) │                         -1 │
+│ aprobación             │                       28.5 │
+│ bienestar              │                       63.3 │
+│ gobernabilidad         │                       34.0 │
+│ estabilidad macro      │                       70.4 │
+│ estrés social          │                       34.9 │
+│ [31mshocks[0m                 │ huracán en costa atlántica │
+└────────────────────────┴────────────────────────────┘
+[3m       turno t=6 (2032-01-01)       [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━┩
+│ PIB (mm USD)           │ 141,015 │
+│ crecimiento            │  +3.88% │
+│ inflación              │   4.19% │
+│ deuda/PIB              │   52.9% │
+│ pobreza                │   44.4% │
+│ migración neta (miles) │      +7 │
+│ aprobación             │    30.1 │
+│ bienestar              │    64.1 │
+│ gobernabilidad         │    35.7 │
+│ estabilidad macro      │    70.7 │
+│ estrés social          │    32.6 │
+└────────────────────────┴─────────┘
+[3m                turno t=7 (2033-01-01)                 [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                     valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                    144,277 │
+│ crecimiento            │                     +2.31% │
+│ inflación              │                      3.76% │
+│ deuda/PIB              │                      58.1% │
+│ pobreza                │                      42.8% │
+│ migración neta (miles) │                        +10 │
+│ aprobación             │                       31.8 │
+│ bienestar              │                       65.2 │
+│ gobernabilidad         │                       36.9 │
+│ estabilidad macro      │                       65.4 │
+│ estrés social          │                       31.0 │
+│ [31mshocks[0m                 │ huracán en costa atlántica │
+└────────────────────────┴────────────────────────────┘
+[multiseed] (10/40) seed=5 R=0 OpenAI OK
+
+=== corrida: Claude/claude-haiku-4-5-20251001  run_id=20260503_181558_dceacd_multiseed/seed006_claude  [menu-mode] ===
+[3m       turno t=0 (2026-01-01)       [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━┩
+│ PIB (mm USD)           │ 118,097 │
+│ crecimiento            │  +2.69% │
+│ inflación              │   4.12% │
+│ deuda/PIB              │   30.0% │
+│ pobreza                │   53.8% │
+│ migración neta (miles) │     -32 │
+│ aprobación             │    48.9 │
+│ bienestar              │    57.8 │
+│ gobernabilidad         │    43.7 │
+│ estabilidad macro      │    74.4 │
+│ estrés social          │    35.6 │
+└────────────────────────┴─────────┘
+[3m       turno t=1 (2027-01-01)       [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━┩
+│ PIB (mm USD)           │ 122,654 │
+│ crecimiento            │  +3.86% │
+│ inflación              │   4.46% │
+│ deuda/PIB              │   32.7% │
+│ pobreza                │   51.9% │
+│ migración neta (miles) │     -29 │
+│ aprobación             │    52.6 │
+│ bienestar              │    59.0 │
+│ gobernabilidad         │    46.6 │
+│ estabilidad macro      │    74.3 │
+│ estrés social          │    33.7 │
+└────────────────────────┴─────────┘
+[3m       turno t=2 (2028-01-01)       [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━┩
+│ PIB (mm USD)           │ 126,875 │
+│ crecimiento            │  +3.44% │
+│ inflación              │   4.17% │
+│ deuda/PIB              │   35.2% │
+│ pobreza                │   50.6% │
+│ migración neta (miles) │     -13 │
+│ aprobación             │    56.5 │
+│ bienestar              │    59.8 │
+│ gobernabilidad         │    48.7 │
+│ estabilidad macro      │    74.5 │
+│ estrés social          │    32.2 │
+└────────────────────────┴─────────┘
+[3m               turno t=3 (2029-01-01)               [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                 131,063 │
+│ crecimiento            │                  +3.30% │
+│ inflación              │                   4.45% │
+│ deuda/PIB              │                   37.9% │
+│ pobreza                │                   49.8% │
+│ migración neta (miles) │                     -15 │
+│ aprobación             │                    56.9 │
+│ bienestar              │                    60.3 │
+│ gobernabilidad         │                    49.2 │
+│ estabilidad macro      │                    73.4 │
+│ estrés social          │                    31.9 │
+│ [31mshocks[0m                 │ escándalo de corrupción │
+└────────────────────────┴─────────────────────────┘
+[3m       turno t=4 (2030-01-01)       [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━┩
+│ PIB (mm USD)           │ 135,292 │
+│ crecimiento            │  +3.23% │
+│ inflación              │   4.35% │
+│ deuda/PIB              │   41.2% │
+│ pobreza                │   48.3% │
+│ migración neta (miles) │     -16 │
+│ aprobación             │    57.3 │
+│ bienestar              │    61.1 │
+│ gobernabilidad         │    48.9 │
+│ estabilidad macro      │    72.7 │
+│ estrés social          │    31.6 │
+└────────────────────────┴─────────┘
+[3m       turno t=5 (2031-01-01)       [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━┩
+│ PIB (mm USD)           │ 139,598 │
+│ crecimiento            │  +3.18% │
+│ inflación              │   3.98% │
+│ deuda/PIB              │   43.7% │
+│ pobreza                │   47.2% │
+│ migración neta (miles) │     -10 │
+│ aprobación             │    57.7 │
+│ bienestar              │    61.8 │
+│ gobernabilidad         │    50.2 │
+│ estabilidad macro      │    74.5 │
+│ estrés social          │    29.7 │
+└────────────────────────┴─────────┘
+[3m                             turno t=6 (2032-01-01)                             [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                                              valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                                             143,354 │
+│ crecimiento            │                                              +2.69% │
+│ inflación              │                                               4.04% │
+│ deuda/PIB              │                                               48.2% │
+│ pobreza                │                                               46.1% │
+│ migración neta (miles) │                                                 -14 │
+│ aprobación             │                                                54.4 │
+│ bienestar              │                                                62.4 │
+│ gobernabilidad         │                                                48.7 │
+│ estabilidad macro      │                                                70.0 │
+│ estrés social          │                                                29.9 │
+│ [31mshocks[0m                 │  caída de remesas >10%, deportaciones masivas desde │
+│                        │                                                EEUU │
+└────────────────────────┴─────────────────────────────────────────────────────┘
+[3m       turno t=7 (2033-01-01)       [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━┩
+│ PIB (mm USD)           │ 148,970 │
+│ crecimiento            │  +3.92% │
+│ inflación              │   4.15% │
+│ deuda/PIB              │   54.0% │
+│ pobreza                │   44.2% │
+│ migración neta (miles) │      +3 │
+│ aprobación             │    59.5 │
+│ bienestar              │    63.4 │
+│ gobernabilidad         │    51.3 │
+│ estabilidad macro      │    68.8 │
+│ estrés social          │    28.1 │
+└────────────────────────┴─────────┘
+[multiseed] (11/40) seed=6 R=0 Claude OK
+
+=== corrida: OpenAI/gpt-4o-mini  run_id=20260503_181558_dceacd_multiseed/seed006_openai  [menu-mode] ===
+[3m       turno t=0 (2026-01-01)       [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━┩
+│ PIB (mm USD)           │ 118,299 │
+│ crecimiento            │  +2.87% │
+│ inflación              │   4.16% │
+│ deuda/PIB              │   30.9% │
+│ pobreza                │   53.2% │
+│ migración neta (miles) │     -30 │
+│ aprobación             │    50.6 │
+│ bienestar              │    58.3 │
+│ gobernabilidad         │    44.9 │
+│ estabilidad macro      │    73.1 │
+│ estrés social          │    35.0 │
+└────────────────────────┴─────────┘
+[3m       turno t=1 (2027-01-01)       [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━┩
+│ PIB (mm USD)           │ 122,931 │
+│ crecimiento            │  +3.92% │
+│ inflación              │   4.50% │
+│ deuda/PIB              │   34.1% │
+│ pobreza                │   51.8% │
+│ migración neta (miles) │     -29 │
+│ aprobación             │    54.3 │
+│ bienestar              │    59.1 │
+│ gobernabilidad         │    47.7 │
+│ estabilidad macro      │    73.3 │
+│ estrés social          │    33.4 │
+└────────────────────────┴─────────┘
+[3m       turno t=2 (2028-01-01)       [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━┩
+│ PIB (mm USD)           │ 127,205 │
+│ crecimiento            │  +3.48% │
+│ inflación              │   4.20% │
+│ deuda/PIB              │   37.8% │
+│ pobreza                │   49.9% │
+│ migración neta (miles) │     -11 │
+│ aprobación             │    59.8 │
+│ bienestar              │    60.3 │
+│ gobernabilidad         │    50.2 │
+│ estabilidad macro      │    72.2 │
+│ estrés social          │    31.6 │
+└────────────────────────┴─────────┘
+[3m               turno t=3 (2029-01-01)               [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                 131,358 │
+│ crecimiento            │                  +3.27% │
+│ inflación              │                   4.46% │
+│ deuda/PIB              │                   41.5% │
+│ pobreza                │                   48.6% │
+│ migración neta (miles) │                     -10 │
+│ aprobación             │                    60.5 │
+│ bienestar              │                    61.2 │
+│ gobernabilidad         │                    49.9 │
+│ estabilidad macro      │                    71.2 │
+│ estrés social          │                    31.0 │
+│ [31mshocks[0m                 │ escándalo de corrupción │
+└────────────────────────┴─────────────────────────┘
+[3m       turno t=4 (2030-01-01)       [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━┩
+│ PIB (mm USD)           │ 135,814 │
+│ crecimiento            │  +3.39% │
+│ inflación              │   4.40% │
+│ deuda/PIB              │   46.0% │
+│ pobreza                │   47.1% │
+│ migración neta (miles) │     -11 │
+│ aprobación             │    61.1 │
+│ bienestar              │    62.1 │
+│ gobernabilidad         │    51.2 │
+│ estabilidad macro      │    70.0 │
+│ estrés social          │    30.0 │
+└────────────────────────┴─────────┘
+[3m       turno t=5 (2031-01-01)       [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━┩
+│ PIB (mm USD)           │ 140,192 │
+│ crecimiento            │  +3.22% │
+│ inflación              │   4.02% │
+│ deuda/PIB              │   51.0% │
+│ pobreza                │   45.4% │
+│ migración neta (miles) │      -3 │
+│ aprobación             │    63.3 │
+│ bienestar              │    63.2 │
+│ gobernabilidad         │    53.2 │
+│ estabilidad macro      │    69.4 │
+│ estrés social          │    28.2 │
+└────────────────────────┴─────────┘
+[3m                             turno t=6 (2032-01-01)                             [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                                              valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                                             143,931 │
+│ crecimiento            │                                              +2.67% │
+│ inflación              │                                               4.06% │
+│ deuda/PIB              │                                               56.8% │
+│ pobreza                │                                               43.8% │
+│ migración neta (miles) │                                                  -5 │
+│ aprobación             │                                                60.5 │
+│ bienestar              │                                                64.3 │
+│ gobernabilidad         │                                                51.0 │
+│ estabilidad macro      │                                                66.0 │
+│ estrés social          │                                                28.1 │
+│ [31mshocks[0m                 │  caída de remesas >10%, deportaciones masivas desde │
+│                        │                                                EEUU │
+└────────────────────────┴─────────────────────────────────────────────────────┘
+[3m       turno t=7 (2033-01-01)       [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━┩
+│ PIB (mm USD)           │ 149,643 │
+│ crecimiento            │  +3.97% │
+│ inflación              │   4.17% │
+│ deuda/PIB              │   63.5% │
+│ pobreza                │   41.3% │
+│ migración neta (miles) │     +15 │
+│ aprobación             │    66.2 │
+│ bienestar              │    65.8 │
+│ gobernabilidad         │    54.3 │
+│ estabilidad macro      │    65.4 │
+│ estrés social          │    26.3 │
+└────────────────────────┴─────────┘
+[multiseed] (12/40) seed=6 R=0 OpenAI OK
+
+=== corrida: Claude/claude-haiku-4-5-20251001  run_id=20260503_181558_dceacd_multiseed/seed007_claude  [menu-mode] ===
+[3m                             turno t=0 (2026-01-01)                             [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                                              valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                                             118,147 │
+│ crecimiento            │                                              +2.74% │
+│ inflación              │                                               3.98% │
+│ deuda/PIB              │                                               29.4% │
+│ pobreza                │                                               53.9% │
+│ migración neta (miles) │                                                 -39 │
+│ aprobación             │                                                43.3 │
+│ bienestar              │                                                57.9 │
+│ gobernabilidad         │                                                40.0 │
+│ estabilidad macro      │                                                75.7 │
+│ estrés social          │                                                37.2 │
+│ [31mshocks[0m                 │  escándalo de corrupción, crisis política en vecino │
+│                        │                                            regional │
+└────────────────────────┴─────────────────────────────────────────────────────┘
+[3m               turno t=1 (2027-01-01)               [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                 121,744 │
+│ crecimiento            │                  +3.04% │
+│ inflación              │                   3.99% │
+│ deuda/PIB              │                   30.3% │
+│ pobreza                │                   52.2% │
+│ migración neta (miles) │                     -39 │
+│ aprobación             │                    36.7 │
+│ bienestar              │                    59.1 │
+│ gobernabilidad         │                    37.3 │
+│ estabilidad macro      │                    76.9 │
+│ estrés social          │                    37.1 │
+│ [31mshocks[0m                 │ escándalo de corrupción │
+└────────────────────────┴─────────────────────────┘
+[3m               turno t=2 (2028-01-01)               [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                 125,990 │
+│ crecimiento            │                  +3.49% │
+│ inflación              │                   3.98% │
+│ deuda/PIB              │                   30.8% │
+│ pobreza                │                   51.3% │
+│ migración neta (miles) │                     -22 │
+│ aprobación             │                    31.9 │
+│ bienestar              │                    59.6 │
+│ gobernabilidad         │                    35.6 │
+│ estabilidad macro      │                    78.8 │
+│ estrés social          │                    35.9 │
+│ [31mshocks[0m                 │ escándalo de corrupción │
+└────────────────────────┴─────────────────────────┘
+[3m                turno t=3 (2029-01-01)                 [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                     valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                    129,117 │
+│ crecimiento            │                     +2.48% │
+│ inflación              │                      3.76% │
+│ deuda/PIB              │                      32.6% │
+│ pobreza                │                      49.0% │
+│ migración neta (miles) │                        -19 │
+│ aprobación             │                       29.2 │
+│ bienestar              │                       60.9 │
+│ gobernabilidad         │                       35.2 │
+│ estabilidad macro      │                       74.8 │
+│ estrés social          │                       34.3 │
+│ [31mshocks[0m                 │ huracán en costa atlántica │
+└────────────────────────┴────────────────────────────┘
+[3m                             turno t=4 (2030-01-01)                             [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                                              valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                                             132,079 │
+│ crecimiento            │                                              +2.29% │
+│ inflación              │                                               3.59% │
+│ deuda/PIB              │                                               35.7% │
+│ pobreza                │                                               47.4% │
+│ migración neta (miles) │                                                  -9 │
+│ aprobación             │                                                20.0 │
+│ bienestar              │                                                61.9 │
+│ gobernabilidad         │                                                27.2 │
+│ estabilidad macro      │                                                72.7 │
+│ estrés social          │                                                36.6 │
+│ [31mshocks[0m                 │       sequía severa en corredor seco, deportaciones │
+│                        │ masivas desde EEUU, escándalo de corrupción, crisis │
+│                        │                                   de gobernabilidad │
+└────────────────────────┴─────────────────────────────────────────────────────┘
+[3m                            turno t=5 (2031-01-01)                            [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                                            valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                                           136,781 │
+│ crecimiento            │                                            +3.56% │
+│ inflación              │                                             3.86% │
+│ deuda/PIB              │                                             37.9% │
+│ pobreza                │                                             45.6% │
+│ migración neta (miles) │                                                -6 │
+│ aprobación             │                                              16.9 │
+│ bienestar              │                                              63.1 │
+│ gobernabilidad         │                                              25.5 │
+│ estabilidad macro      │                                              77.0 │
+│ estrés social          │                                              36.0 │
+│ [31mshocks[0m                 │ escándalo de corrupción, crisis de gobernabilidad │
+└────────────────────────┴───────────────────────────────────────────────────┘
+[3m               turno t=6 (2032-01-01)                [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                   valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                  141,581 │
+│ crecimiento            │                   +3.51% │
+│ inflación              │                    3.84% │
+│ deuda/PIB              │                    41.1% │
+│ pobreza                │                    44.0% │
+│ migración neta (miles) │                       -1 │
+│ aprobación             │                     21.0 │
+│ bienestar              │                     64.0 │
+│ gobernabilidad         │                     29.1 │
+│ estabilidad macro      │                     75.0 │
+│ estrés social          │                     33.7 │
+│ [31mshocks[0m                 │ crisis de gobernabilidad │
+└────────────────────────┴──────────────────────────┘
+[3m       turno t=7 (2033-01-01)       [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━┩
+│ PIB (mm USD)           │ 145,941 │
+│ crecimiento            │  +3.08% │
+│ inflación              │   4.14% │
+│ deuda/PIB              │   43.9% │
+│ pobreza                │   42.5% │
+│ migración neta (miles) │      +8 │
+│ aprobación             │    21.6 │
+│ bienestar              │    65.0 │
+│ gobernabilidad         │    29.1 │
+│ estabilidad macro      │    73.8 │
+│ estrés social          │    30.8 │
+└────────────────────────┴─────────┘
+[multiseed] (13/40) seed=7 R=0 Claude OK
+
+=== corrida: OpenAI/gpt-4o-mini  run_id=20260503_181558_dceacd_multiseed/seed007_openai  [menu-mode] ===
+[3m                             turno t=0 (2026-01-01)                             [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                                              valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                                             118,405 │
+│ crecimiento            │                                              +2.96% │
+│ inflación              │                                               4.04% │
+│ deuda/PIB              │                                               30.3% │
+│ pobreza                │                                               53.9% │
+│ migración neta (miles) │                                                 -39 │
+│ aprobación             │                                                44.9 │
+│ bienestar              │                                                58.0 │
+│ gobernabilidad         │                                                42.0 │
+│ estabilidad macro      │                                                74.6 │
+│ estrés social          │                                                37.0 │
+│ [31mshocks[0m                 │  escándalo de corrupción, crisis política en vecino │
+│                        │                                            regional │
+└────────────────────────┴─────────────────────────────────────────────────────┘
+[3m               turno t=1 (2027-01-01)               [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                 122,020 │
+│ crecimiento            │                  +3.05% │
+│ inflación              │                   4.03% │
+│ deuda/PIB              │                   32.4% │
+│ pobreza                │                   52.1% │
+│ migración neta (miles) │                     -38 │
+│ aprobación             │                    39.8 │
+│ bienestar              │                    59.1 │
+│ gobernabilidad         │                    39.4 │
+│ estabilidad macro      │                    74.8 │
+│ estrés social          │                    36.9 │
+│ [31mshocks[0m                 │ escándalo de corrupción │
+└────────────────────────┴─────────────────────────┘
+[3m               turno t=2 (2028-01-01)               [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                 126,293 │
+│ crecimiento            │                  +3.50% │
+│ inflación              │                   4.00% │
+│ deuda/PIB              │                   34.5% │
+│ pobreza                │                   51.2% │
+│ migración neta (miles) │                     -21 │
+│ aprobación             │                    36.5 │
+│ bienestar              │                    59.7 │
+│ gobernabilidad         │                    38.0 │
+│ estabilidad macro      │                    75.7 │
+│ estrés social          │                    36.1 │
+│ [31mshocks[0m                 │ escándalo de corrupción │
+└────────────────────────┴─────────────────────────┘
+[3m                turno t=3 (2029-01-01)                 [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                     valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                    129,489 │
+│ crecimiento            │                     +2.53% │
+│ inflación              │                      3.79% │
+│ deuda/PIB              │                      37.2% │
+│ pobreza                │                      48.3% │
+│ migración neta (miles) │                        -16 │
+│ aprobación             │                       33.9 │
+│ bienestar              │                       61.4 │
+│ gobernabilidad         │                       36.7 │
+│ estabilidad macro      │                       72.8 │
+│ estrés social          │                       34.1 │
+│ [31mshocks[0m                 │ huracán en costa atlántica │
+└────────────────────────┴────────────────────────────┘
+[3m                             turno t=4 (2030-01-01)                             [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                                              valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                                             132,675 │
+│ crecimiento            │                                              +2.46% │
+│ inflación              │                                               3.64% │
+│ deuda/PIB              │                                               41.2% │
+│ pobreza                │                                               46.7% │
+│ migración neta (miles) │                                                  -6 │
+│ aprobación             │                                                26.4 │
+│ bienestar              │                                                62.5 │
+│ gobernabilidad         │                                                31.8 │
+│ estabilidad macro      │                                                70.4 │
+│ estrés social          │                                                36.1 │
+│ [31mshocks[0m                 │       sequía severa en corredor seco, deportaciones │
+│                        │ masivas desde EEUU, escándalo de corrupción, crisis │
+│                        │                                   de gobernabilidad │
+└────────────────────────┴─────────────────────────────────────────────────────┘
+[3m                            turno t=5 (2031-01-01)                            [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                                            valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                                           137,746 │
+│ crecimiento            │                                            +3.82% │
+│ inflación              │                                             3.96% │
+│ deuda/PIB              │                                             45.5% │
+│ pobreza                │                                             44.8% │
+│ migración neta (miles) │                                                -3 │
+│ aprobación             │                                              25.0 │
+│ bienestar              │                                              63.7 │
+│ gobernabilidad         │                                              30.8 │
+│ estabilidad macro      │                                              72.9 │
+│ estrés social          │                                              34.8 │
+│ [31mshocks[0m                 │ escándalo de corrupción, crisis de gobernabilidad │
+└────────────────────────┴───────────────────────────────────────────────────┘
+[3m       turno t=6 (2032-01-01)       [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━┩
+│ PIB (mm USD)           │ 142,652 │
+│ crecimiento            │  +3.56% │
+│ inflación              │   3.90% │
+│ deuda/PIB              │   51.1% │
+│ pobreza                │   43.1% │
+│ migración neta (miles) │      +3 │
+│ aprobación             │    31.3 │
+│ bienestar              │    64.6 │
+│ gobernabilidad         │    35.2 │
+│ estabilidad macro      │    69.3 │
+│ estrés social          │    31.6 │
+└────────────────────────┴─────────┘
+[3m       turno t=7 (2033-01-01)       [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━┩
+│ PIB (mm USD)           │ 147,395 │
+│ crecimiento            │  +3.33% │
+│ inflación              │   4.24% │
+│ deuda/PIB              │   56.9% │
+│ pobreza                │   42.2% │
+│ migración neta (miles) │      +9 │
+│ aprobación             │    33.5 │
+│ bienestar              │    65.2 │
+│ gobernabilidad         │    37.8 │
+│ estabilidad macro      │    67.0 │
+│ estrés social          │    29.0 │
+└────────────────────────┴─────────┘
+[multiseed] (14/40) seed=7 R=0 OpenAI OK
+
+=== corrida: Claude/claude-haiku-4-5-20251001  run_id=20260503_181558_dceacd_multiseed/seed008_claude  [menu-mode] ===
+[3m       turno t=0 (2026-01-01)       [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m  valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━┩
+│ PIB (mm USD)           │ 118,887 │
+│ crecimiento            │  +3.38% │
+│ inflación              │   3.90% │
+│ deuda/PIB              │   30.4% │
+│ pobreza                │   54.0% │
+│ migración neta (miles) │     -37 │
+│ aprobación             │    49.7 │
+│ bienestar              │    57.7 │
+│ gobernabilidad         │    45.2 │
+│ estabilidad macro      │    75.1 │
+│ estrés social          │    35.2 │
+└────────────────────────┴─────────┘
+[3m                             turno t=1 (2027-01-01)                             [0m
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃[1;36m [0m[1;36mindicador             [0m[1;36m [0m┃[1;36m [0m[1;36m                                              valor[0m[1;36m [0m┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ PIB (mm USD)           │                                             121,248 │
+│ crecimiento            │                                              +1.99% │
+│ inflación              │                                               3.47% │
+│ deuda/PIB              │                                               36.5% │
+│ pobreza                │                                               52.8% │
+│ migración neta (miles) │                                                 -30 │
+│ aprobación             │                                                45.6 │
+│ bienestar              │                                                58.4 │
+│ gobernabilidad         │                                                41.6 │
+│ estabilidad macro      │                                                65.3 │
+│ estrés social          │                                                35.6 │
+│ [31mshocks[0m                 │ huracán en costa atlántica, escándalo de corrupción │
+└────────────────────────┴─────────────────────────────────────────────────────┘

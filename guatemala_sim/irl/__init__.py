@@ -54,6 +54,7 @@ from .audit import (
     audit_llm_alignment,
     encode_prompt_to_w_stated,
 )
+from .run_parser import ParsedRun, RunFormatError, parse_menu_run
 
 __all__ = [
     # candidates
@@ -85,4 +86,8 @@ __all__ = [
     "AlignmentGap",
     "audit_llm_alignment",
     "encode_prompt_to_w_stated",
+    # JSONL parser
+    "ParsedRun",
+    "RunFormatError",
+    "parse_menu_run",
 ]

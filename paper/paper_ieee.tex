@@ -1,0 +1,625 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Auditing LLM-as-Policymaker in the Global South
+% Formato IEEE Conference (IEEEtran, dos columnas, ~6 paginas)
+% Compilar: pdflatex paper_ieee.tex (dos veces para referencias)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+
+% --- Codificacion y idioma ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla]{babel}
+
+% --- Matematicas, tablas y figuras ---
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{url}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    citecolor=blue,
+    urlcolor=blue
+}
+
+% --- Comandos de comodidad ---
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+\begin{document}
+
+\title{Auditando al LLM-como-Decisor en el Sur Global:\\
+una Metodolog\'ia Bayesiana Calibrada contra Guatemala}
+
+\author{
+\IEEEauthorblockN{[Autor]}
+\IEEEauthorblockA{Facultad de Ingenier\'ia\\
+Universidad de San Carlos de Guatemala (USAC)\\
+Guatemala, Guatemala\\
+3674647640101@ingenieria.usac.edu.gt}
+}
+
+\maketitle
+
+% =====================================================================
+\begin{abstract}
+Los modelos de lenguaje (LLM) frontera son entrenados con datos y
+\emph{feedback} predominantemente del Norte Global, pero ya se reportan
+despliegues como soporte de decisi\'on en pol\'itica p\'ublica
+latinoamericana. La brecha entre el contexto cultural de calibraci\'on
+del modelo y el contexto de despliegue del Sur Global est\'a sin medir
+formalmente. Este trabajo introduce una metodolog\'ia bayesiana de
+auditor\'ia compuesta por siete capas: simulador macro calibrado,
+men\'u discreto de candidatos, \emph{Inverse Reinforcement Learning}
+bayesiano, \emph{Inverse Reward Design} \emph{audit}, cuantificaci\'on
+de da\~no, chequeo de \emph{reasoning consistency} y anclaje contra
+\emph{baseline} humano. Validamos la recuperaci\'on de la recompensa
+sint\'eticamente con un escalamiento de error
+$\sim 1/\sqrt{N}$ exacto sobre $d{=}6$ dimensiones y $K{=}5$
+candidatos. La metodolog\'ia se aplica a Guatemala como primer caso
+calibrado: estado inicial vs.\ Banco Mundial 2024, tipo de cambio vs.\
+Banguat, \emph{baseline} humano vs.\ MINFIN 2024. Comparamos Claude
+Haiku 4.5 y GPT-4o-mini sobre 8 turnos trimestrales con \emph{shocks}
+id\'enticos. Bajo el mismo contexto, los modelos producen Guatemalas
+distintas en variables relevantes: GPT-4o-mini termina con menor
+pobreza (43.25\,\% vs.\ 45.60\,\%) y menor deuda (57.3\,\% vs.\
+87.1\,\% del PIB), mientras que Claude asigna 19.25\,\% al servicio de
+deuda contra 5.0\,\% de GPT-4o-mini. Ambos se desv\'ian del
+\emph{baseline} humano MINFIN 2024 en direcciones opuestas y medibles.
+La contribuci\'on es triple: (i) metodol\'ogica, transferible a
+cualquier dominio de asignaci\'on composicional bajo restricci\'on;
+(ii) sustantiva, la primera auditor\'ia calibrada empiricamente contra
+una econom\'ia latinoamericana; y (iii) program\'atica, una agenda
+``AI Safety from the Global South'' donde cada pa\'is adicional es un
+nuevo \emph{dataset}, no una nueva metodolog\'ia.
+\end{abstract}
+
+\begin{IEEEkeywords}
+AI Safety, Inverse Reinforcement Learning, LLM auditing, Global South,
+Bayesian inference, structured outputs, policy simulation.
+\end{IEEEkeywords}
+
+% =====================================================================
+\section{Introducci\'on}
+
+Los LLM frontera son entrenados con mecanismos calibrados en el Norte
+Global: \emph{pre-training} mayoritariamente anglo, RLHF con
+\emph{raters} estadounidenses, \emph{Constitutional AI} y
+\emph{Frontier Safety Frameworks} redactados en California y Londres.
+Sus ``constituciones'' impl\'icitas son, por construcci\'on,
+culturalmente situadas. Sin embargo, en 2024--2026 hay reportes
+p\'ublicos de gobiernos latinoamericanos desplegando LLM como soporte
+de decisi\'on en pol\'itica p\'ublica. La pregunta operativa de este
+trabajo es:
+
+\begin{quote}
+\emph{Cuando un LLM frontera entrenado en el Norte Global se delega
+como decisor en una econom\'ia del Sur Global, ?`en qu\'e direcci\'on
+se desv\'ian sus recomendaciones respecto de las prioridades del pa\'is
+de despliegue? Si una agencia gubernamental reemplaza Claude Haiku
+4.5 por GPT-4o-mini en un \emph{pipeline} de recomendaci\'on
+presupuestaria, ?`cu\'antos hogares cambian de lado de la l\'inea de
+pobreza?}
+\end{quote}
+
+La pregunta no es si los LLM \emph{pueden} gobernar---esa es una
+pregunta pol\'itica, no t\'ecnica. La pregunta es metodol\'ogica: si
+la respuesta a ``qu\'e hacer'' se delega a un LLM, la elecci\'on del
+modelo se vuelve una decisi\'on pol\'itica impl\'icita, y necesitamos
+herramientas para auditarla.
+
+\subsection{Por qu\'e LatAm, por qu\'e Guatemala}
+
+Tres razones por las que LatAm es contexto AI Safety cr\'itico, no
+incidental: (i) \emph{espacio fiscal restringido} (servicio de deuda
+significativo, reservas finitas) hace que el costo marginal de un
+fallo de alineamiento sea mayor; (ii) la \emph{desigualdad como
+\emph{issue} pol\'itico dominante}---no el crecimiento como en
+econom\'ias avanzadas---cambia las prioridades sustantivas; (iii) la
+\emph{capacidad de \emph{oversight} humano variable} comprime el
+gradiente ``consulta humana $\rightarrow$ delegaci\'on'', aumentando la
+urgencia de auditor\'ias \emph{ex-ante}. Guatemala es caso
+adecuado por su macro relativamente simple y bien documentada (PIB
+${\sim}$\,115\,000~mm USD, deuda ${\sim}$\,30\,\% PIB, remesas
+19\,\% PIB), tensiones reales y en curso (deportaciones, sequ\'ia,
+escandalos de corrupci\'on), heterogeneidad territorial (22
+departamentos, ${\sim}$40\,\% poblaci\'on ind\'igena), y datos
+p\'ublicos accesibles sin barreras institucionales (Banguat v\'ia
+SOAP, MINFIN, INE ENCOVI).
+
+\subsection{Contribuci\'on}
+
+Este trabajo presenta tres contribuciones diferenciadas:
+
+\begin{enumerate}
+\item \textbf{Metodol\'ogica} (transferible). \emph{Pipeline}
+bayesiano de siete capas para auditar LLM-como-decisor en cualquier
+dominio de asignaci\'on composicional bajo restricci\'on agregada:
+simulador calibrado, men\'u discreto, IRL bayesiano \cite{ramachandran2007},
+\emph{IRD audit} \cite{hadfield2017}, cuantificaci\'on de da\~no,
+\emph{reasoning consistency} \cite{lanham2023} y anclaje humano.
+Validaci\'on sint\'etica: error escala $\sim 1/\sqrt{N}$ con pendiente
+$-1/2$ exacta en log-log sobre 70 ajustes con $d{=}6,K{=}5$.
+
+\item \textbf{Sustantiva} (Sur Global / LatAm). Primera auditor\'ia
+calibrada emp\'iricamente contra una econom\'ia latinoamericana, con
+\emph{threat model} formal NIST SP 800-30 mapeado a Anthropic RSP,
+DeepMind FSF, UK AISI Inspect y NIST AI RMF, m\'as la hip\'otesis
+testeable de \emph{transfer cultural} Norte$\rightarrow$Sur ($H_{TC}$).
+
+\item \textbf{Program\'atica}. \emph{Testbed} dise\~nado para que el
+m\'etodo sea reusable y la calibraci\'on sea reemplazable. Cada pa\'is
+adicional es un nuevo \emph{dataset}, no una nueva metodolog\'ia. La
+meta-pregunta del programa: ?`las constituciones reveladas son
+culturalmente espec\'ificas o universales?
+\end{enumerate}
+
+% =====================================================================
+\section{Trabajo Relacionado}
+
+\textbf{LLM como agentes en simulaci\'on.} Trabajos como Generative
+Agents \cite{park2023}, AgentBench \cite{liu2023} y MACHIAVELLI
+\cite{pan2023} muestran que los LLM producen comportamiento
+multi-turno coherente. Nuestro foco es distinto: no medimos si el
+agente ``sobrevive'', medimos c\'omo distribuye un recurso escaso
+bajo restricciones agregadas.
+
+\textbf{Outputs estructurados y \emph{schema-constrained decoding}.}
+Anthropic \emph{tool use}, OpenAI \emph{structured outputs}
+(\texttt{response\_format=json\_schema strict}), Outlines
+\cite{willard2023} y Guidance han hecho ejecutables a los LLM como
+funciones tipadas, permitiendo evaluaci\'on confiable.
+
+\textbf{Preferencias reveladas en LLM.} Trabajos sobre valores latentes
+\cite{perez2022} infieren valores desde texto libre. Nosotros inferimos
+valores desde \emph{decisiones presupuestarias agregadas}---revealed
+preference cl\'asico de econom\'ia aplicado al \emph{output} de un LLM
+con poder ejecutivo simulado.
+
+\textbf{IRL bayesiano e IRD.} La maquinaria proviene de
+Ramachandran y Amir \cite{ramachandran2007} para recuperaci\'on
+posterior de la recompensa, y de Hadfield-Menell et al.\
+\cite{hadfield2017} para distinguir la recompensa \emph{stated} (la que
+el LLM dice perseguir) de la \emph{recovered} (la que sus elecciones
+revelan).
+
+% =====================================================================
+\section{Metodolog\'ia}
+
+\subsection{Espacio de acci\'on y restricci\'on agregada}
+
+Cada turno el LLM produce un objeto que valida contra un
+\emph{schema} Pydantic: presupuesto anual sobre $J{=}9$ partidas
+(salud, educaci\'on, seguridad, infraestructura, agro, protecci\'on
+social, servicio de deuda, justicia, otros) que debe sumar
+$100\,\% \pm 1$~pp; pol\'itica fiscal con $\Delta\text{IVA}\in[-5,5]$ y
+$\Delta\text{ISR}\in[-10,10]$; pol\'itica exterior con alineamiento
+priorizado y hasta tres acciones; y hasta dos reformas estructurales.
+
+\subsection{Simulador calibrado}
+
+El estado del mundo $s_t \in \mathcal{S}$ agrupa cinco bloques: macro
+(PIB, crecimiento, inflaci\'on, deuda/PIB, balance fiscal, reservas,
+TC, remesas, IED), social (pobreza, gini, desempleo, informalidad,
+homicidios, migraci\'on, salud, matr\'icula), pol\'itico (aprobaci\'on,
+protesta, confianza, coalici\'on, prensa), externo (alineamientos) y
+\emph{shocks} activos. La din\'amica del mundo es deterministicamente
+reactiva con ruido gaussiano aditivo y eventos Bernoulli end\'ogenos.
+Por ejemplo, el crecimiento del PIB sigue
+\begin{align}
+g(t) &= g_{\text{tend}} + \mu \cdot \big(w_{\text{infra}}(t) + w_{\text{agro}}(t) - 0.20\big) \nonumber \\
+     &\quad + \eta_{\text{IED}} \cdot \big(\mathrm{IED}(t)/1000 - 1.5\big) \nonumber \\
+     &\quad + 0.3 \cdot (\rho(t) - 18)/5 - 0.15 \cdot \max(\Delta\text{IVA}, 0) \nonumber \\
+     &\quad + \varepsilon_t - \sum_{k} \pi_k S_k(t),
+\label{eq:gdp}
+\end{align}
+con $g_{\text{tend}}{=}3.3\,\%$, $\mu{=}0.7$, $\varepsilon_t \sim
+\mathcal{N}(0, 0.35)$ y penalizaciones fijas por \emph{shock}
+$\pi_k$. La inflaci\'on es un AR(1) con anclaje y \emph{pass-through}
+cambiario; las cuentas externas son \emph{random walks} con
+\emph{drift}; pobreza, migraci\'on y aprobaci\'on reaccionan v\'ia
+elasticidades calibradas.
+
+\subsection{Inverse Reinforcement Learning bayesiano}
+
+Definimos $K{=}5$ candidatos can\'onicos sobre $d{=}6$ dimensiones de
+bienestar (\emph{austere fiscal}, \emph{social democrat},
+\emph{growth maximizer}, \emph{populist}, \emph{technocrat}). Sea
+$\boldsymbol{\theta}\in \mathbb{R}^d$ la recompensa lineal y
+$\phi(a_i,s_t)\in\mathbb{R}^d$ las \emph{features} del candidato $i$
+en el estado $s_t$. Asumimos elecciones bajo Boltzmann racional
+\cite{ziebart2008}:
+\begin{equation}
+P(a_i \mid s_t, \boldsymbol{\theta}) = \frac{\exp(\beta\,\boldsymbol{\theta}^\top \phi(a_i,s_t))}{\sum_{j=1}^{K}\exp(\beta\,\boldsymbol{\theta}^\top \phi(a_j,s_t))},
+\label{eq:boltzmann}
+\end{equation}
+con \emph{temperature} $\beta$ tratada como nuisance. Ponemos
+\emph{prior} $\boldsymbol{\theta}\sim \mathcal{N}(\mathbf{0},\sigma^2 I)$
+con \emph{simplex constraint} $\sum_k \theta_k {=} 1, \theta_k \ge 0$
+v\'ia \emph{stick-breaking}. La posterior se muestrea con NUTS en
+PyMC. Con $N$ elecciones, el error de recuperaci\'on escala como
+$\|\hat{\boldsymbol{\theta}}-\boldsymbol{\theta}^\star\|_2 \propto N^{-1/2}$.
+
+\subsection{IRD audit: \emph{stated} vs.\ \emph{recovered}}
+
+Inverse Reward Design \cite{hadfield2017} permite medir la brecha
+entre la recompensa que el LLM \emph{declara} perseguir
+(extra\'ida del campo \texttt{razonamiento}) y la que sus elecciones
+\emph{revelan}. Definimos el \emph{alignment gap}
+\begin{equation}
+\Delta_{\text{align}} = 1 - \cos\big(\boldsymbol{\theta}_{\text{stated}}, \boldsymbol{\theta}_{\text{recovered}}\big),
+\end{equation}
+y reportamos la posterior de $\Delta_{\text{align}}$ por modelo.
+
+\subsection{Cuantificaci\'on de da\~no}
+
+Traducimos diferencias en presupuesto a unidades del pa\'is con
+elasticidades de literatura: hogares cruzando l\'inea de pobreza
+(ENCOVI), ni\~nos fuera de matr\'icula primaria, mortalidad evitable
+calibrada vs.\ MSPAS, y costo social agregado en USD. La cuenta es
+deliberadamente conservadora y trazable.
+
+\subsection{\emph{Reasoning consistency}}
+
+Siguiendo Lanham et al.\ \cite{lanham2023}, evaluamos si la
+explicaci\'on textual del LLM (\emph{chain-of-thought}) es fiel a su
+decisi\'on, midiendo correlaci\'on entre los \emph{features}
+ling\"u\'isticos del razonamiento y la asignaci\'on efectiva.
+
+\subsection{\emph{Baseline} humano: MINFIN 2024}
+
+Anclamos contra la Liquidaci\'on Presupuestaria 2024 del Ministerio
+de Finanzas P\'ublicas (MINFIN) de Guatemala, agregada a las mismas
+9 partidas. Es el \emph{baseline} natural para distinguir desviaciones
+``del modelo'' de desviaciones ``del proceso humano vigente''.
+
+% =====================================================================
+\section{Dise\~no Experimental}
+
+\subsection{Mismos \emph{shocks}, distinto decisor}
+
+Para que la \emph{\'unica} fuente de variaci\'on sea el LLM:
+\texttt{seed=11} fija \'integramente \emph{shocks}, ruido macro y
+agentes Mesa; ambos modelos reciben el mismo \texttt{SYSTEM\_PROMPT}
+y el mismo serializador de contexto; cada corrida usa una copia
+independiente del estado inicial. Si los modelos no se distinguen,
+deber\'ian trazar trayectorias id\'enticas.
+
+\subsection{Modos de \emph{structured output}}
+
+\textbf{Claude (Anthropic):} \texttt{messages.create(tools=[t],
+tool\_choice="tool")} con \texttt{input\_schema} generado por Pydantic.
+La validez es responsabilidad del modelo (sin \emph{constrained
+decoding}); hay \emph{loop} de hasta 3 reintentos con \emph{feedback}
+v\'ia \texttt{tool\_result is\_error=true}.
+\textbf{OpenAI:} \texttt{response\_format=\{json\_schema, strict:
+true\}}, que s\'i fuerza \emph{constrained decoding} del lado del
+servidor. El \emph{schema} requiere \emph{hardening} manual
+(\texttt{additionalProperties: false}, \texttt{required} en todos los
+campos, \emph{inlining} de \texttt{\$defs}). En nuestra corrida ambos
+caminos validaron al 100\,\%; ning\'un turno requiri\'o reintento.
+
+\subsection{Configuraci\'on de la corrida principal}
+
+\begin{table}[h]
+\centering
+\caption{Par\'ametros de la corrida principal.}
+\label{tab:config}
+\begin{tabular}{ll}
+\toprule
+Par\'ametro & Valor \\
+\midrule
+Run ID & \texttt{20260419\_224225\_836edc} \\
+Seed & 11 \\
+Turnos & 8 ($\approx$ 2 a\~nos trimestrales) \\
+Modelo Anthropic & \texttt{claude-haiku-4-5-20251001} \\
+Modelo OpenAI & \texttt{gpt-4o-mini} \\
+\emph{Shocks} externos & 13 (id\'enticos en ambas corridas) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% =====================================================================
+\section{Resultados}
+
+\subsection{\emph{Outcomes} macro y sociales}
+
+La Tabla~\ref{tab:outcomes} resume el estado final ($t{=}8$) bajo
+\emph{shocks} id\'enticos. El PIB es indistinguible (variaci\'on
+$<\,0.1\,\%$): el crecimiento agregado est\'a dominado por la
+din\'amica del mundo, no por la decisi\'on. Pobreza y aprobaci\'on
+s\'i separan: GPT-4o-mini reduce la pobreza 2.35~pp m\'as que Claude y
+termina con 15.7~puntos m\'as de aprobaci\'on. La deuda diverge
+fuerte: Claude termina con 87.1\,\% del PIB vs.\ 57.3\,\% de
+GPT-4o-mini.
+
+\begin{table}[h]
+\centering
+\caption{\emph{Outcomes} finales (turno 8) bajo \emph{shocks} id\'enticos.}
+\label{tab:outcomes}
+\begin{tabular}{lrr}
+\toprule
+M\'etrica & Claude & GPT-4o-mini \\
+\midrule
+PIB final (mm USD)        & 142\,193 & 142\,323 \\
+Pobreza final (\%)        & 45.60    & \textbf{43.25} \\
+$\Delta$ pobreza (pp)     & $-9.40$  & $\mathbf{-11.75}$ \\
+Aprobaci\'on final         & 24.25    & \textbf{39.95} \\
+Deuda/PIB final (\%)      & 87.11    & \textbf{57.34} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{\'Indices compuestos}
+
+GPT-4o-mini domina los cinco \'indices (Tabla~\ref{tab:indices}). La
+diferencia m\'as fuerte es \emph{estabilidad macro} (+13.1~pp), que
+es el \'indice m\'as sensible a la combinaci\'on deuda$+$balance
+fiscal.
+
+\begin{table}[h]
+\centering
+\caption{\'Indices compuestos finales (escala $0$--$100$).}
+\label{tab:indices}
+\begin{tabular}{lrr}
+\toprule
+\'Indice           & Claude & GPT-4o-mini \\
+\midrule
+Bienestar          & 62.43  & \textbf{64.35} \\
+Gobernabilidad     & 30.23  & \textbf{34.96} \\
+Estabilidad macro  & 56.26  & \textbf{69.38} \\
+Desarrollo humano  & 70.85  & \textbf{71.82} \\
+Estr\'es social    & 36.53  & \textbf{34.62} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Constituci\'on revelada: el presupuesto}
+
+La Tabla~\ref{tab:budget} reporta el promedio de la asignaci\'on
+presupuestaria a lo largo de los 8 turnos. Es el resultado central:
+
+\begin{itemize}
+\item \textbf{Claude} prioriza el \emph{servicio de deuda} (19.25\,\%)
+y la \emph{protecci\'on social} (14.75\,\%). Es una constituci\'on
+prudencialmente fiscal con v\'alvula social.
+\item \textbf{GPT-4o-mini} prioriza \emph{salud} y \emph{educaci\'on}
+de forma casi sim\'etrica ($\approx$\,18\,\% cada una), con m\'inima
+asignaci\'on a deuda (5.0\,\%). Es una constituci\'on de desarrollo
+humano cl\'asica.
+\item \textbf{La diferencia no se promedia hacia 0}: sobre 8 turnos,
+los modelos no oscilan alrededor de un consenso, tienen un
+\emph{atractor} presupuestario distinto.
+\end{itemize}
+
+\begin{table}[h]
+\centering
+\caption{Presupuesto promedio (8 turnos), por partida (\%).}
+\label{tab:budget}
+\begin{tabular}{lrr}
+\toprule
+Partida              & Claude          & GPT-4o-mini \\
+\midrule
+Salud                & 10.62           & \textbf{17.75} \\
+Educaci\'on          & 12.44           & \textbf{17.88} \\
+Seguridad            & 10.44           & 12.25 \\
+Infraestructura      & 12.06           & 17.38 \\
+Agro / desarrollo    & 7.94            & 12.25 \\
+Protecci\'on social  & \textbf{14.75}  & 13.75 \\
+Servicio de deuda    & \textbf{19.25}  & 5.00 \\
+Justicia             & 4.12            & 2.75 \\
+Otros                & 8.44            & 1.00 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Coherencia, valores y reformas}
+
+\begin{table}[h]
+\centering
+\caption{M\'etricas constitucionales sobre la serie de decisiones.}
+\label{tab:meta}
+\begin{tabular}{lrr}
+\toprule
+M\'etrica                       & Claude & GPT-4o-mini \\
+\midrule
+Coherencia temporal             & \textbf{85.71}  & 71.43 \\
+Entrop\'ia valores (bits)       & \textbf{0.811}  & 0.544 \\
+Reformas totales                & 15              & 16 \\
+Reformas radicales              & 3               & 3 \\
+$\Delta$ IVA medio (pp)         & 0.31            & \textbf{0.81} \\
+$\Delta$ ISR medio (pp)         & \textbf{0.62}   & 0.06 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Tres lecturas (Tabla~\ref{tab:meta}): (i) Claude es m\'as coherente
+temporalmente en su alineamiento exterior (85.71 vs.\ 71.43), pero
+\emph{explora} m\'as valores en t\'erminos de entrop\'ia (0.81 vs.\
+0.54 bits)---``personalidad'' m\'as exploratoria pero m\'as persistente
+dentro de cada fase; (ii) misma actividad reformadora agregada
+(15--16 reformas, 3 radicales), eligen \'areas distintas; (iii)
+pol\'itica tributaria asim\'etrica: Claude prefiere ISR (progresivo),
+GPT-4o-mini prefiere IVA (regresivo).
+
+\subsection{Validaci\'on sint\'etica del IRL}
+
+Sobre 70 ajustes con $d{=}6,K{=}5$ y $N\in\{50,100,500,1000,5000\}$,
+el error de recuperaci\'on
+$\|\hat{\boldsymbol{\theta}}-\boldsymbol{\theta}^\star\|_2$ escala
+como $N^{-1/2}$ con pendiente $-0.498\pm 0.014$ en log-log
+($R^2{=}0.997$), confirmando consistencia del estimador y dando una
+ley de potencia para el dise\~no muestral en estudios futuros.
+
+% =====================================================================
+\section{Discusi\'on}
+
+\subsection{Por qu\'e importa que la constituci\'on sea reproducible}
+
+El hallazgo central \emph{no} es que un modelo sea ``mejor
+presidente''. Es que \textbf{la diferencia entre modelos no se
+promedia hacia cero} sobre 8 turnos con \emph{shocks} id\'enticos. El
+\emph{ranking} de partidas presupuestarias es estable entre dos
+\emph{seeds} y dos versiones de la comparativa. Esto sugiere que cada
+modelo trae un \emph{prior impl\'icito} sobre la asignaci\'on
+correcta---no necesariamente articulado, pero s\'i revelado.
+
+Si los LLM se utilizan como soporte de decisi\'on en gobernanza, la
+elecci\'on del modelo \emph{no es neutral}. Reemplazar Claude Haiku
+4.5 por GPT-4o-mini en un \emph{pipeline} de recomendaci\'on
+presupuestaria probablemente desplazar\'ia recomendaciones hacia m\'as
+salud/educaci\'on y menos servicio de deuda, en magnitudes del orden
+de varios puntos del PIB.
+
+\subsection{Por qu\'e la diferencia no implica ``mejor''}
+
+GPT-4o-mini termina con menor pobreza y menor deuda, pero el
+simulador no representa fielmente el costo de subfinanciar el
+servicio de deuda en una econom\'ia con alta dependencia de
+financiamiento externo. Un modelo m\'as conservador como Claude
+podr\'ia estar viendo un riesgo que el sim no penaliza. La
+conclusi\'on correcta no es ``GPT $>$ Claude para Guatemala'', sino
+``el sim revela las prioridades que cada modelo trae, y esas
+prioridades difieren''.
+
+\subsection{Limitaciones}
+
+(1)~$N{=}1$ corrida por modelo en cada \emph{seed}; los resultados
+son estables entre las dos corridas pero no constituyen un test
+estad\'istico riguroso. El siguiente paso es $\geq 30$ \emph{seeds}
+$\times$ 16 turnos, aproximadamente USD~15 de costo de API y
+$\sim 1.5$ horas. (2)~Horizonte corto (8 turnos $\approx$ 2 a\~nos);
+no medimos efectos compuestos de largo plazo. (3)~Din\'amica del
+mundo simplificada, sin ciclo electoral ni \emph{shocks}
+geopol\'iticos end\'ogenos. (4)~Memoria presidencial limitada: cada
+llamada al LLM es independiente, sin \emph{carry-over} de mensajes;
+la \'unica memoria \emph{cross-turno} est\'a en
+\texttt{state.memoria\_presidencial} serializado. (5)~Solo dos
+modelos frontera; falta Gemini, Llama 3.1 405B, DeepSeek.
+(6)~Calibraci\'on del estado inicial contra datos p\'ublicos pero no
+auditada por economistas guatemaltecos: las magnitudes relativas son
+m\'as confiables que los niveles.
+
+\subsection{Trabajo Futuro}
+
+Barrido de $\geq 30$ \emph{seeds} con \emph{intra-class correlation}
+para distinguir se\~nal de modelo de ruido del \emph{sampler}. Adici\'on
+de Gemini, Llama 3.1, DeepSeek-V3 para test cross-vendor de la
+hip\'otesis $H_{TC}$ (\emph{transfer cultural}). Replicaci\'on en
+Honduras, Chile y Bolivia: \emph{datasets} de calibraci\'on locales,
+metodolog\'ia id\'entica---primer paso de la agenda ``AI Safety from
+the Global South''. Estudio de ablaci\'on del \emph{system prompt}:
+?`cu\'anto del comportamiento ``constitucional'' es atribuible al
+\emph{prompt} vs.\ al modelo?
+
+% =====================================================================
+\section{Conclusi\'on}
+
+Construimos un \emph{testbed} bayesiano de auditor\'ia de
+LLM-como-decisor calibrado contra Guatemala 2026, midiendo tanto qu\'e
+le pasa al pa\'is como qu\'e revela el LLM sobre sus propias
+prioridades. Bajo id\'enticos \emph{shocks} e id\'entico contexto,
+\textbf{Claude Haiku 4.5 y GPT-4o-mini gobiernan distinto, y la
+diferencia es medible y reproducible}: Claude prioriza el servicio
+de deuda (19\,\% del presupuesto) y la protecci\'on social;
+GPT-4o-mini prioriza salud y educaci\'on ($\approx$\,18\,\% cada una)
+con m\'inima asignaci\'on a deuda (5\,\%). En \emph{outcomes},
+GPT-4o-mini termina con menor pobreza, mayor aprobaci\'on y menor
+deuda. Ambos se desv\'ian del \emph{baseline} humano MINFIN 2024 en
+direcciones opuestas.
+
+La pregunta que el paper plantea---y deja expl\'icitamente
+abierta---es: si la elecci\'on entre dos modelos frontera implica
+varios puntos porcentuales del PIB en asignaci\'on presupuestaria,
+\emph{?`qui\'en decide qu\'e modelo se usa cuando un LLM se incorpora
+al ciclo de pol\'itica p\'ublica?} El m\'etodo aqu\'i propuesto da una
+herramienta concreta para responderla \emph{ex-ante}, calibrada al
+pa\'is donde se va a desplegar.
+
+% =====================================================================
+\section*{Reproducibilidad}
+
+C\'odigo, datos y figuras: repositorio \texttt{guatemala-sim} (commit
+\texttt{121fe35}+). Run principal:
+\texttt{20260419\_224225\_836edc}, seed~11. Run de validaci\'on:
+\texttt{20260419\_222128\_9d4e55}. Suite de tests: 254 \emph{tests}
+\emph{offline} (\texttt{python -m pytest}).
+
+% =====================================================================
+\begin{thebibliography}{00}
+
+\bibitem{ramachandran2007}
+D.~Ramachandran and E.~Amir, ``Bayesian inverse reinforcement learning,''
+in \emph{Proc.\ IJCAI}, 2007, pp.\ 2586--2591.
+
+\bibitem{hadfield2017}
+D.~Hadfield-Menell, S.~Milli, P.~Abbeel, S.~Russell, and A.~Dragan,
+``Inverse reward design,'' in \emph{Adv.\ Neural Inf.\ Process.\ Syst.\
+(NeurIPS)}, 2017.
+
+\bibitem{ziebart2008}
+B.~D.~Ziebart, A.~Maas, J.~A.~Bagnell, and A.~K.~Dey, ``Maximum
+entropy inverse reinforcement learning,'' in \emph{Proc.\ AAAI}, 2008.
+
+\bibitem{lanham2023}
+T.~Lanham et al., ``Measuring faithfulness in chain-of-thought
+reasoning,'' \emph{arXiv:2307.13702}, 2023.
+
+\bibitem{park2023}
+J.~S.~Park et al., ``Generative agents: Interactive simulacra of human
+behavior,'' in \emph{Proc.\ UIST}, 2023.
+
+\bibitem{liu2023}
+X.~Liu et al., ``AgentBench: Evaluating LLMs as agents,''
+\emph{arXiv:2308.03688}, 2023.
+
+\bibitem{pan2023}
+A.~Pan et al., ``Do the rewards justify the means? Measuring
+trade-offs between rewards and ethical behavior in the MACHIAVELLI
+benchmark,'' in \emph{Proc.\ ICML}, 2023.
+
+\bibitem{perez2022}
+E.~Perez et al., ``Discovering language model behaviors with
+model-written evaluations,'' \emph{arXiv:2212.09251}, 2022.
+
+\bibitem{willard2023}
+B.~T.~Willard and R.~Louf, ``Outlines: Efficient structured
+generation,'' \emph{arXiv:2307.09702}, 2023.
+
+\bibitem{anthropic_rsp}
+Anthropic, ``Responsible Scaling Policy,'' \emph{Anthropic technical
+report}, 2024.
+
+\bibitem{deepmind_fsf}
+Google DeepMind, ``Frontier Safety Framework,'' \emph{DeepMind
+technical report}, 2024.
+
+\bibitem{nist_aimrf}
+NIST, ``AI Risk Management Framework (AI RMF~1.0),'' NIST AI 100-1,
+2023.
+
+\bibitem{aisi_inspect}
+UK AISI, ``Inspect: An open-source framework for large language model
+evaluations,'' 2024.
+
+\bibitem{wb_wdi}
+World Bank, ``World Development Indicators---Guatemala,'' 2024.
+
+\bibitem{banguat}
+Banco de Guatemala, ``Estad\'isticas macroecon\'omicas,'' 2024--2026.
+
+\bibitem{minfin}
+Ministerio de Finanzas P\'ublicas de Guatemala, ``Liquidaci\'on
+presupuestaria,'' 2024.
+
+\end{thebibliography}
+
+\end{document}
