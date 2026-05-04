@@ -541,8 +541,8 @@ def plot_budget_with_ci(df: pd.DataFrame, agg: pd.DataFrame, out_path: Path) -> 
         )
     ax.set_xticks(x)
     ax.set_xticklabels(nombres, rotation=30, ha="right")
-    ax.set_ylabel("% del presupuesto (promedio sobre turnos y seeds)")
-    ax.set_title("Presupuesto revelado: media ± IC95 (bootstrap, multi-seed)",
+    ax.set_ylabel("% of budget (averaged over turns and seeds)")
+    ax.set_title("Revealed budget allocation: mean ± 95% CI (bootstrap, multi-seed)",
                  fontweight="bold")
     ax.grid(True, alpha=0.3, axis="y")
     ax.legend()
@@ -556,12 +556,12 @@ def plot_outcomes_box(df: pd.DataFrame, out_path: Path) -> Path:
     if "replica" in df.index.names:
         df = collapse_replicas(df)
     metricas = [
-        ("PIB_delta", "Δ PIB"),
-        ("pobreza_fin", "pobreza final (%)"),
-        ("aprobacion_fin", "aprobación final"),
-        ("deuda_fin", "deuda/PIB final"),
-        ("bienestar_fin", "bienestar (0-100)"),
-        ("gobernabilidad_fin", "gobernabilidad (0-100)"),
+        ("PIB_delta", "Δ GDP"),
+        ("pobreza_fin", "final poverty (%)"),
+        ("aprobacion_fin", "final approval"),
+        ("deuda_fin", "final debt/GDP"),
+        ("bienestar_fin", "wellbeing (0-100)"),
+        ("gobernabilidad_fin", "governance (0-100)"),
     ]
     modelos = sorted(df.index.get_level_values("modelo").unique())
     fig, axes = plt.subplots(2, 3, figsize=(14, 8))
@@ -574,7 +574,7 @@ def plot_outcomes_box(df: pd.DataFrame, out_path: Path) -> Path:
             patch.set_alpha(0.55)
         ax.set_title(titulo)
         ax.grid(True, alpha=0.3, axis="y")
-    fig.suptitle("Outcomes por modelo (multi-seed)", fontweight="bold", fontsize=14)
+    fig.suptitle("Outcomes by model (multi-seed)", fontweight="bold", fontsize=14)
     fig.tight_layout()
     fig.savefig(out_path, dpi=140)
     plt.close(fig)
@@ -611,9 +611,9 @@ def plot_mixed_effects_forest(me_table: pd.DataFrame, out_path: Path,
     ax.axvline(0, color="black", lw=0.7, ls="--")
     ax.set_yticks(y)
     ax.set_yticklabels(df.index)
-    ax.set_xlabel("Efecto fijo  (Modelo B − Modelo A)")
-    ax.set_title("Mixed-effects: efecto del modelo por métrica\n"
-                 "errorbar = IC95;  *=BH-FDR<0.05  **<0.01  ***<0.001",
+    ax.set_xlabel("Fixed effect  (Model B − Model A)")
+    ax.set_title("Mixed-effects: model effect per metric\n"
+                 "errorbars = 95% CI;  *=BH-FDR<0.05  **<0.01  ***<0.001",
                  fontweight="bold")
     ax.grid(True, alpha=0.3, axis="x")
     fig.tight_layout()

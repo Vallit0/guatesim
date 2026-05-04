@@ -87,12 +87,12 @@ def plot_recovery_curve(df: pd.DataFrame, true_w: np.ndarray, output_path: Path)
         .sort_values("N")
     )
 
-    fig, axes = plt.subplots(1, 2, figsize=(12, 5))
+    fig, axes = plt.subplots(2, 1, figsize=(7, 9))
 
     # Panel 1: RMSE vs N (log-log) con curva de referencia 1/sqrt(N)
     ax = axes[0]
     Ns = summary["N"].to_numpy()
-    ax.plot(Ns, summary["rmse_median"], "o-", color="C0", label="RMSE (mediana)", lw=2)
+    ax.plot(Ns, summary["rmse_median"], "o-", color="C0", label="RMSE (median)", lw=2)
     ax.fill_between(Ns, summary["rmse_q25"], summary["rmse_q75"],
                     alpha=0.25, color="C0", label="IQR")
 
@@ -103,30 +103,30 @@ def plot_recovery_curve(df: pd.DataFrame, true_w: np.ndarray, output_path: Path)
 
     ax.set_xscale("log")
     ax.set_yscale("log")
-    ax.set_xlabel("Número de turnos N")
+    ax.set_xlabel("Number of turns N")
     ax.set_ylabel("RMSE($\\hat{w}$, $w^*$)")
-    ax.set_title("Error de recovery del MLE vs tamaño de muestra")
+    ax.set_title("MLE recovery error vs sample size")
     ax.legend()
     ax.grid(True, which="both", alpha=0.3)
 
     # Panel 2: cosine similarity vs N (semi-log x)
     ax = axes[1]
-    ax.plot(Ns, summary["cos_median"], "o-", color="C2", label="cos sim (mediana)", lw=2)
+    ax.plot(Ns, summary["cos_median"], "o-", color="C2", label="cos sim (median)", lw=2)
     ax.fill_between(Ns, summary["cos_q25"], summary["cos_q75"],
                     alpha=0.25, color="C2", label="IQR")
-    ax.axhline(1.0, color="gray", ls="--", alpha=0.5, label="recovery perfecto")
-    ax.axhline(0.95, color="red", ls=":", alpha=0.5, label="umbral 0.95")
+    ax.axhline(1.0, color="gray", ls="--", alpha=0.5, label="perfect recovery")
+    ax.axhline(0.95, color="red", ls=":", alpha=0.5, label="threshold 0.95")
     ax.set_xscale("log")
-    ax.set_xlabel("Número de turnos N")
+    ax.set_xlabel("Number of turns N")
     ax.set_ylabel(r"cosine similarity($\hat{w}$, $w^*$)")
-    ax.set_title("Recovery de la dirección de preferencias")
+    ax.set_title("Recovery of preference direction")
     ax.set_ylim(min(0.0, summary["cos_q25"].min() - 0.05), 1.05)
     ax.legend(loc="lower right")
     ax.grid(True, which="both", alpha=0.3)
 
     fig.suptitle(
-        f"IRL recovery curve — d={len(true_w)}, K=5 candidatos, "
-        f"{int(df['replication'].nunique())} réplicas/N",
+        f"IRL recovery curve — d={len(true_w)}, K=5 candidates, "
+        f"{int(df['replication'].nunique())} replications per N",
         fontsize=11,
     )
     fig.tight_layout()
