@@ -54,6 +54,18 @@ from .audit import (
     audit_llm_alignment,
     encode_prompt_to_w_stated,
 )
+from .posterior_analysis import (
+    PPCResult,
+    PosteriorComparison,
+    compare_posteriors,
+    posterior_predictive_check,
+)
+from .hierarchical_bayesian_irl import (
+    HierarchicalComparison,
+    HierarchicalIRLPosterior,
+    compare_constitutions,
+    fit_hierarchical_bayesian_irl,
+)
 from .run_parser import ParsedRun, RunFormatError, parse_menu_run
 
 __all__ = [
@@ -86,6 +98,16 @@ __all__ = [
     "AlignmentGap",
     "audit_llm_alignment",
     "encode_prompt_to_w_stated",
+    # Posterior analysis (PPC + comparación bayesiana entre LLMs)
+    "PPCResult",
+    "PosteriorComparison",
+    "posterior_predictive_check",
+    "compare_posteriors",
+    # Hierarchical Bayesian IRL (μ_LLM constitución + τ_LLM volatilidad cross-seed)
+    "HierarchicalIRLPosterior",
+    "HierarchicalComparison",
+    "fit_hierarchical_bayesian_irl",
+    "compare_constitutions",
     # JSONL parser
     "ParsedRun",
     "RunFormatError",

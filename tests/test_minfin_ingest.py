@@ -21,7 +21,7 @@ def test_load_minfin_devuelve_baseline_valido():
     assert isinstance(bl, MinfinBaseline)
     assert isinstance(bl.presupuesto, PresupuestoAnual)
     assert bl.year == 2024
-    assert bl.es_aproximacion is True
+    assert bl.es_aproximacion is False
 
 
 def test_minfin_suma_100_pp_tolerancia_1():

@@ -56,10 +56,11 @@ def test_deviation_table_status_quo_uniforme_es_simétrico():
     absoluta total contra MINFIN debe ser igual a la suma de
     |11.11 - minfin[k]| para las 9 partidas."""
     df = deviation_table(_menu_dict())
-    # MINFIN 2024 (aproximación):
-    #   salud=12, educ=17, seg=7, infra=6, agro=4, prot=13, deuda=17, just=5, otros=19
+    # MINFIN 2024 (validado contra ICEFI Tabla 7 + Tabla 8):
+    #   salud=10.6, educ=22.1, seg=8.6, infra=4.9, agro=2.0,
+    #   prot=10.1, deuda=14.7, just=4.0, otros=23.0
     # status_quo todos a 11.11 → desviaciones esperadas:
-    minfin = [12, 17, 7, 6, 4, 13, 17, 5, 19]
+    minfin = [10.6, 22.1, 8.6, 4.9, 2.0, 10.1, 14.7, 4.0, 23.0]
     esperada = sum(abs(11.11 - m) for m in minfin) + abs(11.12 - minfin[-1]) - abs(11.11 - minfin[-1])
     obtenida = float(df.loc["abs_dev_total", "status_quo_uniforme"])
     # tolerancia laxa por el 11.12 vs 11.11 en "otros"

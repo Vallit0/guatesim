@@ -29,12 +29,28 @@ from .state import (
 )
 
 
-def initial_state() -> GuatemalaState:
-    """Devuelve un `GuatemalaState` hardcodeado a enero 2026.
+def initial_state(country: "object | None" = None) -> GuatemalaState:
+    """Devuelve un `GuatemalaState` inicial.
 
-    Para una versión calibrada con datos reales del Banco Mundial,
-    usá `initial_state_calibrated()`.
+    Sin argumentos: estado hardcodeado de Guatemala enero 2026
+    (idéntico al comportamiento pre-multipaís — el resto del repo
+    sigue funcionando sin cambios).
+
+    Con `country=<CountryProfile>`: delega al `initial_state_factory`
+    del profile (ver `guatemala_sim.country_profile`). Permite correr
+    el simulador contra otros países calibrados.
+
+    Para datos reales WB en lugar del hardcode, usá
+    `initial_state_calibrated()`.
     """
+    if country is not None:
+        # Lazy import para evitar ciclo si country_profile importa state.py
+        from .country_profile import CountryProfile
+        if not isinstance(country, CountryProfile):
+            raise TypeError(
+                f"country debe ser CountryProfile o None; tengo {type(country).__name__}"
+            )
+        return country.initial_state()
     return GuatemalaState(
         turno=Turno(t=0, fecha=date(2026, 1, 1), periodo="anual"),
         macro=Macro(

@@ -68,7 +68,13 @@ Pendientes de ingesta automatizada:
 - [ ] `banguat_2025.csv` — PIB trimestral, política monetaria (Banguat
   publica Excel, no API estable)
 - [ ] `encovi_agregado.csv` — pobreza por depto (INE)
-- [ ] `minfin_ejecucion.csv` — ejecución presupuestaria (SICOIN)
+- [x] `minfin_2024_ejecutado.csv` — validado contra ICEFI Tabla 7
+  (vigente 2024, dic 2024) + Tabla 8 (ejecutado 2024, nov 2025).
+  Datos primarios del SICOIN, agregados por ICEFI. Mapeo mixto:
+  finalidad para salud/educación/protección social/servicio de deuda;
+  entidad para seguridad/infraestructura/agro. Justicia estimada
+  desde asignaciones constitucionales (CPRG Art. 213). Ver docstring
+  de `guatemala_sim/minfin_ingest.py` para el detalle metodológico.
 - [ ] `tse_congreso.csv` — composición del Congreso (TSE)
 - [ ] ACLED API — violencia política y protesta (key opcional)
 

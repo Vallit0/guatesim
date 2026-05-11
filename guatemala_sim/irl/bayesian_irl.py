@@ -78,6 +78,56 @@ class IRLPosterior:
         """True si los diagnostics están en niveles aceptables."""
         return self.rhat_max <= rhat_threshold and self.diverging == 0
 
+    @property
+    def variance_ratio(self) -> np.ndarray:
+        """`var(posterior_k) / prior_sigma**2` por dimensión.
+
+        Diagnóstico de identificabilidad por-dimensión:
+            - ≈ 1.0 ⇒ los datos no contraen el prior; esa dim NO es
+              identificada por las observaciones (T turnos × K candidatos
+              fueron insuficientes para fijar w_k).
+            - << 1.0 ⇒ los datos contraen fuertemente el prior; dim
+              identificada.
+
+        Es la métrica más cruda de "¿cuánta información extrajo el
+        IRL?" por componente — necesaria especialmente con T pequeño
+        (ej. T=8 en el setup actual) donde algunas dims pueden no
+        ser recuperables.
+        """
+        post_var = self.w_samples.var(axis=0)
+        return post_var / (self.prior_sigma ** 2)
+
+    def identified_dimensions(self, threshold: float = 0.5) -> list[int]:
+        """Índices de dims con variance_ratio < `threshold`.
+
+        Default 0.5: una dim cuya varianza posterior bajó a la mitad
+        de la del prior es razonablemente identificada. Subir a 0.25
+        para criterio más estricto.
+        """
+        if not (0 < threshold <= 1.0):
+            raise ValueError(
+                f"threshold debe estar en (0, 1]; tengo {threshold}"
+            )
+        ratios = self.variance_ratio
+        return [int(k) for k, r in enumerate(ratios) if r < threshold]
+
+    def identifiability_table(self, threshold: float = 0.5) -> pd.DataFrame:
+        """Tabla por dimensión con prior_var, post_var, ratio, identified."""
+        prior_var = self.prior_sigma ** 2
+        post_var = self.w_samples.var(axis=0)
+        ratios = post_var / prior_var
+        identified = ratios < threshold
+        return pd.DataFrame({
+            "feature": list(self.feature_names),
+            "prior_variance": [float(prior_var)] * len(self.feature_names),
+            "posterior_variance": post_var.astype(float),
+            "variance_ratio": ratios.astype(float),
+            "identified": identified.astype(bool),
+        }).set_index("feature")
+
+    def n_dims_identified(self, threshold: float = 0.5) -> int:
+        return len(self.identified_dimensions(threshold=threshold))
+
 
 def fit_bayesian_irl(
     features: np.ndarray,

@@ -1,24 +1,29 @@
 """Snapshot del presupuesto público ejecutado de Guatemala 2024 (MINFIN).
 
-Fuente primaria: Ministerio de Finanzas Públicas (MINFIN), Liquidación
-del Presupuesto General de Ingresos y Egresos del Estado para el
-ejercicio fiscal 2024. Datos públicos disponibles vía:
-    - https://www.minfin.gob.gt/   (Portal de Transparencia Fiscal)
-    - SICOIN web                   (Sistema de Contabilidad Integrada)
-    - ICEFI                        (https://icefi.org/) — análisis fiscal centroamericano
+Fuente: validado contra ICEFI (Instituto Centroamericano de Estudios
+Fiscales), que opera con datos oficiales del SICOIN (Sistema de
+Contabilidad Integrada del MINFIN).
 
-**Limitación honesta**: el snapshot en `data/minfin_2024_ejecutado.csv`
-es una **aproximación** basada en la estructura conocida del gasto
-público guatemalteco, agregada manualmente a las 9 partidas del schema
-`PresupuestoAnual`. Los porcentajes son del orden correcto pero NO son
-los números oficiales exactos extraídos automáticamente del SICOIN.
-Para uso en publicación, **verificar contra la Liquidación oficial**
-del MINFIN o contra las series de ICEFI.
+  - Por finalidad (salud, educación, protección social): Tabla 8,
+    ICEFI "Análisis del proyecto de presupuesto para 2026" (nov 2025),
+    serie ejecutada 2020-2024. Total ejecutado 2024 ≈ Q120,903 MM.
+  - Por entidad (seguridad, infraestructura, agro): Tabla 7, ICEFI
+    "Análisis del presupuesto aprobado para 2025" (dic 2024). Vigente
+    2024 = Q131,196.5 MM (techo presupuestario).
+  - Servicio de deuda: clasificación económica, ICEFI nov 2025 Fig 18,
+    14.7% incluye intereses + amortización (12.0% solo intereses).
+  - Justicia (OJ+MP+IDPP+INACIF+TSE): estimación basada en
+    asignaciones constitucionales (Art. 213 CPRG: OJ ≥2%) más
+    incrementos confirmados en Decreto 36-2024.
 
-El propósito de este baseline es transformar la narrativa del paper
-de "los modelos difieren entre sí" a "ambos modelos se desvían del
-baseline humano de referencia, en direcciones opuestas". Eso requiere
-un baseline plausible, no necesariamente exacto al cuarto decimal.
+**Marcos heterogéneos**: las shares mezclan clasificación funcional
+(finalidad) y administrativa (entidad). La columna `nota` documenta
+el marco de cada partida. La suma cierra a 100 ± 1.
+
+Cita primaria del paper:
+  ICEFI (2024). *Análisis del presupuesto aprobado para 2025*.
+  ICEFI (2025). *Análisis y recomendaciones para el proyecto de
+    presupuesto para 2026*.
 """
 
 from __future__ import annotations
@@ -113,8 +118,11 @@ def load_minfin_baseline(
     return MinfinBaseline(
         presupuesto=presupuesto,
         year=2024,
-        fuente="MINFIN Liquidación 2024 (aproximación, ver minfin_ingest.py)",
-        es_aproximacion=True,
+        fuente=(
+            "ICEFI Tabla 7 (vigente 2024, dic 2024) + Tabla 8 "
+            "(ejecutado 2024, nov 2025), datos primarios SICOIN"
+        ),
+        es_aproximacion=False,
         csv_path=path,
         notas=notas,
     )

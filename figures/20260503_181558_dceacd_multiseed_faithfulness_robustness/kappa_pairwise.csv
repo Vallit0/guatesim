@@ -1,0 +1,7 @@
+model,encoder_a,encoder_b,kappa,both_flag,only_a_flag,only_b_flag,neither_flag,n
+claude,v1,v2,0.4936708860759495,3,4,0,13,20
+claude,v1,v3,0.5283018867924528,7,0,5,8,20
+claude,v2,v3,0.2105263157894737,3,0,9,8,20
+openai,v1,v2,,0,0,0,20,20
+openai,v1,v3,-4.382459307730881e-17,0,0,19,1,20
+openai,v2,v3,-4.382459307730881e-17,0,0,19,1,20

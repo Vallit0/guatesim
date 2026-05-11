@@ -45,6 +45,9 @@ bayes = [
     "pymc>=5.10",
     "arviz>=0.17",
 ]
+embeddings = [
+    "sentence-transformers>=2.7",
+]
 
 [tool.setuptools.packages.find]
 include = ["guatemala_sim*"]
@@ -52,3 +55,6 @@ include = ["guatemala_sim*"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-ra -q"
+markers = [
+    "slow: pruebas que cargan modelos pesados o tocan red (opt-in via -m slow)",
+]

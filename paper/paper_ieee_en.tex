@@ -1,7 +1,11 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Bayesian Inverse Reward Design for Large Language Model Policy-Makers
 % Under Compositional Constraints in the Global South
-% IEEE Conference (IEEEtran, two-column, 6 pages)
+% IEEE Conference (IEEEtran, two-column).
+% Length budget at the time of writing: estimate ~14-16 pages
+% rendered (prose ~7150 words + 4 figs + 7 tables + 20 refs).
+% Target venues require trimming: SoLaR/NeurIPS-W ~6-8p, AIES ~7p+refs,
+% FAccT ~9p+refs. See "page-count" follow-up in the project tracker.
 % Compile: pdflatex paper_ieee_en.tex (twice for cross-references)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -58,22 +62,35 @@ calibrated macroeconomic simulator, a discrete candidate menu,
 Bayesian Inverse Reinforcement Learning, an Inverse Reward Design
 audit comparing stated and recovered objectives, model-based
 translation of trajectory differences into human units under explicit
-simulator assumptions, a reasoning--policy consistency diagnostic,
-and a human baseline anchor. We validate identifiability synthetically
+simulator assumptions, a lexical reasoning--policy coherence proxy,
+and a triad of baselines (in-menu constrained optimum, random-uniform,
+and a human-process anchor). We validate identifiability synthetically
 with an empirical one-over-square-root-N convergence rate. We then
 apply the framework to Guatemala as a calibrated case, comparing
 Claude Haiku 4.5 and GPT-4o-mini over twenty seeds of eight quarterly
 turns under identical shocks. Under this audit setup, both models
 exhibit systematic misalignment with the declared deployer intent in
-twenty out of twenty seeds. Paired Wilcoxon tests reveal thirteen of
-thirteen metrics differ significantly between models, eleven at the
-one-in-one-thousand level. Most notably, Claude shows reasoning--action
-inconsistency in seven of twenty seeds while GPT-4o-mini shows zero,
-a gap that survives a sweep of inconsistency thresholds and a second,
-independent reasoning encoding. We frame these results as evidence
-\emph{under this instrumentation}, not as universal claims about the
-models; harm magnitudes are translated consequences under the
-calibrated simulator, not predictions of real-world policy outcomes.
+twenty out of twenty seeds. Against an in-menu constrained-optimum
+oracle (B1) under the stated reward and a random-but-valid baseline
+(B2), both LLMs fall strictly between B1 and B2, with median
+per-seed agreement with B1 of $0.38$ for Claude and $0.75$ for
+GPT-4o-mini and a cross-model regret gap of $-1.19$ in median
+($p<10^{-4}$, paired Wilcoxon). Against a human-process anchor (B3)
+instantiated as the Guatemalan MINFIN 2024 executed budget, the
+direction \emph{reverses}: Claude is closer to the human process
+(median $L_1{=}59.1$ pp) than GPT-4o-mini ($60.6$ pp, $p{=}0.0003$),
+ruling out a single-axis ranking of the two models. Across thirteen pre-specified paired
+Wilcoxon comparisons between Claude and GPT-4o-mini, eleven reject
+the null at $\alpha{=}0.05$, nine survive Holm--Bonferroni
+multiplicity correction, and seven hold at $p<0.001$. We additionally report a lexical proxy for
+reasoning--action coherence: Claude is flagged in seven of twenty
+seeds versus zero for GPT-4o-mini at the default cosine threshold,
+and the cross-model direction persists under two independent text
+encodings and a threshold sweep, but we report it as a screening
+signal, not a faithfulness verdict. All claims are bounded \emph{under
+this instrumentation}; harm magnitudes are translated consequences
+under the calibrated simulator, not predictions of real-world policy
+outcomes.
 The method is country-agnostic and reusable; each additional country
 is a new calibration dataset, not a new methodology.
 \end{abstract}
@@ -125,7 +142,7 @@ country-calibrated simulator.
 calibrated empirically against a Latin American economy, comparing
 two frontier models over twenty seeds with paired-shock experimental
 control and a battery of robustness checks (menu size, stated-reward
-perturbation, inconsistency thresholds, dual reasoning encoding).
+perturbation, coherence-threshold sweep, dual reasoning encoding).
 \textbf{(iii) Programmatic}: a testbed designed so that the method is
 reusable and the calibration is replaceable, supporting an ``AI Safety
 from the Global South'' research agenda where each additional country
@@ -222,7 +239,7 @@ selection into human units.
 
 \begin{table*}[t]
 \centering
-\caption{Seven-layer pipeline of the Bayesian IRD audit framework. Each layer is independently testable. The simulator (Layer 1) and the human baseline (presented separately in Sec.~III-H) are the country-specific components; the remaining layers are country-agnostic by construction.}
+\caption{Seven-layer pipeline of the Bayesian IRD audit framework. Each layer is independently testable. The simulator (Layer 1) and the human-process anchor (component B3 of Sec.~III-H) are the country-specific components; the remaining layers and the normative baselines (B1, B2) are country-agnostic by construction.}
 \label{tab:pipeline}
 \renewcommand{\arraystretch}{1.15}
 \begin{tabular}{c l l l}
@@ -235,7 +252,7 @@ selection into human units.
 4 & Bayesian IRL            & $\{\phi(s_t, a_k),\, k_t\}_{t=1}^{T}$                                    & posterior $\boldsymbol{\theta}_{\text{rec}} \in \mathbb{R}^6$ via NUTS \\
 5 & IRD audit               & $\boldsymbol{\theta}_{\text{rec}},\, \boldsymbol{\theta}_{\text{stated}}$ & cosine, ROPE, HDI95, alignment-gap diagnostics                         \\
 6 & Harm translation        & initial state $s_0$, final state $s_T$                                   & households, children, deaths, USD welfare (simulator-translated)       \\
-7 & Reasoning--policy consistency & chain-of-thought, $\boldsymbol{\theta}_{\text{rec}}$               & cosine (two encodings), reasoning--action inconsistency flag           \\
+7 & Reasoning--policy coherence proxy & chain-of-thought, $\boldsymbol{\theta}_{\text{rec}}$               & cosine (two encodings), low-coherence flag           \\
 \bottomrule
 \end{tabular}
 \end{table*}
@@ -295,17 +312,27 @@ intended as an exhaustive list of fiscal stances; they are chosen to
 \emph{span} the dominant ideological directions on the 9-simplex
 (uniform anchor, debt-prudent, human-development, security-prioritizing,
 balanced) so that the menu does not collapse the LLM's choice into a
-narrow corner. Two limits are explicit. First, the menu is the same
+narrow corner. Three limits are explicit. First, the menu is the same
 across turns, so within-trajectory adaptation is not measured; a
 turn-conditional menu is a natural extension. Second, the ranking
-across models could in principle be an artifact of $K{=}5$. We address
-this directly with two robustness checks (Sec.~\ref{sec:robustness}):
+across models could in principle be an artifact of $K{=}5$. Third,
+and most consequentially, since both LLMs allocate substantial weight
+to the \texttt{anti\_pobreza} feature, the recovered direction is
+expected \emph{a priori} to load on the \texttt{human\_development}
+candidate; this is not pathology, but it makes the recovered axis
+partially load-bearing on a single archetype. We address all three
+directly with two robustness checks (Sec.~\ref{sec:robustness}):
 (i) leave-one-out menu refits ($K{=}4$), one per dropped candidate,
 which re-fits the IRL on the same observed choices restricted to the
-sub-menu containing the chosen index, and (ii) extended menus
-($K{=}7$, $K{=}9$) that we publish as additional candidate
-specifications for follow-up live runs. Both ground the K=5 choice as
-a documented modeling decision rather than an opaque one.
+sub-menu containing the chosen index---and which we report transparently
+even when the result is partial (drop \texttt{human\_development}
+moves the recovered direction visibly, while the other four drops do
+not); and (ii) extended menus ($K{=}7$, $K{=}9$) that we publish as
+additional candidate specifications for follow-up live runs. We treat
+the partial $K{=}4$ result as the honest finding it is, not as a flaw
+of the estimator: a single candidate that dominantly expresses the
+dominant feature is structural to the recovered direction in any
+discrete-menu IRL.
 
 \subsection{Bayesian Inverse Reinforcement Learning}
 
@@ -347,23 +374,28 @@ preventable mortality versus MSPAS, and aggregate welfare in USD. The
 calculation is deliberately conservative and traceable; estimates are
 order-of-magnitude indicators, not policy projections.
 
-\subsection{Reasoning--policy consistency}
+\subsection{Reasoning--policy coherence proxy}
 \label{sec:rpc}
 
+We treat this layer as a \emph{lexical screening proxy}, not a
+faithfulness verdict. Both encodings below operate at the
+keyword/term-frequency level; semantic encodings (LLM-as-judge,
+sentence embeddings) and blind human coding are explicit follow-ups,
+not optional refinements. A low encoded cosine is consistent with
+unfaithful introspection, articulation noise, encoding coarseness, or
+genuine preference--explanation divergence, and our instrumentation
+cannot distinguish among them. We therefore avoid the strong language
+of deceptive alignment in the sense of Hubinger et al.
+\cite{hubinger2024}.
+
 Following Lanham et al. \cite{lanham2023}, we test whether the LLM's
-verbal explanation (chain-of-thought, CoT) is consistent with its
+verbal explanation (chain-of-thought, CoT) is coherent with its
 revealed decision. We compute, per turn, a cosine
 $\cos(\boldsymbol{\theta}_{\text{CoT}}, \boldsymbol{\theta}_{\text{rec}})$
 where $\boldsymbol{\theta}_{\text{CoT}}$ is a six-dimensional encoding
 of the reasoning text in the same feature basis as
 $\boldsymbol{\theta}_{\text{rec}}$. A cosine below a threshold $\tau$
-raises a \emph{reasoning--action inconsistency flag}---a screening
-signal, not a diagnosis of intent. We deliberately avoid the strong
-language of deceptive alignment in the sense of Hubinger et al.
-\cite{hubinger2024}: low consistency may reflect unfaithful
-introspection, articulation noise, encoding coarseness, or genuine
-preference--explanation divergence, and our instrumentation cannot
-distinguish among them.
+raises a \emph{low-coherence flag}.
 
 To guard against artifacts of any single encoding, we report two
 independent encodings of the reasoning text and the agreement between
@@ -371,20 +403,32 @@ them: \textbf{(v1)} a hand-calibrated keyword-frequency vector over a
 domain lexicon; \textbf{(v2)} a TF-IDF projection over an
 \emph{independently constructed} expanded lexicon (anchor phrases,
 disjoint from v1) using uni- and bi-grams, projected onto per-feature
-centroids. We report (a) per-encoding inconsistency-flag counts at the
+centroids. We report (a) per-encoding low-coherence flag counts at the
 default threshold $\tau{=}0.5$, (b) per-encoding flag counts under a
-sweep $\tau \in \{0.3,0.4,0.5,0.6,0.7\}$, and (c) Cohen's $\kappa$ of
-the per-turn binary inconsistency labels between v1 and v2. The
-threshold sweep prevents the gap from being an artifact of $\tau{=}0.5$;
-the dual encoding prevents it from being an artifact of v1's lexicon.
+sweep $\tau \in \{0.3,0.4,0.5,0.6,0.7\}$, and (c) seed-level
+agreement of v1 and v2 binary labels. The threshold sweep prevents
+the gap from being an artifact of $\tau{=}0.5$; the dual encoding
+prevents it from being an artifact of v1's lexicon. Encoding-level
+agreement is meaningful at the seed level only: per-turn flags are
+noisy binarizations of a continuous cosine, and v1 and v2 use disjoint
+lexicons by construction.
 
-\subsection{Human baseline}
+\subsection{Baselines}
 
-We anchor against the Liquidaci\'on Presupuestaria 2024 of the
-Ministry of Public Finance (MINFIN) \cite{minfin}, aggregated to the
-nine budget items used in the simulator. This baseline distinguishes
-``model deviations'' from ``deviations of the existing human
-process.''
+We compare against three reference policies. \textbf{(B1)
+Constrained optimum}: at each turn, $a_t^\star{=}\arg\max_k\,
+\boldsymbol{\theta}_{\text{stated}}^\top\phi(s_t, a_k)$, the
+in-menu maximizer of the deployer's stated reward---a normative
+ceiling for the audit. \textbf{(B2) Random-but-valid}: uniform over
+the $K{=}5$ menu, scored by analytical expectation; a normative
+floor representing ``no preference within the menu.''
+\textbf{(B3) Human-process anchor}: Liquidaci\'on Presupuestaria
+2024 of the Ministry of Public Finance (MINFIN) \cite{minfin},
+aggregated to the nine budget items used in the simulator;
+distinguishes ``model deviations'' from ``deviations of the existing
+human process.'' B1 and B2 share the LLM's observed states, so all
+three policies are paired-seed commensurable; B3 is a one-shot
+real-world reference.
 
 % =====================================================================
 \section{Experimental Design}
@@ -543,54 +587,84 @@ the result holds for the specific stated reward and feature basis we
 use, and we show in Sec.~\ref{sec:robustness} that it is stable under
 perturbations of both.
 
-\subsection{Harm translation under simulator assumptions}
+\subsection{Normative baselines: constrained optimum and random-uniform}
+\label{sec:baselines}
 
-Table~\ref{tab:harms} reports median values across the twenty
-seed-paired trajectories of the calibrated simulator's translation
-of state differences into human units, using literature-anchored
-elasticities. We emphasize the framing: these are
-\emph{model-based translated consequences} under the simulator and
-elasticities of Sec.~III, not real-world predictions, and they are
-contingent on the assumptions of both. Under those assumptions, the
-GPT-4o-mini trajectories are translated into 65{,}000 more households
-moved out of poverty per trajectory, 2{,}700 more preventable deaths
-averted per year, and 1{,}030 USD million higher welfare delta than
-the Claude trajectories. All differences are significant in paired
-Wilcoxon tests at $p < 0.001$.
+To anchor the magnitude of the misalignment of
+Sec.~\ref{sec:misalign}, we evaluate two oracle policies on the
+same observed states as the LLM runs, with no new API calls.
+\textbf{B1 (constrained optimum)} picks
+$a_t^\star=\arg\max_k\,\boldsymbol{\theta}_{\text{stated}}^\top
+\phi(s_t, a_k)$ at each turn---the best the menu allows under the
+deployer's stated reward. \textbf{B2 (random-but-valid)} samples
+uniformly over the $K{=}5$ menu; we report its analytical expectation
+$\frac{1}{K}\sum_k\boldsymbol{\theta}_{\text{stated}}^\top\phi(s_t,
+a_k)$ to keep B2 noise-free. Both baselines are scored on the same
+reference-subtracted features as the IRL likelihood, so the three
+policies (LLM, B1, B2) are directly commensurable.
+
+Cumulative stated-reward over the eight-turn trajectory has median
+$+2.51$ for Claude and $+3.62$ for GPT-4o-mini, against $+4.40$ for
+B1 and $+0.84$ for B2. Both models fall \emph{between} B1 and B2:
+they revealed-prefer the deployer direction more strongly than a
+random valid policy ($p<10^{-4}$ for both, paired Wilcoxon vs B2),
+but neither attains B1 ($p<10^{-3}$ for both, paired Wilcoxon vs B1).
+Per-seed agreement with B1's chosen index has median $0.38$ for
+Claude and $0.75$ for GPT-4o-mini. The cross-model regret gap to B1
+is $-1.19$ in median (Claude leaves more stated-reward on the table
+than GPT-4o-mini), paired Wilcoxon $p<10^{-4}$. This recovers the
+direction of the cross-model gap from Sec.~\ref{sec:misalign} on a
+metric independent of the IRL inference, on a scale that has a
+\emph{ceiling} (B1) and a \emph{floor} (B2) instead of an unanchored
+cosine.
+
+\subsection{Human-process anchor (B3): MINFIN 2024}
+\label{sec:b3}
+
+B1 and B2 score policies against the deployer's \emph{stated} reward.
+A complementary question is how each LLM compares against the
+\emph{actual budget process} of the country it is being audited
+against, independent of any stated objective. We instantiate B3 with
+the Guatemalan 2024 budget (MINFIN), validated against ICEFI
+Tables 7 and 8 over primary SICOIN data \cite{minfin,icefi2024,icefi2025},
+aggregated to the same nine simulator items. For each (seed, model)
+pair we average the eight quarterly budgets the LLM emitted and
+compare to the MINFIN 2024 vector under two metrics: $L_1$ deviation
+in percentage points and cosine similarity over the 9-simplex.
+
+Both LLMs sit \emph{between} the menu's closest archetype to MINFIN
+(\texttt{status\_quo\_uniform}, $L_1{=}52.9$~pp) and its farthest
+(\texttt{security\_first}, $L_1{=}78.8$~pp), but with a measurable
+cross-model direction: Claude has median $L_1$ of $59.1$~pp
+(IQR~$[58.6, 60.1]$) and cosine $0.791$ (IQR~$[0.777, 0.793]$);
+GPT-4o-mini has median $L_1$ of $60.6$~pp (IQR~$[60.1, 61.6]$) and
+cosine $0.767$ (IQR~$[0.757, 0.777]$). Paired Wilcoxon Claude vs.\
+GPT-4o-mini: $p{=}0.0003$ on both metrics, with median $L_1$ difference
+$-1.5$~pp (Claude closer) and median cosine difference $+0.022$
+(Claude closer). \textbf{This direction is opposite to the B1 result}:
+GPT-4o-mini revealed-prefers the deployer-stated objective more
+sharply, while Claude revealed-prefers an allocation closer to the
+existing human process. Read together with B1, this rules out a
+single-axis ranking: the two models are not better and worse, they
+are differently misaligned with respect to two distinct references.
+B3 is country-specific and not informative for cross-country
+generalization claims; B1 and B2 carry the country-agnostic load.
 
 \begin{table}[h]
 \centering
-\caption{Median harm metrics across twenty seeds, paired Wilcoxon.}
-\label{tab:harms}
-\begin{tabular}{lrrl}
+\caption{Triangulating against three baselines. Median over 20 seeds; Wilcoxon paired tests Claude vs.\ GPT-4o-mini.}
+\label{tab:baselines}
+\begin{tabular}{lrrr}
 \toprule
-Metric & Claude & GPT-4o-mini & $p$ (Wilcoxon) \\
+Reference & Claude & GPT-4o-mini & $p$ \\
 \midrule
-$\Delta$ households (poverty)  & $-411{,}187$ & $-473{,}420$ & $<0.0001$ \\
-Deaths averted per year        & $-5{,}979$   & $-8{,}681$   & $0.0003$ \\
-Welfare delta (USD M)          & $-6{,}495$   & $-7{,}478$   & $<0.0001$ \\
+B1 regret to constrained optimum (lower is better) & $+1.84$ & $+0.73$ & $<10^{-4}$ \\
+B2 lift over random valid (higher is better)        & $+1.70$ & $+2.81$ & $<10^{-4}$ \\
+B3 $L_1$ vs.\ MINFIN (pp, lower is closer)          & $59.1$ & $60.6$ & $0.0003$ \\
+B3 cosine vs.\ MINFIN (higher is closer)            & $0.791$ & $0.767$ & $0.0003$ \\
 \bottomrule
 \end{tabular}
 \end{table}
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=\columnwidth]{20260503_181558_dceacd_multiseed_analysis/outcomes_box.png}
-\caption{Per-seed distribution of trajectory outcomes by model
-(twenty seeds, identical shocks). Boxes show interquartile range;
-whiskers show 1.5$\times$IQR; dots are individual seeds. The
-seed-paired structure of the experiment makes Wilcoxon signed-rank
-tests the appropriate inferential tool; reported $p$-values reflect
-the consistency of the per-seed direction of the difference, not
-merely the difference in medians.}
-\label{fig:outcomes}
-\end{figure}
-
-This result is not a quality ranking. The simulator does not penalize
-sovereign default risk or exchange-rate fragility; a more conservative
-model could be perceiving a risk the simulator does not capture. What
-the method measures is the \emph{revealed direction} of the
-preference, not its correctness in a normative sense.
 
 \subsection{Reasoning--policy consistency gap}
 \label{sec:rpc-gap}
@@ -598,10 +672,9 @@ preference, not its correctness in a normative sense.
 The most notable finding under this audit is in Table~\ref{tab:cot}.
 Under encoding v1 (keyword frequencies), Claude exhibits a median
 CoT-versus-recovered cosine of $+0.519$ (IQR $[+0.416, +0.564]$) and
-triggers the reasoning--action inconsistency flag in seven of twenty
-seeds at threshold $\tau{=}0.5$; GPT-4o-mini exhibits a median cosine
-of $+0.837$ (IQR $[+0.812, +0.869]$) and triggers the flag in zero of
-twenty seeds. The paired Wilcoxon difference is $-0.32$ in median,
+triggers the low-coherence flag in seven of twenty seeds at threshold
+$\tau{=}0.5$; GPT-4o-mini exhibits a median cosine of $+0.837$ (IQR
+$[+0.812, +0.869]$) and triggers the flag in zero of twenty seeds. The paired Wilcoxon difference is $-0.32$ in median,
 $p < 0.0001$. The threshold sweep and the agreement between v1 and
 the independently-constructed v2 encoding are reported in
 Sec.~\ref{sec:robustness}; we summarize the gap there as surviving
@@ -621,29 +694,37 @@ Quantity & Claude & GPT-4o-mini \\
 \midrule
 Median cosine (CoT, $\boldsymbol{\theta}_{\text{rec}}$) & $+0.519$ & $+0.837$ \\
 IQR                                                     & $[+0.416, +0.564]$ & $[+0.812, +0.869]$ \\
-Reasoning--action inconsistency flag count              & $7/20$ & $0/20$ \\
+Low-coherence flag count                                & $7/20$ & $0/20$ \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \subsection{Aggregate paired-test result}
 
-Across thirteen distinct metrics tested seed-by-seed with the
-Wilcoxon signed-rank test, all thirteen reject the null of no
-difference between Claude and GPT-4o-mini. Eleven do so at the
-$p < 0.001$ level. Two metrics fail to reach significance:
-the per-seed entropy of the chosen-candidate distribution
-($p = 0.24$) and $w_{\text{pro\_approval}}$ ($p = 0.45$). The
-remaining metrics span recovery norms, all four
-simulator-translated harm dimensions, the consistency cosine, and
-five of six per-dimension recovered weights.
+We pre-specify thirteen seed-paired Wilcoxon signed-rank
+comparisons spanning recovery norms, the four simulator-translated
+harm dimensions, the consistency cosine, and the six per-dimension
+recovered weights. Of these, eleven reject the null at
+$\alpha{=}0.05$; two never do (per-seed entropy of the
+chosen-candidate distribution, $p{=}0.24$; $w_{\text{pro\_approval}}$,
+$p{=}0.45$). To guard against multiplicity, we apply Holm--Bonferroni
+step-down correction at the family-wise level $\alpha{=}0.05$:
+\emph{nine} of the thirteen pre-specified tests survive
+($p_{\text{sorted}}^{(10)}{=}0.0172$ exceeds $\alpha/4{=}0.0125$ and
+breaks the chain). \emph{Seven} comparisons hold at $p<0.001$
+unadjusted: recovery norm, all three monetized harm dimensions
+(households, deaths-averted, welfare USD), the reasoning--action
+cosine, and two recovered weights ($w_{\text{anti\_pobreza}}$,
+$w_{\text{pro\_crecimiento}}$). We report both the adjusted and
+unadjusted views so the reader can audit the multiplicity choice.
 
 \subsection{Robustness checks}
 \label{sec:robustness}
 
 Reviewers of an earlier draft asked, correctly, whether the audit
 might be measuring the instrument rather than the models. We address
-this directly with four sweeps; details in Appendix~\ref{app:repro}.
+this directly with five sweeps (R1--R4 and R6); details in
+Appendix~\ref{app:repro}.
 
 \textbf{(R1) Stated-reward perturbation.} We perturb the deployer
 intent vector $\boldsymbol{\theta}_{\text{stated}}$ by
@@ -664,8 +745,8 @@ GPT-4o-mini. We read this as evidence that the central misalignment
 finding is not an artifact of the specific $\boldsymbol{\theta}_{\text{stated}}$
 encoding.
 
-\textbf{(R2) Inconsistency-threshold sweep.} The reasoning--action
-inconsistency flag of Sec.~\ref{sec:rpc-gap} is recomputed at
+\textbf{(R2) Coherence-threshold sweep.} The low-coherence flag of
+Sec.~\ref{sec:rpc-gap} is recomputed at
 $\tau \in \{0.3, 0.4, 0.5, 0.6, 0.7\}$. The Claude-vs-GPT-4o-mini gap
 in flag counts persists monotonically across the entire sweep
 (Table~\ref{tab:robust}), with Claude flag counts of
@@ -678,7 +759,7 @@ not an artifact of $\tau{=}0.5$.
 text with v2, an independently constructed TF-IDF projection over an
 expanded anchor lexicon (Appendix~\ref{app:repro}); a unit test
 verifies that no v1 keyword appears as a substring of any v2 anchor
-phrase. Under v2 at $\tau{=}0.5$, Claude triggers the inconsistency
+phrase. Under v2 at $\tau{=}0.5$, Claude triggers the low-coherence
 flag in $3/20$ seeds and GPT-4o-mini in $0/20$ seeds; v2 median
 cosines are $+0.623$ and $+0.631$ respectively. The seed-level
 agreement between v1 and v2 binary flags is $80\%$ for Claude and
@@ -694,6 +775,21 @@ disagree on \emph{which} turns within a seed are flagged even when
 they agree at the seed level. The robustness claim is therefore that
 the cross-model seed-level gap survives the encoding swap, not that
 the per-turn flags are interchangeable.
+
+\textbf{(R6) Prior-$\sigma$ sweep.} The Bayesian IRL recovery uses
+$\theta_k \sim \mathcal{N}(0, \sigma{=}1)$ as the default. We re-fit
+the posterior under $\sigma \in \{0.5, 1, 2\}$ on every (seed, model)
+pair, holding the data, the NUTS configuration and the seed fixed.
+The recovered direction is essentially invariant: median cosine of
+$\boldsymbol{\theta}^{(\sigma)}_{\text{rec}}$ vs.\ the
+$\sigma{=}1$ reference is $0.9976$ at $\sigma{=}0.5$ and $0.9838$ at
+$\sigma{=}2$ for Claude, $0.9995$ and $0.9963$ for GPT-4o-mini, with
+minimum cosines $0.907$ and $0.991$ respectively. The misalignment
+classification of Sec.~\ref{sec:misalign} is identical across all
+three priors (40/40 pairs misaligned in every $\sigma$, 0
+reclassifications). The norm $\|\boldsymbol{\theta}\|$ scales
+linearly with $\sigma$ as expected from the Boltzmann temperature
+absorption (Sec.~III-D); the direction does not.
 
 \textbf{(R4) Menu leave-one-out (K=4).} For each candidate
 $c \in \{0,\dots,4\}$, we delete $c$ from the menu, restrict the
@@ -741,9 +837,72 @@ R3 v2 at $\tau{=}0.5$ (C vs G)      & 3 vs 0 flags                   & yes \\
 R3 v1--v2 seed-level concur.        & 80\% Claude, 100\% GPT         & yes \\
 R4 LOO 4 of 5 drops, median cos     & $\ge 0.977$ C, $\ge 0.994$ G   & yes \\
 R4 LOO drop \texttt{human\_dev}     & 0.875 C, 0.781 G (min 0.488)   & partial \\
+R6 $\sigma{=}0.5$ vs $\sigma{=}1$ direction & cos median 0.998 C / 0.999 G & yes \\
+R6 $\sigma{=}2$ vs $\sigma{=}1$ direction   & cos median 0.984 C / 0.996 G & yes \\
+R6 reclassifications across $\sigma$ sweep   & 0/40 pairs                  & yes \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+\subsection{Downstream illustration: simulator-translated consequences}
+\label{sec:harm}
+
+This subsection sits at the end of the results, deliberately, because
+its claims are layered on top of every previous one and additionally
+on the simulator dynamics and the elasticity calibration of Sec.~III.
+We treat it as a \emph{downstream illustration} of what the audit
+direction translates to under those assumptions, not as a measurement
+of real-world policy outcomes. The audit-layer claims of
+Secs.~\ref{sec:misalign}, \ref{sec:rpc-gap}, and~\ref{sec:robustness}
+do not depend on this layer.
+
+Under those assumptions, the median seed-paired difference between
+GPT-4o-mini and Claude trajectories translates into a swing of
+roughly tens of thousands of households around the poverty line, of
+the same order in deaths-averted, and of order $10^3$ USD million in
+aggregate welfare delta (Table~\ref{tab:harms}). All three differences
+have unadjusted $p<0.001$ in paired Wilcoxon and survive Holm
+correction. The point estimates are reported for completeness; we
+deliberately quote them once, in this single subsection, and avoid
+treating them as headline magnitudes elsewhere.
+
+\begin{table}[h]
+\centering
+\caption{Simulator-translated outcome metrics, twenty seed-paired trajectories. Magnitudes inherit the assumptions of the simulator (Sec.~III) and the elasticity calibration (Appendix); they are not forecasts.}
+\label{tab:harms}
+\begin{tabular}{lrrl}
+\toprule
+Metric & Claude & GPT-4o-mini & $p$ (Wilcoxon) \\
+\midrule
+$\Delta$ households (poverty)  & $-411{,}187$ & $-473{,}420$ & $<0.0001$ \\
+Deaths averted per year        & $-5{,}979$   & $-8{,}681$   & $0.0003$ \\
+Welfare delta (USD M)          & $-6{,}495$   & $-7{,}478$   & $<0.0001$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{20260503_181558_dceacd_multiseed_analysis/outcomes_box.png}
+\caption{Per-seed distribution of simulator-translated outcomes by
+model (twenty seeds, identical shocks). Boxes show interquartile
+range; whiskers show 1.5$\times$IQR; dots are individual seeds. The
+seed-paired structure of the experiment makes Wilcoxon signed-rank
+tests the appropriate inferential tool; reported $p$-values reflect
+the consistency of the per-seed direction of the difference, not
+merely the difference in medians. Magnitudes are simulator-translated,
+not predicted.}
+\label{fig:outcomes}
+\end{figure}
+
+This is not a quality ranking. The simulator does not penalize
+sovereign default risk or exchange-rate fragility, and a more
+fiscally cautious model could be perceiving a risk the simulator
+does not capture. What this layer translates is the \emph{revealed
+direction} of preference into a single common currency, not its
+correctness in a normative sense; for that, Sec.~\ref{sec:robustness}
+already shows that the audit-layer direction is robust independently
+of these magnitudes.
 
 % =====================================================================
 \section{Discussion}
@@ -762,54 +921,86 @@ GPT-4o-mini concentrates more sharply on poverty reduction and
 growth; Claude exhibits comparatively more weight on inflation
 control. Neither captures the deployer's full vector.
 
-\subsection{The reasoning--policy consistency gap as an AI Safety screening signal}
+\subsection{Three baselines, three different stories}
+
+The triangulation of B1, B2 and B3 is informative beyond a single
+ranking. Under B1 (constrained optimum on the deployer's stated
+reward) GPT-4o-mini is closer to the menu's best-feasible policy and
+Claude trails by $-1.19$ in median regret. Under B3 (Guatemalan
+human process, MINFIN 2024) the direction reverses: Claude is closer
+to the executed budget by a small but significant margin
+($p{=}0.0003$). Under B2 (random valid) both models pull strictly
+above the floor and remain comparable. We read this as evidence
+that ``alignment with the deployer'' (B1) and ``alignment with the
+country's existing institutional process'' (B3) are not the same
+target, and that a generic verdict of which model is ``better''
+hides this disagreement. The audit framework does not adjudicate
+between these references; it makes them visible.
+
+\subsection{Two non-rejections that we keep on the record}
+
+Of the thirteen pre-specified paired comparisons, two never reach
+$\alpha{=}0.05$: the per-seed entropy of the chosen-candidate
+distribution ($p{=}0.24$) and the recovered weight on
+\texttt{pro\_approval} ($p{=}0.45$). The interpretation we offer is
+deliberately mundane. Entropy is bounded above by $\log K{=}\log 5$
+and saturates quickly when both models concentrate on a small set of
+candidates, so it is mechanically insensitive to differences that
+the per-dimension weights detect. \texttt{pro\_approval} sits at the
+intersection of two effects that pull in opposite directions: the
+deployer prompt asks for popularity weight, and presidential
+approval is mechanically influenced by every category, so both
+models hover near a similar non-zero value. Reporting these two
+non-rejections matters: the eleven-of-thirteen significance count is
+informative only against the full pre-specified set, not against a
+selected subset.
+
+\subsection{The low-coherence proxy gap as a screening signal}
 
 The CoT-versus-action gap in Claude (seven of twenty seeds below the
-$\tau{=}0.5$ cosine threshold under v1, persisting under the
-threshold sweep R2 and the second encoding R3) is the strongest
-AI-Safety-relevant signal we report. Lanham et al. \cite{lanham2023}
-document unfaithful CoT in controlled tasks; we observe an analogous
-gap between two frontier models in a high-stakes simulated
-policy-recommendation context with statistical robustness over
-twenty seeds and across two reasoning encodings. We are deliberate
-about how far this evidence carries: a low cosine between encoded
-reasoning and recovered reward is consistent with unfaithful
-introspection, articulation noise, encoding coarseness, or
-preference--explanation divergence, and our instrumentation cannot
-distinguish them. We therefore do not invoke deceptive alignment in
-the sense of Hubinger et al. \cite{hubinger2024}; we report a
-screening signal that warrants deeper investigation, including
-structured LLM-as-judge re-encoding, blind human coding on a
-sub-sample, and turn-level analysis of the flagged seeds.
+$\tau{=}0.5$ cosine threshold under v1, persisting under the threshold
+sweep R2 and the second encoding R3) is the most attention-worthy
+AI-Safety-relevant signal we report, but we are deliberate about how
+far this evidence carries. Distinguishing among unfaithful
+introspection, articulation noise, encoding coarseness, and
+preference--explanation divergence requires a v3 (LLM-as-judge
+re-encoding) and a v4 (blind human coding on a sub-sample); we treat
+those as required follow-ups, not optional refinements. We therefore
+do not invoke deceptive alignment in the sense of Hubinger et al.
+\cite{hubinger2024}: a lexical proxy operating on six features cannot
+adjudicate that question. What we report is that, in this
+instrumentation and on this domain, two frontier models behave
+differently along a coherence dimension that prior work
+\cite{lanham2023} has flagged as worth measuring.
 
-\textbf{Audit vs.\ harm.} A clean separation between layers is
-important: \emph{the audit identifies revealed-preference divergence
-more strongly than it predicts real policy outcomes}. Reward
-recovery (Sec.~V-B, V-D) and reasoning--policy consistency
-(Sec.~\ref{sec:rpc-gap}) are layered on the LLM's observed choices
-and a Bayesian inference. The translated harm magnitudes (Sec.~V-E)
-are a downstream layer that depends on the simulator and elasticities
-in addition. Our central claim is at the audit layer; the harm layer
-is a scenario-based illustration under explicit assumptions.
+\textbf{Audit vs.\ downstream illustration.} A clean separation
+between layers is important: \emph{the audit identifies
+revealed-preference divergence more strongly than it predicts real
+policy outcomes}. Reward recovery (Secs.~\ref{sec:misalign},
+V-B, V-C) and the coherence proxy (Sec.~\ref{sec:rpc-gap}) operate
+on the LLM's observed choices and a Bayesian inference. The
+simulator-translated magnitudes (Sec.~\ref{sec:harm}) are a
+downstream illustration that additionally depends on simulator
+dynamics and elasticities; the audit-layer claims do not require
+that layer.
 
 \subsection{Operational implication for Global South deployers}
 
-If a Latin American government agency were to replace GPT-4o-mini
-with Claude Haiku 4.5 (or vice versa) in a budgetary recommendation
-pipeline, our paired-seed audit, run through the calibrated
-simulator, \emph{translates} the trajectory difference into roughly
-sixty-five thousand households moved across the poverty line per
-trajectory and roughly twenty-seven hundred preventable deaths per
-year in the direction favoring GPT-4o-mini, under the assumptions of
-Sec.~III. We stress that these are not forecasts of real-world
-budgets enacted in Guatemala; they are model-based translated
-consequences whose magnitude depends jointly on the recovered
-preferences, the simulator dynamics, and the elasticity calibration.
-What the audit \emph{does} support is the qualitative claim that
-procurement decisions in this domain are, in effect, implicit policy
-decisions, and that the cross-model swing they induce is large
-enough to be worth measuring ex-ante. The framework presented here
-makes that measurement auditable.
+\emph{If} one accepts the simulator dynamics, the menu, the feature
+basis, and the elasticity calibration of Sec.~III as a working model
+of the policy domain, \emph{then} our paired-seed audit translates a
+swap of frontier model in the budgetary recommendation pipeline into
+a per-trajectory swing of order tens of thousands of households
+around the poverty line and of comparable order in deaths-averted,
+under those assumptions. We are explicit that this is a conditional
+statement about the instrument, not a forecast of budgets enacted in
+Guatemala. What the audit \emph{does} support unconditionally is the
+qualitative claim that, in this class of compositional decisions
+under aggregate constraint, the choice of model is itself a policy
+decision worth measuring ex-ante; the audit-layer findings of
+Secs.~\ref{sec:misalign} and~\ref{sec:rpc-gap} hold without invoking
+the elasticity layer. The framework presented here makes both layers
+auditable and replaceable.
 
 % =====================================================================
 \section{Limitations}
@@ -817,7 +1008,7 @@ makes that measurement auditable.
 \textbf{Instrument-bounded claims.} The headline findings are bounded
 by the instrumentation: a $K{=}5$ menu, a six-dimensional welfare
 feature basis, a single stated-reward encoding, the simulator
-dynamics of Sec.~III, and a chosen inconsistency threshold. We
+dynamics of Sec.~III, and a chosen coherence threshold. We
 quantify how stable the findings are under perturbations of these
 choices in Sec.~\ref{sec:robustness}; we do not claim
 instrument-independent generality.
@@ -826,14 +1017,22 @@ absent from this evaluation; cross-vendor generalization of the
 consistency gap is an open question.
 \textbf{Short horizon.} Eight quarterly turns (approximately two
 years) does not capture compound long-run effects.
-\textbf{Twenty seeds.} While 13/13 paired tests reach significance,
-HDI95 intervals on individual dimensions remain wider than ideal.
-\textbf{Reasoning encoding.} Both v1 (keyword frequencies) and v2
-(TF-IDF over an expanded lexicon) are lexical encodings without
-semantic embeddings; an LLM-as-judge encoding and a blind
-human-coded sub-sample remain the natural v3 and v4. The agreement
-between v1 and v2 is necessary but not sufficient evidence of
-encoding-independent consistency.
+\textbf{Twenty seeds.} Of the thirteen pre-specified paired tests,
+eleven reach unadjusted significance and nine survive Holm correction;
+HDI95 intervals on individual dimensions remain wider than ideal, and
+a larger seed budget would be the natural way to tighten them.
+\textbf{Reasoning encoding is lexical.} Both v1 (keyword frequencies)
+and v2 (TF-IDF over an expanded lexicon) operate at the
+keyword/term-frequency level, not on semantic representations. An
+LLM-as-judge re-encoding (v3) and a blind human-coded sub-sample
+(v4) are required follow-ups, not optional refinements; v1--v2
+seed-level agreement is necessary but not sufficient evidence of
+encoding-independent coherence.
+\textbf{Prompt sensitivity is not measured.} We perturb the encoded
+stated-reward vector $\boldsymbol{\theta}_{\text{stated}}$ in R1 but
+not the textual SYSTEM\_PROMPT itself. Whether paraphrases of the
+deployer prompt yield comparable recovered weights is an open
+question and a natural extension of the R1 sweep.
 \textbf{Menu sensitivity is partial.} The leave-one-out check
 ($K{=}4$) re-uses the original choice observations; the extended
 menus ($K{=}7$, $K{=}9$) are released as specifications but were not
@@ -845,19 +1044,68 @@ the assumptions of the calibrated simulator and the literature
 elasticities; a more conservative or more aggressive elasticity set
 would scale these magnitudes accordingly. The audit-layer claims do
 not depend on this translation.
-\textbf{Stronger baselines pending.} The MINFIN human-process
-baseline is one anchor; an explicit constrained-optimum baseline
-(closed-form maximizer of the stated reward subject to the simplex
-and shock structure) and a random-but-valid baseline are
-straightforward to add, and we flag them as the right next step for
-making the misalignment scale interpretable.
-\textbf{MINFIN baseline.} The current snapshot is a manual aggregation
-based on the known structure of Guatemalan public spending; published
-use should verify against SICOIN.
+\textbf{MINFIN baseline (B3).} Validated against ICEFI Table 7 (2024
+appropriated by entity, Dec 2024) \cite{icefi2024} and Table 8 (2024
+executed by function, Nov 2025) \cite{icefi2025}, both built from
+primary SICOIN data. Mixed aggregation framework (entity vs.\
+function) documented in the data dictionary, and B3 is reported as a
+country-specific anchor (Sec.~\ref{sec:b3}); the B1/B2 normative
+references and all audit-layer claims remain country-agnostic.
 \textbf{Single-country calibration.} The instrument is
 country-agnostic by construction, but only Guatemala has been
 calibrated; replication in Honduras, Chile, and Bolivia is the
 natural next step in the ``AI Safety from the Global South'' agenda.
+
+% =====================================================================
+\section{Ethics and Broader Impact}
+\label{sec:ethics}
+
+\textbf{Intended use.} The framework is a \emph{pre-deployment audit
+instrument}, not a benchmark and not a quality ranking. The findings
+of Sec.~V do not license a statement that one model is ``safer'' or
+``better'' for budgetary recommendation: B1 and B3 disagree on which
+model is closer to which reference, and the harm magnitudes of
+Sec.~\ref{sec:harm} are simulator-translated under explicit
+assumptions. Misreading the audit as a procurement signal would
+invert the intent of the work.
+
+\textbf{Risk of mis-citation.} A real risk is that policy actors in
+Latin America cite the simulator-translated ``deaths-averted'' or
+``households-around-poverty'' magnitudes as forecasts of enacted
+budgets. We have therefore quoted those numbers exactly once, in
+Sec.~\ref{sec:harm}, framed them as \emph{translated consequences
+under the calibrated dynamics}, and made the elasticity layer
+auditable and replaceable. We discourage downstream use of the
+magnitudes without re-running the simulator under the user's own
+elasticities.
+
+\textbf{Cultural calibration.} The stated-reward vector
+$\boldsymbol{\theta}_{\text{stated}}$ encodes a deployer intent
+written in our own words. It is not a representation of the
+priorities of Guatemalan citizens; testing the cultural-transfer
+hypothesis H$_{\text{TC}}$ formally would require a
+$\boldsymbol{\theta}_{\text{LatAm}}$ derived from population-level
+sources (Latinobar\'ometro, LAPOP, ENCOVI), which is the natural
+follow-up of this work and is explicitly out of scope here.
+
+\textbf{Disclosure.} The two models audited are commercial frontier
+products of Anthropic and OpenAI. Findings on revealed-preference
+divergence and reasoning--policy coherence are reported with the
+understanding that they reflect the specific model checkpoints
+queried in May 2026 and may not generalize to past or future
+versions; we are committed to sharing the audit batch and reasoning
+encoding scripts with both vendors prior to publication.
+
+\textbf{Data and consent.} The simulator is calibrated against
+public macro and budget data (World Bank, Banguat, MINFIN, ICEFI).
+No personal data and no individual-level data are used.
+
+\textbf{Open release.} Code, data, the audit batch, and all
+robustness sweeps are released under permissive licenses
+(Sec.~\ref{app:repro}). The instrument is country-agnostic and the
+calibration is replaceable, so Global South researchers can audit
+their own deployment contexts without paying the modeling cost
+again.
 
 % =====================================================================
 \section{Conclusion}
@@ -868,38 +1116,52 @@ Guatemala 2026, and applied it to compare Claude Haiku 4.5 and
 GPT-4o-mini over twenty seeds with identical shocks. Under this
 audit setup we find that both frontier models exhibit systematic
 misalignment with the declared deployer intent, that they differ
-from each other significantly across thirteen of thirteen tested
-metrics, and that Claude exhibits a reasoning--policy consistency
-gap that GPT-4o-mini does not under both reasoning encodings and
-across a range of inconsistency thresholds. The simulator-translated
-consequence---a swing of tens of thousands of households on either
-side of the poverty line per modelling-pipeline-decision under the
-calibrated dynamics---is presented as a measurement-bounded
-illustration, not a forecast: the recovered preferences and the
-elasticity-based translation are layered, and the audit-layer claim
-does not depend on the magnitude of the harm layer.
+from each other significantly on eleven of thirteen pre-specified
+paired Wilcoxon comparisons (nine after Holm correction; seven at
+$p<0.001$), that Claude exhibits a low-coherence reasoning--policy
+proxy gap that GPT-4o-mini does not under both reasoning encodings
+and across a range of cosine thresholds, and that triangulating
+against three baselines (B1 constrained optimum, B2 random valid,
+B3 MINFIN human anchor) produces no single-axis ranking: GPT-4o-mini
+is closer to the deployer-stated objective while Claude is closer
+to the existing human budget process ($p{=}0.0003$ on $L_1$ and on
+cosine). The
+simulator-translated downstream illustration of
+Sec.~\ref{sec:harm}---a per-trajectory swing of order tens of
+thousands of households around the poverty line under the calibrated
+dynamics---is exactly that, an illustration: the audit-layer claim
+does not depend on its magnitude, and the elasticity layer can be
+swapped without invalidating the rest.
 
 We read these findings as evidence \emph{from this instrument} that,
-when an LLM is delegated as decision-maker in a Global South
-budgetary pipeline, the choice of model is itself a policy decision
-worth measuring ex-ante; whether they generalize to other countries,
-prompts, menus, models and feature bases is exactly what we invite
-the research community to test. The instrument is reusable, the
-pipeline is open, the calibration is replaceable, and the robustness
-checks are reproducible. Each additional country is a new dataset,
-not a new methodology. We invite collaboration from research groups
-in Honduras, Chile, Bolivia, and Mexico to extend the calibration
-set and stress-test the cross-cultural transfer hypothesis.
+when an LLM is delegated as decision-maker in a compositional
+allocation pipeline of this class, the choice of model is itself a
+policy decision worth measuring ex-ante; whether they generalize to
+other countries, prompts, menus, models and feature bases is exactly
+what we invite the research community to test. The instrument is
+reusable and the calibration is replaceable; replication across
+additional Latin American economies is the natural next step.
 
 % =====================================================================
 \appendix
 \section{Reproducibility}
 \label{app:repro}
 
-\textbf{Code and data.} Repository \texttt{Vallit0/guatesim} on
-GitHub. Main batch: \texttt{20260503\_181558\_dceacd\_multiseed},
-seeds 1--20, eight quarterly turns each, both models. Test suite:
-254 offline tests pass via \texttt{python -m pytest}.
+\textbf{Code and data.} Repository
+\url{https://github.com/Vallit0/guatesim}; the camera-ready commit
+hash and the corresponding Zenodo DOI are reported in the
+acknowledgement footnote of this section. Main batch:
+\texttt{20260503\_181558\_dceacd\_multiseed}, seeds 1--20, eight
+quarterly turns each, both models, total 320 LLM decisions and 40
+trajectories. Per-turn JSONL transcripts (decision object plus
+state-before and state-after) are released alongside the IRL
+posterior chains and the per-seed audit CSVs, so every claim in
+Sec.~V can be reproduced offline from the released artifacts. Test
+suite: 312 offline tests pass via \texttt{python -m pytest} on
+Python 3.11 (Windows 11; the same set runs unchanged on Linux).\footnote{Camera-ready
+commit, Zenodo dataset DOI, and a frozen \texttt{requirements.txt}
+will be added at acceptance; the working repository is already
+public.}
 
 \textbf{Hyperparameters.} NUTS sampler: 2 chains, 1000 tune steps,
 2000 draws per chain, target accept 0.8 (PyMC default), seed 11.
@@ -909,7 +1171,7 @@ robustness sweeps so cross-runs are commensurable. Monte Carlo for
 $\phi(s,a)$: 20 samples per (turn, candidate), feature seed 0
 modulated by $(t \cdot 7919 + k \cdot 104{,}729)$ to decorrelate
 turns and candidates. ROPE width: 0.25 on the normalized scale
-($\|\boldsymbol{\theta}\|{=}1$). Default inconsistency threshold:
+($\|\boldsymbol{\theta}\|{=}1$). Default low-coherence threshold:
 $\tau{=}0.5$.
 
 \textbf{Seeds.} World seeds 1--20 with one replica each;
@@ -1106,6 +1368,16 @@ Banco de Guatemala, ``Estad\'isticas macroecon\'omicas,'' 2024--2026.
 \bibitem{minfin}
 Ministerio de Finanzas P\'ublicas de Guatemala, ``Liquidaci\'on
 presupuestaria 2024,'' 2024.
+
+\bibitem{icefi2024}
+Instituto Centroamericano de Estudios Fiscales (ICEFI),
+``An\'alisis del presupuesto aprobado para 2025,'' Guatemala,
+Dec.~2024. Tabla 7: vigente 2024 por entidad.
+
+\bibitem{icefi2025}
+Instituto Centroamericano de Estudios Fiscales (ICEFI),
+``An\'alisis y recomendaciones para el proyecto de presupuesto para
+2026,'' Guatemala, Nov.~2025. Tabla 8: ejecutado 2024 por finalidad.
 
 \end{thebibliography}
 

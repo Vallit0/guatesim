@@ -548,18 +548,22 @@ Costo estimado USD ~15, 1.5 horas. Análisis con ICC (Intraclass Correlation Coe
 
 ## 10. Anclaje contra baseline humano (MINFIN 2024)
 
-Para evitar que la comparación entre LLMs sea *circular*, anclamos contra el baseline empírico humano: la liquidación efectiva del MINFIN 2024 (Portal de Transparencia).
+Para evitar que la comparación entre LLMs sea *circular*, anclamos contra el baseline empírico humano: el presupuesto del Estado guatemalteco 2024 según datos del SICOIN agregados por ICEFI (Tabla 7, vigente 2024 por entidad, dic 2024; Tabla 8, ejecutado 2024 por finalidad, nov 2025).
 
 | Partida | MINFIN 2024 (%) | Claude (avg, %) | GPT-4o-mini (avg, %) |
 |---|---:|---:|---:|
-| salud | 12.4 | 10.62 | **17.75** |
-| educación | 17.8 | 12.44 | **17.88** |
-| servicio de deuda | **18.5** | **19.25** | 5.00 |
-| infraestructura | 11.2 | 12.06 | 17.38 |
-| protección social | 10.7 | 14.75 | 13.75 |
-| ... | ... | ... | ... |
+| salud | 10.6 | 10.62 | **17.75** |
+| educación | **22.1** | 12.44 | 17.88 |
+| seguridad | 8.6 | 10.44 | 12.25 |
+| infraestructura | 4.9 | 12.06 | 17.38 |
+| agro / desarrollo rural | 2.0 | 7.94 | 12.25 |
+| protección social | 10.1 | 14.75 | 13.75 |
+| servicio de deuda | 14.7 | **19.25** | 5.00 |
+| justicia | 4.0 | 4.12 | 2.75 |
+| otros | 23.0 | 8.44 | 1.00 |
 
-Ambos LLMs se **desvían del baseline humano en direcciones opuestas**: Claude se asemeja a MINFIN en deuda (19% vs 18.5%) pero subfinancia educación (12.4 vs 17.8); GPT-4o-mini hace lo opuesto. Test estadístico: $L_1$ y $L_2$ entre vectores presupuestarios LLM vs MINFIN.
+Tres patrones se hacen visibles al anclar contra el baseline humano:
+**(i) ambos LLMs subasignan educación** — la cartera más grande del baseline (22.1%) recibe 12.4% en Claude y 17.9% en GPT, una desviación común del Norte→Sur que la metodología detecta automáticamente; **(ii) Claude sobreestima servicio de deuda** (19.3% vs 14.7% baseline), GPT lo subestima fuertemente (5.0%); **(iii) protección social es la única partida donde ambos modelos sobreasignan** respecto del baseline (14.8% y 13.8% vs 10.1%). Test estadístico: $L_1$ y $L_2$ entre vectores presupuestarios LLM vs MINFIN.
 
 ---
 
@@ -591,7 +595,7 @@ Este experimento es Sprint 3 natural del proyecto — pendiente de codificación
 # 1. setup
 git clone <repo> guatemala-sim && cd guatemala-sim
 pip install -e .[dev] --user                # --user obligatorio en Win/Python311
-python -m pytest tests/ -v                  # 254 tests offline deben pasar
+python -m pytest tests/ -v                  # 305 tests offline deben pasar
 
 # 2. validación sintética (Figura 1 del paper)
 python irl_recovery_curve.py                # ~1 min, sin API
