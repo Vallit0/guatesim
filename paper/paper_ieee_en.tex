@@ -778,18 +778,29 @@ the per-turn flags are interchangeable.
 
 \textbf{(R6) Prior-$\sigma$ sweep.} The Bayesian IRL recovery uses
 $\theta_k \sim \mathcal{N}(0, \sigma{=}1)$ as the default. We re-fit
-the posterior under $\sigma \in \{0.5, 1, 2\}$ on every (seed, model)
+the posterior under the extended grid
+$\sigma \in \{0.1, 0.25, 0.5, 1, 2, 5, 10\}$ on every (seed, model)
 pair, holding the data, the NUTS configuration and the seed fixed.
-The recovered direction is essentially invariant: median cosine of
+Over the moderate-prior regime $\sigma \in [0.1, 2]$ the recovered
+direction is essentially invariant: median cosine of
 $\boldsymbol{\theta}^{(\sigma)}_{\text{rec}}$ vs.\ the
-$\sigma{=}1$ reference is $0.9976$ at $\sigma{=}0.5$ and $0.9838$ at
-$\sigma{=}2$ for Claude, $0.9995$ and $0.9963$ for GPT-4o-mini, with
-minimum cosines $0.907$ and $0.991$ respectively. The misalignment
-classification of Sec.~\ref{sec:misalign} is identical across all
-three priors (40/40 pairs misaligned in every $\sigma$, 0
-reclassifications). The norm $\|\boldsymbol{\theta}\|$ scales
-linearly with $\sigma$ as expected from the Boltzmann temperature
-absorption (Sec.~III-D); the direction does not.
+$\sigma{=}1$ reference stays $\ge 0.984$ for Claude
+($0.9921, 0.9965, 0.9976, 0.9838$ at $\sigma{=}0.1,0.25,0.5,2$) and
+$\ge 0.996$ for GPT-4o-mini. Under near-flat priors the direction is
+\emph{not} invariant: at $\sigma{=}5$ the median cosine falls to
+$0.694$ (Claude) / $0.929$ (GPT-4o-mini), and at $\sigma{=}10$ to
+$0.409$ / $0.659$. We read this honestly as a regularization
+boundary---when the prior stops constraining the recovery, the norm
+$\|\boldsymbol{\theta}\|$ inflates (Claude $0.024 \!\to\! 10.3$ across
+the grid) and the direction rotates into weakly-identified likelihood
+directions; the default $\sigma{=}1$ direction is therefore partially
+prior-stabilized, and our direction-level claims are scoped to
+$\sigma \le 2$. Crucially, the \emph{binary} misalignment
+classification of Sec.~\ref{sec:misalign} is identical across the
+\emph{entire} grid (40/40 pairs misaligned at every
+$\sigma \in \{0.1,\dots,10\}$, 0 reclassifications): the verdict that
+both models diverge from the stated reward does not depend on the
+prior width, even where the exact recovered direction does.
 
 \textbf{(R4) Menu leave-one-out (K=4).} For each candidate
 $c \in \{0,\dots,4\}$, we delete $c$ from the menu, restrict the
@@ -837,9 +848,10 @@ R3 v2 at $\tau{=}0.5$ (C vs G)      & 3 vs 0 flags                   & yes \\
 R3 v1--v2 seed-level concur.        & 80\% Claude, 100\% GPT         & yes \\
 R4 LOO 4 of 5 drops, median cos     & $\ge 0.977$ C, $\ge 0.994$ G   & yes \\
 R4 LOO drop \texttt{human\_dev}     & 0.875 C, 0.781 G (min 0.488)   & partial \\
-R6 $\sigma{=}0.5$ vs $\sigma{=}1$ direction & cos median 0.998 C / 0.999 G & yes \\
-R6 $\sigma{=}2$ vs $\sigma{=}1$ direction   & cos median 0.984 C / 0.996 G & yes \\
-R6 reclassifications across $\sigma$ sweep   & 0/40 pairs                  & yes \\
+R6 direction, $\sigma\in[0.1,2]$ vs $\sigma{=}1$ & cos median $\ge$0.984 C / $\ge$0.996 G & yes \\
+R6 direction, $\sigma{=}5$ vs $\sigma{=}1$   & cos median 0.694 C / 0.929 G & no (scope $\sigma\!\le\!2$) \\
+R6 direction, $\sigma{=}10$ vs $\sigma{=}1$  & cos median 0.409 C / 0.659 G & no (scope $\sigma\!\le\!2$) \\
+R6 reclassifications, full grid $\sigma\in[0.1,10]$ & 0/40 pairs            & yes \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -1033,6 +1045,21 @@ stated-reward vector $\boldsymbol{\theta}_{\text{stated}}$ in R1 but
 not the textual SYSTEM\_PROMPT itself. Whether paraphrases of the
 deployer prompt yield comparable recovered weights is an open
 question and a natural extension of the R1 sweep.
+\textbf{$\boldsymbol{\theta}_{\text{stated}}$ is a coder-dependent
+projection.} The deployer-intent vector is a manual projection of the
+SYSTEM\_PROMPT onto the six-dimensional salience basis. An inter-coder
+reliability check with two independent LLM coders (Sonnet~4.5,
+Haiku~4.5) re-rating the same prompt yields a low linear-weighted
+Cohen's $\kappa$ (min $-0.20$ across the three pairs), driven mainly by
+the ambiguous salience of \texttt{pro\_approval}; the resulting
+$\boldsymbol{\theta}_{\text{stated}}$ vectors nonetheless lie within
+pairwise cosine $[0.66, 0.93]$. We therefore treat the extraction as
+coder-dependent rather than canonical. The binary misalignment verdict
+is defended against this dependence by R1, which shows the verdict
+survives multiplicative perturbation of $\boldsymbol{\theta}_{\text{stated}}$
+up to $\rho{=}0.5$ ($\ge 99.5\%$ of pairs still misaligned); a
+multi-coder re-estimate of the recovered-vs-stated cosine is a declared
+follow-up.
 \textbf{Menu sensitivity is partial.} The leave-one-out check
 ($K{=}4$) re-uses the original choice observations; the extended
 menus ($K{=}7$, $K{=}9$) are released as specifications but were not
