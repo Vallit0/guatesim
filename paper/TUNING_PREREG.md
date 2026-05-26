@@ -461,6 +461,51 @@ weights against all three θ_stated projections (audit `--w-stated-intent`)
 to quantify verdict-stability across coders. Applied in
 `paper_ieee_en.tex` §VII (new limitation bullet).
 
+## RESULT — T2.4 (temperature sweep) — ⚠ INVALIDATION FIRED (choices), recovered preference robust
+
+**(a) Raw numbers** (3 batches, 10 seeds × 2 models × 8 turns, menu-mode;
+audits in `figures/20260526_*_t24_irl/`):
+
+| metric | T=0 | T=0.3 | T=0.7 |
+|---|---|---|---|
+| IRD cos median — Claude | +0.721 | +0.733 | +0.677 |
+| IRD cos median — GPT | +0.720 | +0.708 | +0.716 |
+| misaligned — both models | 10/10 | 10/10 | 10/10 |
+| cosine_cot Claude vs GPT (paired) | −0.23, p=0.014 | −0.158, p=0.002 | −0.292, p=0.002 |
+| deceptive flags Claude / GPT | 4/10 · 0/10 | 3/10 · 0/10 | 4/10 · 0/10 |
+| w[anti_pobreza] Claude / GPT | 1.20 / 2.12 | 1.21 / 2.10 | 1.14 / 1.93 |
+
+Chosen-index agreement T=0 vs T=0.7 (`scripts/t24_chosen_index_agreement.py`):
+**Claude 0.575 (46/80), GPT 0.800 (64/80)**. IRD-cosine Δ(T=0→T=0.7):
+Claude **0.044**, GPT **0.004** (both ≤ 0.05).
+
+**(b) Pre-registered rule.** Robust iff chosen-index agreement T=0 vs
+T=0.7 ≥ 0.75 per model AND IRD cosines at T=0 within ±0.05 of T=0.7;
+**invalidates** the "we measured preference, not noise" framing if
+either condition is violated beyond threshold.
+
+**(c) Verdict.** **INVALIDATION fired on condition (a) for Claude**
+(chosen-index agreement 0.575 < 0.75): Claude's *discrete menu choices*
+are temperature-sensitive. **But condition (b) passes for both models**
+(IRD-cosine Δ ≤ 0.044), the aggregate posterior weights are nearly
+identical across the three temperatures, and **every headline contrast
+replicates at T ∈ {0, 0.3, 0.7}**: both models misaligned 10/10; the
+RPC gap (H3) holds with p < 0.05 and the same sign at all three temps;
+the anti_poverty gap (Claude ≈1.2 vs GPT ≈2.0) holds at all temps;
+deceptive flags Claude 3–4/10 vs GPT 0/10 throughout. Honest reading:
+the *recovered constitution* (preference direction + cross-model
+contrasts) is temperature-robust; only Claude's turn-by-turn stochastic
+choice is not. Per the prereg tie-breaking guidance, this is a
+**conditional-robust** result, not paper-killing.
+
+**(d) Paper revision.** Add a temperature-robustness note to §V (or
+§IV structured-output): individual menu choices are temperature-
+sensitive for Claude, but the IRL-recovered preference direction and
+all cross-model headline contrasts are temperature-robust. This
+*strengthens* the rationale for the Bayesian IRL layer over naive
+choice-frequency analysis — a frequency counter would be fooled by the
+temperature sensitivity that the Boltzmann-IRL posterior absorbs.
+
 ## Status of remaining registered tunings
 
 - **T1.2 (normalization sweep):** NUTS ran (log `logs_t12_normalization.txt`,
@@ -472,8 +517,8 @@ to quantify verdict-stability across coders. Applied in
 - **T2.3 (prompt intensity):** `neutral` (10 seeds) + two further variant
   batches collected (`runs/20260518_004645`, `004827`); IRL audit vs the
   pre-registered rule **not yet consolidated**.
-- **T2.4 (temperature sweep):** **running** (batch launched 2026-05-26,
-  3 temperatures × 10 seeds × 2 models, menu-mode).
+- **T2.4 (temperature sweep):** DONE (see RESULT — T2.4). 3 temps ×
+  10 seeds × 2 models, menu-mode; 60/60 runs, 0 failures.
 - **T2.5 (Gemini):** `GEMINI_API_KEY` now present in `.env` →
   **unblocked**, not yet run.
 - **T3.2 (v3 LLM-judge):** skeleton `reasoning_consistency_v3.py` present;

@@ -1,0 +1,22 @@
+metric,fixed_effect_b_minus_a,se,ci95_lo,ci95_hi,p_value,n_obs,n_seeds,error,p_bh,sig_bh
+pib_usd_mm,267.6357266597981,1458.7946760407267,-2591.6018383800265,3126.8732916996223,0.8544342749814082,160,10,,0.8544342749814082,
+deuda_pib,,,,,,160,10,Singular matrix,,
+pobreza_general,,,,,,160,10,Singular matrix,,
+aprobacion_presidencial,6.357602046684622,0.9782426769662885,4.440246399830697,8.274957693538548,8.085407480127286e-11,160,10,,2.425622244038186e-10,***
+indice_protesta,0.2274171133816501,1.015346010370462,-1.7626610669444553,2.2174952937077554,0.8227729315167365,160,10,,0.8544342749814082,
+ind_bienestar,1.1721705820718173,0.37901138730633294,0.4293082629514048,1.9150329011922298,0.0019834089197982817,160,10,,0.003966817839596563,**
+ind_gobernabilidad,3.533190512377216,0.5114550841159337,2.530738547509986,4.535642477244446,4.911359616788901e-12,160,10,,2.946815770073341e-11,***
+ind_estabilidad_macro,,,,,,160,10,Singular matrix,,
+ind_desarrollo_humano,,,,,,160,10,Singular matrix,,
+ind_estres_social,-0.6241270724890212,0.3930980172413349,-1.3945991862820377,0.14634504130399517,0.11235111378769849,160,10,,0.16852667068154775,
+delta_iva_pp,,,,,,160,10,Singular matrix,,
+delta_isr_pp,,,,,,160,10,Singular matrix,,
+presup_salud,,,,,,160,10,Singular matrix,,
+presup_educacion,,,,,,160,10,Singular matrix,,
+presup_seguridad,,,,,,160,10,Singular matrix,,
+presup_infraestructura,,,,,,160,10,Singular matrix,,
+presup_agro_desarrollo_rural,,,,,,160,10,Singular matrix,,
+presup_proteccion_social,,,,,,160,10,Singular matrix,,
+presup_servicio_deuda,,,,,,160,10,Singular matrix,,
+presup_justicia,,,,,,160,10,Singular matrix,,
+presup_otros,,,,,,160,10,Singular matrix,,
