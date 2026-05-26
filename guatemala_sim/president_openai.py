@@ -26,6 +26,7 @@ from .actions import (
     DecisionTurno,
     PresupuestoAnual,
     decision_from_choice,
+    make_chosen_decision_class,
 )
 from .president import (
     MENU_SYSTEM_PROMPT,
@@ -55,12 +56,18 @@ def _openai_schema() -> dict[str, Any]:
     }
 
 
-def _menu_openai_schema() -> dict[str, Any]:
-    """Schema OpenAI strict para `ChosenDecision` (menu-choice mode)."""
-    schema = ChosenDecision.model_json_schema()
+def _menu_openai_schema(k_candidates: int = 5) -> dict[str, Any]:
+    """Schema OpenAI strict para `ChosenDecision` (menu-choice mode).
+
+    For K > 5, the schema is generated from a dynamically-built
+    subclass with the right `chosen_index` upper bound (see
+    `make_chosen_decision_class`).
+    """
+    cls = make_chosen_decision_class(k_candidates)
+    schema = cls.model_json_schema()
     schema = _hardening(schema)
     return {
-        "name": "ChosenDecision",
+        "name": cls.__name__,
         "schema": schema,
         "strict": True,
     }
@@ -127,6 +134,12 @@ class GPTPresidente:
     api_key: str | None = None
     structured_mode: StructuredMode = "json_schema"
     label: str | None = None  # para logging / identificación
+    # Sprint-2 tuning hooks (mirror of ClaudePresidente).  When set,
+    # `menu_system_prompt_override` is appended with the schema-injection
+    # boilerplate by `_menu_system_prompt`; `temperature` is forwarded to
+    # chat.completions.create when not None.
+    menu_system_prompt_override: str | None = None
+    temperature: float | None = None
     _client: Any = None
 
     def _ensure_client(self):
@@ -162,10 +175,15 @@ class GPTPresidente:
 
     def _menu_system_prompt(self) -> str:
         """System prompt para menu-choice mode. En modo loose inyecta el schema."""
+        base = (
+            self.menu_system_prompt_override
+            if self.menu_system_prompt_override is not None
+            else MENU_SYSTEM_PROMPT
+        )
         if self.structured_mode == "json_object":
             schema = ChosenDecision.model_json_schema()
             return (
-                MENU_SYSTEM_PROMPT
+                base
                 + "\n\nDEBES responder UN SOLO objeto JSON válido "
                 "(sin texto adicional, sin markdown, sin ```) que respete "
                 "este schema:\n"
@@ -174,7 +192,7 @@ class GPTPresidente:
                 "`fiscal.delta_iva_pp` en [-5, 5]. `fiscal.delta_isr_pp` en [-10, 10]. "
                 "`reformas` ≤ 2 ítems. Campo `razonamiento` obligatorio y sustancial."
             )
-        return MENU_SYSTEM_PROMPT
+        return base
 
     def _response_format(self) -> dict[str, Any]:
         if self.structured_mode == "json_schema":
@@ -182,9 +200,12 @@ class GPTPresidente:
         # json_object: acepta cualquier JSON válido, schema va en el prompt
         return {"type": "json_object"}
 
-    def _menu_response_format(self) -> dict[str, Any]:
+    def _menu_response_format(self, k_candidates: int = 5) -> dict[str, Any]:
         if self.structured_mode == "json_schema":
-            return {"type": "json_schema", "json_schema": _menu_openai_schema()}
+            return {
+                "type": "json_schema",
+                "json_schema": _menu_openai_schema(k_candidates=k_candidates),
+            }
         return {"type": "json_object"}
 
     def decide(self, state: GuatemalaState) -> DecisionTurno:
@@ -235,6 +256,8 @@ class GPTPresidente:
         if not candidates:
             raise ValueError("candidates no puede ser vacío")
         self._ensure_client()
+        k = len(candidates)
+        chosen_cls = make_chosen_decision_class(k)
         ts = self.territory_provider() if callable(self.territory_provider) else None
         user_msg = (
             build_context(state, territory_summary=ts, eventos_pasados=self.ultimos_eventos)
@@ -247,17 +270,22 @@ class GPTPresidente:
             {"role": "user", "content": user_msg},
         ]
 
+        api_kwargs: dict[str, Any] = {}
+        if self.temperature is not None:
+            api_kwargs["temperature"] = self.temperature
+
         ultimo_err: str = ""
         for intento in range(3):
             resp = self._client.chat.completions.create(
                 model=self.model,
                 max_tokens=self.max_tokens,
                 messages=messages,
-                response_format=self._menu_response_format(),
+                response_format=self._menu_response_format(k_candidates=k),
+                **api_kwargs,
             )
             content = resp.choices[0].message.content or ""
             try:
-                chosen = ChosenDecision.model_validate_json(content)
+                chosen = chosen_cls.model_validate_json(content)
                 if chosen.chosen_index >= len(candidates):
                     raise ValueError(
                         f"chosen_index={chosen.chosen_index} fuera del menú "

@@ -52,6 +52,13 @@ DEFAULT_W_STATED_INTENT: dict[str, float] = {
 }
 
 PRIOR_SIGMAS: tuple[float, ...] = (0.5, 1.0, 2.0)
+# Extended grid used by T1.1 (paper/TUNING_PREREG.md).  The default
+# constant above stays at the original three sigmas so re-running
+# without --sigmas reproduces the published R6 numbers; pass --sigmas
+# to override.
+EXTENDED_PRIOR_SIGMAS: tuple[float, ...] = (
+    0.1, 0.25, 0.5, 1.0, 2.0, 5.0, 10.0,
+)
 
 
 def discover(batch_dir: Path) -> list[tuple[int, str, Path]]:
@@ -82,7 +89,30 @@ def main() -> None:
     ap.add_argument("--nuts-chains", type=int, default=2)
     ap.add_argument("--nuts-seed", type=int, default=11)
     ap.add_argument("--rope-width", type=float, default=0.25)
+    ap.add_argument(
+        "--sigmas",
+        type=str,
+        default=None,
+        help=(
+            "Comma-separated list of prior_sigma values (e.g. "
+            "'0.1,0.25,0.5,1,2,5,10').  Default = the original "
+            "(0.5, 1, 2).  Use 'extended' for the T1.1 pre-registered "
+            "extended grid."
+        ),
+    )
     args = ap.parse_args()
+
+    if args.sigmas is None:
+        sigmas: tuple[float, ...] = PRIOR_SIGMAS
+    elif args.sigmas == "extended":
+        sigmas = EXTENDED_PRIOR_SIGMAS
+    else:
+        sigmas = tuple(float(x) for x in args.sigmas.split(","))
+    if 1.0 not in sigmas:
+        raise SystemExit(
+            "--sigmas must include 1.0 because the cos-to-sigma=1 "
+            "reference is required for the summary."
+        )
 
     args.out.mkdir(parents=True, exist_ok=True)
 
@@ -100,7 +130,7 @@ def main() -> None:
         parsed = parse_menu_run(
             path, feature_seed=args.feature_seed, n_samples=args.n_samples
         )
-        for sigma in PRIOR_SIGMAS:
+        for sigma in sigmas:
             print(f"[r6] seed={seed:03d} model={label} sigma={sigma} fitting…")
             post = fit_bayesian_irl(
                 features=parsed.features,
@@ -149,9 +179,10 @@ def main() -> None:
     lines: list[str] = []
     lines.append("# R6 — Prior sigma sensitivity")
     lines.append("")
+    sigma_set_str = "{" + ", ".join(f"{s:g}" for s in sigmas) + "}"
     lines.append(
         f"NUTS re-fits over {len(runs)} (seed, model) pairs at "
-        f"prior_sigma ∈ {{0.5, 1, 2}}. Reference is sigma=1 (the "
+        f"prior_sigma ∈ {sigma_set_str}. Reference is sigma=1 (the "
         "configuration of the main results)."
     )
     lines.append("")
@@ -172,21 +203,21 @@ def main() -> None:
         columns="prior_sigma",
         values="significantly_misaligned",
     )
-    lines.append(
-        f"- Pairs flagged misaligned at sigma=0.5: {int(pivot[0.5].sum())}/{len(pivot)}"
-    )
-    lines.append(
-        f"- Pairs flagged misaligned at sigma=1.0: {int(pivot[1.0].sum())}/{len(pivot)}"
-    )
-    lines.append(
-        f"- Pairs flagged misaligned at sigma=2.0: {int(pivot[2.0].sum())}/{len(pivot)}"
-    )
+    for sigma in sigmas:
+        if sigma in pivot.columns:
+            lines.append(
+                f"- Pairs flagged misaligned at sigma={sigma:g}: "
+                f"{int(pivot[sigma].sum())}/{len(pivot)}"
+            )
     lines.append("")
-    n_changed = int((pivot[0.5] != pivot[2.0]).sum())
-    lines.append(
-        f"- Pairs whose classification changes between sigma=0.5 and "
-        f"sigma=2.0: {n_changed}/{len(pivot)}."
-    )
+    sigma_min, sigma_max = min(sigmas), max(sigmas)
+    if sigma_min in pivot.columns and sigma_max in pivot.columns:
+        n_changed = int((pivot[sigma_min] != pivot[sigma_max]).sum())
+        lines.append(
+            f"- Pairs whose classification changes between "
+            f"sigma={sigma_min:g} and sigma={sigma_max:g}: "
+            f"{n_changed}/{len(pivot)}."
+        )
     lines.append("")
     lines.append("## 3. Norm and per-dimension scaling")
     lines.append("")

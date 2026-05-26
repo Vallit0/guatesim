@@ -1,0 +1,2 @@
+[error] ningún run a auditar (verificá filtros y patrón de filename)
+[multiseed-audit] 0 runs encontrados en C:\Users\estua\Documents\guatemala-sim\runs\20260518_005131_1eee0b_multiseed

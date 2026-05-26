@@ -1,0 +1,22 @@
+seed=1 R=0 claude-haiku-4-5 FAIL: RuntimeError: Claude no devolvió elección válida tras 3 intentos. Último error: 1 validation error for ChosenDecisionK7
+mensaje_al_pueblo
+  Field required [type=missing, input_value={'chosen_index': 4, 'fisc...sonamiento>\n</invoke>'}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.5/v/missing
+Traceback (most recent call last):
+  File "C:\Users\estua\Documents\guatemala-sim\compare_llms_multiseed.py", line 245, in _ejecutar
+    p = _correr(
+        ^^^^^^^^
+  File "C:\Users\estua\Documents\guatemala-sim\compare_llms.py", line 87, in _correr
+    state, _rec = run_turn(
+                  ^^^^^^^^^
+  File "C:\Users\estua\Documents\guatemala-sim\guatemala_sim\engine.py", line 119, in run_turn
+    chosen_idx, decision = decision_maker.choose_from_menu(
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\estua\Documents\guatemala-sim\guatemala_sim\president.py", line 393, in choose_from_menu
+    raise RuntimeError(
+RuntimeError: Claude no devolvió elección válida tras 3 intentos. Último error: 1 validation error for ChosenDecisionK7
+mensaje_al_pueblo
+  Field required [type=missing, input_value={'chosen_index': 4, 'fisc...sonamiento>\n</invoke>'}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.5/v/missing
+
+---

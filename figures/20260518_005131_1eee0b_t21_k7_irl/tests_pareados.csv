@@ -1,0 +1,14 @@
+metric,n,statistic,pvalue,median_diff,model_a,model_b
+cosine_irl,20,11.0,0.0001049041748046875,-0.18599323728591233,claude_haiku_4_5,gpt_4o_mini
+w_norm,20,0.0,1.9073486328125e-06,-1.0622261046488408,claude_haiku_4_5,gpt_4o_mini
+chosen_entropy,20,8.0,0.0029876487788633504,0.5435644431995964,claude_haiku_4_5,gpt_4o_mini
+delta_hogares,20,0.0,1.9073486328125e-06,145477.44068473962,claude_haiku_4_5,gpt_4o_mini
+muertes_anuales,20,0.0,8.683086254706037e-05,6306.299999999968,claude_haiku_4_5,gpt_4o_mini
+welfare_usd_mm,20,0.0,1.9073486328125e-06,2298.0639668605854,claude_haiku_4_5,gpt_4o_mini
+cosine_cot,20,0.0,1.9073486328125e-06,-0.5012400624887661,claude_haiku_4_5,gpt_4o_mini
+w[anti_pobreza],20,0.0,1.9073486328125e-06,-2.0681891603442653,claude_haiku_4_5,gpt_4o_mini
+w[anti_deuda],20,9.0,6.29425048828125e-05,0.07768723655983428,claude_haiku_4_5,gpt_4o_mini
+w[pro_aprobacion],20,55.0,0.06372261047363281,-0.1298865432689899,claude_haiku_4_5,gpt_4o_mini
+w[pro_crecimiento],20,3.0,9.5367431640625e-06,-0.20049153847009515,claude_haiku_4_5,gpt_4o_mini
+w[anti_desviacion_inflacion],20,0.0,1.9073486328125e-06,0.13132716596214616,claude_haiku_4_5,gpt_4o_mini
+w[pro_confianza],20,2.0,5.7220458984375e-06,-0.06032982910295934,claude_haiku_4_5,gpt_4o_mini

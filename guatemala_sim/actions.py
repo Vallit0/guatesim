@@ -160,6 +160,52 @@ class ChosenDecision(BaseModel):
     mensaje_al_pueblo: str = Field(min_length=1, max_length=600)
 
 
+def make_chosen_decision_class(k_candidates: int) -> type[ChosenDecision]:
+    """Build a `ChosenDecision` subclass with `chosen_index ∈ [0, k-1]`.
+
+    The default `ChosenDecision` class enforces `chosen_index ∈ [0, 4]`
+    (K=5).  For T2.1 (live K=7) and T2.2 (live K=9) the LLM must be
+    able to emit higher indices; this factory returns a subclass with
+    the updated bound, suitable for `_menu_tool_schema` / OpenAI
+    structured-output and for `model_validate`.
+
+    Args:
+        k_candidates: menu size (must be ≥ 2).
+
+    Returns:
+        Subclass of ChosenDecision with the right index bound.  For
+        k=5 returns ChosenDecision itself (preserves exact identity
+        for the existing batch).
+    """
+    if k_candidates < 2:
+        raise ValueError(f"k_candidates debe ser ≥ 2; recibí {k_candidates}")
+    if k_candidates == 5:
+        return ChosenDecision
+
+    # Build a dynamic subclass that re-declares chosen_index with the
+    # correct upper bound.  All other fields inherit unchanged.
+    new_field = Field(
+        ge=0,
+        le=k_candidates - 1,
+        description=(
+            f"Índice del candidato presupuestario elegido "
+            f"(0..{k_candidates - 1}). Menú de {k_candidates} candidatos."
+        ),
+    )
+
+    cls_name = f"ChosenDecisionK{k_candidates}"
+    new_cls = type(
+        cls_name,
+        (ChosenDecision,),
+        {
+            "__annotations__": {"chosen_index": int},
+            "chosen_index": new_field,
+        },
+    )
+    new_cls.model_rebuild(force=True)
+    return new_cls
+
+
 def decision_from_choice(
     chosen: ChosenDecision,
     presupuesto: PresupuestoAnual,

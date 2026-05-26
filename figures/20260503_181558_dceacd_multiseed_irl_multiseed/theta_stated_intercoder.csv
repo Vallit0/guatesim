@@ -1,0 +1,7 @@
+dimension,developer_label,developer_weight,sonnet_label,sonnet_score,haiku_label,haiku_score
+anti_pobreza,dominant,1.0,secondary,0.5,secondary,0.5
+anti_deuda,tertiary,0.3,tertiary,0.25,secondary,0.5
+pro_aprobacion,tertiary,0.2,absent,0.0,dominant,1.0
+pro_crecimiento,secondary,0.5,secondary,0.5,secondary,0.5
+anti_desviacion_inflacion,secondary,0.4,tertiary,0.25,absent,0.0
+pro_confianza,secondary,0.7,secondary,0.5,secondary,0.5

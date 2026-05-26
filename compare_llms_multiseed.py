@@ -43,6 +43,7 @@ import sys
 import time
 import traceback
 from pathlib import Path
+from typing import Any
 
 try:
     from dotenv import load_dotenv
@@ -153,6 +154,38 @@ def main() -> None:
                     help=("modo menu-choice (LLM elige UNO de 5 presupuestos). "
                           "JSONL incluye chosen_index para alimentar el "
                           "pipeline de IRL bayesiano post-corrida."))
+    # --- Sprint-2 tuning flags (TUNING_PLAN.md T2.1/T2.3/T2.4) ---
+    ap.add_argument(
+        "--candidates",
+        choices=["k5", "k7", "k9"],
+        default="k5",
+        help=(
+            "Menu size for menu-mode runs.  k5 (default) = the production "
+            "5-candidate menu used by the main batch; k7/k9 = the "
+            "extended menus in guatemala_sim/irl/candidates_extended.py "
+            "(T2.1 / T2.2)."
+        ),
+    )
+    ap.add_argument(
+        "--prompt-variant",
+        choices=["neutral", "mild", "strong", "conflicting"],
+        default=None,
+        help=(
+            "Override MENU_SYSTEM_PROMPT with one of the four variants "
+            "in guatemala_sim/prompts_variants.py (T2.3 prompt-intensity "
+            "sweep).  Default = None = use the production prompt."
+        ),
+    )
+    ap.add_argument(
+        "--temperature",
+        type=float,
+        default=None,
+        help=(
+            "Sampling temperature passed to the LLM (T2.4).  Default = "
+            "None = use the provider's default.  Set 0 for deterministic, "
+            "0.3 / 0.7 for the pre-registered sweep."
+        ),
+    )
     args = ap.parse_args()
 
     seeds = _parse_seeds(args)
@@ -185,6 +218,21 @@ def main() -> None:
     n_done = 0
     n_fail = 0
 
+    # Resolve Sprint-2 tuning wiring once, outside the per-run loop.
+    overrides: dict[str, Any] = {}
+    if args.prompt_variant is not None:
+        from guatemala_sim.prompts_variants import get_prompt
+        overrides["menu_system_prompt_override"] = get_prompt(args.prompt_variant)
+    if args.temperature is not None:
+        overrides["temperature"] = args.temperature
+
+    if args.candidates == "k5":
+        candidates_provider = None  # default: irl.candidates.generate_candidate_menu
+    else:
+        k_int = int(args.candidates[1:])  # "k7" -> 7, "k9" -> 9
+        from guatemala_sim.irl.candidates_extended import generate_candidate_menu_k
+        candidates_provider = lambda k=k_int: generate_candidate_menu_k(k)
+
     def _ejecutar(seed: int, replica: int, spec: ModelSpec) -> None:
         nonlocal n_done, n_fail
         n_done += 1
@@ -193,11 +241,12 @@ def main() -> None:
         run_id = f"{batch_id}/seed{seed:03d}{suffix}_{label_fs}"
         try:
             rng, state, agentes, territory = _nueva_mundo(seed)
-            dm = make_decision_maker(spec.model_id)
+            dm = make_decision_maker(spec.model_id, **overrides)
             p = _correr(
                 f"{spec.display_name}", dm, territory, agentes,
                 rng, state, args.turnos, run_id,
                 menu_mode=args.menu_mode,
+                menu_candidates_provider=candidates_provider,
             )
             runs.append(SeedRun(
                 seed=seed,

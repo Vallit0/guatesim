@@ -149,6 +149,9 @@ def main() -> None:
                     help="Modelo Anthropic juez. Default sonnet 4.5.")
     ap.add_argument("--threshold", type=float, default=0.5)
     ap.add_argument("--retry-on-error", type=int, default=3)
+    ap.add_argument("--max-seeds", type=int, default=None,
+                    help="Si se da, limita a los primeros N seeds (orden "
+                    "lexicográfico). Útil para sub-muestras adversariales.")
     args = ap.parse_args()
 
     args.out.mkdir(parents=True, exist_ok=True)
@@ -160,6 +163,11 @@ def main() -> None:
     client = anthropic.Anthropic()
 
     runs = discover(args.batch_dir)
+    if args.max_seeds is not None:
+        keep = sorted({s for s, _, _ in runs})[: args.max_seeds]
+        runs = [r for r in runs if r[0] in keep]
+        print(f"[v3] --max-seeds={args.max_seeds} -> "
+              f"keeping seeds {keep}")
     rows: list[dict[str, object]] = []
     cache_per_turn: list[dict[str, object]] = []
 

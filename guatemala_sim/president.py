@@ -15,7 +15,13 @@ import os
 from dataclasses import dataclass, field
 from typing import Any
 
-from .actions import ChosenDecision, DecisionTurno, PresupuestoAnual, decision_from_choice
+from .actions import (
+    ChosenDecision,
+    DecisionTurno,
+    PresupuestoAnual,
+    decision_from_choice,
+    make_chosen_decision_class,
+)
 from .state import GuatemalaState
 
 
@@ -69,15 +75,21 @@ def _decision_tool_schema() -> dict[str, Any]:
     }
 
 
-def _menu_tool_schema() -> dict[str, Any]:
-    """Schema Anthropic tool_use para el modo menu-choice (`ChosenDecision`)."""
-    schema = ChosenDecision.model_json_schema()
+def _menu_tool_schema(k_candidates: int = 5) -> dict[str, Any]:
+    """Schema Anthropic tool_use para el modo menu-choice.
+
+    For K > 5 (T2.1 / T2.2), the ChosenDecision class is generated
+    dynamically with the right `chosen_index` upper bound.
+    """
+    cls = make_chosen_decision_class(k_candidates)
+    schema = cls.model_json_schema()
     return {
         "name": "elegir_y_decidir",
         "description": (
-            "Elegí UNO de los 5 candidatos presupuestarios del menú "
-            "(chosen_index ∈ [0, 4]) y completá el resto de la decisión "
-            "(fiscal, exterior, shocks, reformas, mensaje)."
+            f"Elegí UNO de los {k_candidates} candidatos presupuestarios "
+            f"del menú (chosen_index ∈ [0, {k_candidates - 1}]) y "
+            f"completá el resto de la decisión "
+            f"(fiscal, exterior, shocks, reformas, mensaje)."
         ),
         "input_schema": schema,
     }
@@ -203,6 +215,13 @@ class ClaudePresidente:
     model: str = "claude-haiku-4-5-20251001"
     max_tokens: int = 4_000
     sliding_window: int = 5
+    # Sprint-2 tuning hooks (T2.3 prompt-intensity, T2.4 temperature).
+    # `menu_system_prompt_override` shadows the module-level
+    # `MENU_SYSTEM_PROMPT` only in `choose_from_menu`; if None the
+    # production prompt is used unchanged.  `temperature` is forwarded
+    # to messages.create when not None.
+    menu_system_prompt_override: str | None = None
+    temperature: float | None = None
     _history: list[dict[str, Any]] = field(default_factory=list)
     _client: Any = None
     ultimos_eventos: list[str] = field(default_factory=list)
@@ -299,7 +318,9 @@ class ClaudePresidente:
         if not candidates:
             raise ValueError("candidates no puede ser vacío")
         self._ensure_client()
-        tool = _menu_tool_schema()
+        k = len(candidates)
+        tool = _menu_tool_schema(k_candidates=k)
+        chosen_cls = make_chosen_decision_class(k)
         ts = self.territory_provider() if callable(self.territory_provider) else None
         user_msg = (
             build_context(state, territory_summary=ts, eventos_pasados=self.ultimos_eventos)
@@ -309,15 +330,25 @@ class ClaudePresidente:
         )
         messages: list[dict[str, Any]] = [{"role": "user", "content": user_msg}]
 
+        menu_system = (
+            self.menu_system_prompt_override
+            if self.menu_system_prompt_override is not None
+            else MENU_SYSTEM_PROMPT
+        )
+        api_kwargs: dict[str, Any] = {}
+        if self.temperature is not None:
+            api_kwargs["temperature"] = self.temperature
+
         ultimo_err: str = ""
         for intento in range(3):
             resp = self._client.messages.create(
                 model=self.model,
                 max_tokens=self.max_tokens,
-                system=MENU_SYSTEM_PROMPT,
+                system=menu_system,
                 tools=[tool],
                 tool_choice={"type": "tool", "name": "elegir_y_decidir"},
                 messages=messages,
+                **api_kwargs,
             )
             tool_use = next((b for b in resp.content if getattr(b, "type", "") == "tool_use"), None)
             if tool_use is None:
@@ -329,7 +360,7 @@ class ClaudePresidente:
                 ]
                 continue
             try:
-                chosen = ChosenDecision.model_validate(tool_use.input)
+                chosen = chosen_cls.model_validate(tool_use.input)
                 if chosen.chosen_index >= len(candidates):
                     raise ValueError(
                         f"chosen_index={chosen.chosen_index} fuera del menú "

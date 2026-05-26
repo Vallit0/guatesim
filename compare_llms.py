@@ -60,12 +60,15 @@ def _nueva_mundo(seed: int):
 
 
 def _correr(label, decision_maker, territorio, agentes, rng, state, turnos, run_id,
-            menu_mode: bool = False):
+            menu_mode: bool = False, menu_candidates_provider=None):
     """Corre `turnos` turnos de un decisor sobre el mismo mundo y loguea a JSONL.
 
     Args:
         menu_mode: si True, usa el modo menu-choice (`run_turn(menu_mode=True)`).
             El decisor debe implementar `choose_from_menu(state, candidates)`.
+        menu_candidates_provider: callable opcional que devuelve la lista de
+            `Candidate` cuando `menu_mode=True`.  Se usa para switchear entre
+            K=5 (default) y K=7/K=9 (T2.1/T2.2 del TUNING_PLAN).
     """
     if hasattr(decision_maker, "territory_provider"):
         decision_maker.territory_provider = lambda: territorio.summary().as_dict()
@@ -85,6 +88,7 @@ def _correr(label, decision_maker, territorio, agentes, rng, state, turnos, run_
                 state, decision_maker, rng,
                 hooks=[hook], agentes=agentes, territorio=territorio,
                 menu_mode=menu_mode,
+                menu_candidates_provider=menu_candidates_provider,
             )
     return log_path
 
