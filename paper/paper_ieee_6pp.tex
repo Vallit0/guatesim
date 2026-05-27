@@ -82,20 +82,15 @@ supporting an ``AI safety from the Global South'' agenda.
 
 % =====================================================================
 \section{Method}
-BRCA is a seven-layer pipeline (Fig.~\ref{fig:pipeline}) with two
-phases (Fig.~\ref{fig:arch}): an \emph{online} rollout in which a
-calibrated simulator and the LLM interact for $T$ turns, and an
-\emph{offline}, black-box audit of the resulting trajectory.
-
-\begin{figure*}[t]
-\centering
-\includegraphics[width=0.95\textwidth]{pipeline_7stage.pdf}
-\caption{The seven typed layers of BRCA. The world simulator (Layer~1)
-and the human-process anchor (B3) are country-specific; Layers~2--7 and
-the normative baselines (B1,~B2) are country-agnostic. Each box lists
-its output; the italic label beneath, its input.}
-\label{fig:pipeline}
-\end{figure*}
+BRCA is a seven-layer audit with two phases (Fig.~\ref{fig:arch}): an
+\emph{online} rollout in which a calibrated simulator and the LLM
+interact for $T$ turns to produce a trajectory $\tau$, and an
+\emph{offline}, black-box audit of $\tau$. A single Bayesian-IRL
+posterior feeds three heads---IRD audit, harm translation, and a
+reasoning--policy coherence proxy---with the normative baselines
+(B1,~B2) and the human-process anchor (B3) supplying references. The
+world simulator (Layer~1) and B3 are the only country-specific
+components; the rest is country-agnostic.
 
 \begin{figure*}[t]
 \centering
@@ -110,55 +105,71 @@ comparison.}
 \label{fig:arch}
 \end{figure*}
 
-\textbf{Choice model and recovery.} At turn $t$ the menu offers $K{=}5$
-candidate budgets over the nine-item simplex. We assume rational
-Boltzmann choice \cite{ziebart2008,mcfadden1974} (Fig.~\ref{fig:choice}):
+\textbf{Feature extraction and choice.} Each (state, candidate) pair is
+mapped to a six-dimensional feature vector $\phi$ by $N{=}20$ Monte-Carlo
+simulator rollouts whose outcome deltas are reference-subtracted
+(Fig.~\ref{fig:feat}); the features are signed ``higher is better''
+(\texttt{anti\_poverty}, \texttt{anti\_debt}, \texttt{pro\_approval},
+\texttt{pro\_growth}, \texttt{anti\_inflation\_dev}, \texttt{pro\_trust}).
+At turn $t$ the menu offers $K{=}5$ candidates; we assume rational
+Boltzmann choice over these features \cite{ziebart2008,mcfadden1974}:
 \begin{equation}
 P(a_i\mid s_t,\boldsymbol{\theta})=
 \frac{\exp(\beta\,\boldsymbol{\theta}^\top\phi(a_i,s_t))}
 {\sum_{j=1}^{K}\exp(\beta\,\boldsymbol{\theta}^\top\phi(a_j,s_t))},
 \label{eq:boltzmann}
 \end{equation}
-with temperature $\beta$ absorbed into $\|\boldsymbol{\theta}\|$. We place
-$\boldsymbol{\theta}\sim\mathcal{N}(\mathbf{0},\sigma^2 I)$ and sample the
-posterior with NUTS in PyMC \cite{ramachandran2007} (Fig.~\ref{fig:irl}).
-The six features are signed ``higher is better'':
-\texttt{anti\_poverty}, \texttt{anti\_debt}, \texttt{pro\_approval},
-\texttt{pro\_growth}, \texttt{anti\_inflation\_dev}, \texttt{pro\_trust}.
+with $\beta$ absorbed into $\|\boldsymbol{\theta}\|$. Placing
+$\boldsymbol{\theta}\sim\mathcal{N}(\mathbf{0},\sigma^2 I)$ and sampling
+the posterior with NUTS in PyMC \cite{ramachandran2007}, the $T$ observed
+choices sharpen the wide prior into a recovered weight concentrated on
+\texttt{anti\_poverty} (Fig.~\ref{fig:irl}).
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=\columnwidth]{fig_llm_choice.pdf}
-\caption{Stage~3 (real data). Five candidate budgets, the Boltzmann
-choice probabilities $P(k)$ under $\boldsymbol{\theta}_{\text{rec}}$
-(Eq.~\ref{eq:boltzmann}), the actual selection (outlined), and a real
-chain-of-thought excerpt.}
-\label{fig:choice}
+\includegraphics[width=\columnwidth]{fig_feature_extraction.pdf}
+\caption{Feature extraction. A (state, candidate) pair is rolled out
+$N{=}20$ times; reference-subtracted outcome deltas on the six normative
+dimensions give $\phi(s_t,a_k)$. Real $\phi$ for the chosen candidate of
+one turn (\texttt{anti\_poverty}-dominant).}
+\label{fig:feat}
 \end{figure}
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=\columnwidth]{fig_bayesian_irl.pdf}
-\caption{Stage~4. Left: the generative model (prior
-$\to\boldsymbol{\theta}\to$ Boltzmann choices, plated over $T$). Right:
-the recovered posterior (Claude, 20 seeds); \texttt{anti\_poverty}
-dominates.}
+\includegraphics[width=\columnwidth]{fig_irl_inference.pdf}
+\caption{Bayesian IRL update for the dominant dimension. The $T$
+Boltzmann choices (Eq.~\ref{eq:boltzmann}) sharpen the wide prior
+$\mathcal{N}(0,\sigma^2)$ into a posterior centered near $1.16$
+(representative per-seed posterior; $\hat{R}{=}1.00$, ESS$>$4000).}
 \label{fig:irl}
 \end{figure}
 
 \textbf{IRD audit.} We compare $\boldsymbol{\theta}_{\text{rec}}$ against
 $\boldsymbol{\theta}_{\text{stated}}$ (extracted from the system prompt)
 through the alignment gap $\Delta=1-\cos(\boldsymbol{\theta}_{\text{stated}},
-\boldsymbol{\theta}_{\text{rec}})$, with a 95\% HDI and a
-region-of-practical-equivalence (ROPE) of width $0.25$ per dimension
-\cite{kruschke2013,hadfield2017} (Fig.~\ref{fig:ird}).
+\boldsymbol{\theta}_{\text{rec}})$ plus a per-dimension test against a
+region-of-practical-equivalence (ROPE) of width $0.25$
+\cite{kruschke2013,hadfield2017}. We report both the per-dimension
+verdict (Fig.~\ref{fig:audit}) and the holistic profile
+(Fig.~\ref{fig:ird}).
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{fig_ird_audit.pdf}
+\caption{IRD audit, per dimension. Recovered weight vs.\ the stated value
+and its ROPE band (positive part, $L_1$-normalized). Three of six
+dimensions fall outside the ROPE; cosine to stated $0.70$; misaligned in
+$20/20$ seeds.}
+\label{fig:audit}
+\end{figure}
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=\columnwidth]{fig_ird_radar.pdf}
-\caption{Stage~5. Stated vs.\ recovered constitution over the six
-dimensions ($L_1$-normalized). Both models collapse onto
-\texttt{anti\_poverty}; cosine to stated is $0.70$ (Claude) / $0.72$
+\caption{The same audit as a radar: both models collapse onto
+\texttt{anti\_poverty} relative to the broader stated profile
+($L_1$-normalized); cosine to stated $0.70$ (Claude) / $0.72$
 (GPT-4o-mini), both misaligned.}
 \label{fig:ird}
 \end{figure}
