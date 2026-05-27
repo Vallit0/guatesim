@@ -728,18 +728,27 @@ We pre-specify thirteen seed-paired Wilcoxon signed-rank
 comparisons spanning recovery norms, the four simulator-translated
 harm dimensions, the consistency cosine, and the six per-dimension
 recovered weights. Of these, eleven reject the null at
-$\alpha{=}0.05$; two never do (per-seed entropy of the
+$\alpha{=}0.05$ unadjusted; two never do (per-seed entropy of the
 chosen-candidate distribution, $p{=}0.24$; $w_{\text{pro\_approval}}$,
-$p{=}0.45$). To guard against multiplicity, we apply Holm--Bonferroni
-step-down correction at the family-wise level $\alpha{=}0.05$:
-\emph{nine} of the thirteen pre-specified tests survive
-($p_{\text{sorted}}^{(10)}{=}0.0172$ exceeds $\alpha/4{=}0.0125$ and
-breaks the chain). \emph{Seven} comparisons hold at $p<0.001$
-unadjusted: recovery norm, all three monetized harm dimensions
-(households, deaths-averted, welfare USD), the reasoning--action
-cosine, and two recovered weights ($w_{\text{anti\_pobreza}}$,
-$w_{\text{pro\_crecimiento}}$). We report both the adjusted and
-unadjusted views so the reader can audit the multiplicity choice.
+$p{=}0.45$). To control the cross-layer multiplicity, we apply the
+Holm--Bonferroni step-down procedure over the full family of thirteen
+at a family-wise error rate $\alpha{=}0.05$
+(\texttt{scripts/holm\_bonferroni.py}; adjusted values in
+\texttt{holm\_bonferroni.csv}). \emph{Nine of the thirteen survive}.
+The two that drop under correction are the weakest unadjusted
+rejections---the overall IRD cosine difference
+($p{=}0.017\!\to\!p_{\text{Holm}}{=}0.069$) and $w_{\text{anti\_deuda}}$
+($0.033\!\to\!0.098$); the chain breaks at the former. Critically, the
+load-bearing contrasts survive comfortably: the reasoning--policy
+cosine gap ($p_{\text{Holm}}{=}2.5\times10^{-5}$), $w_{\text{anti\_pobreza}}$
+($3.8\times10^{-5}$), the recovery norm, all three monetized harm
+dimensions, $w_{\text{pro\_crecimiento}}$, $w_{\text{pro\_confianza}}$,
+and $w_{\text{anti\_desviacion\_inflacion}}$ all clear the corrected
+threshold. The binary misalignment verdict of
+Sec.~\ref{sec:misalign} is a \emph{per-model} ROPE test, not one of
+these paired comparisons, so it is unaffected by the correction; what
+the Holm step removes is only the claim that the two models differ in
+\emph{overall} IRD cosine, which we accordingly do not assert.
 
 \subsection{Robustness checks}
 \label{sec:robustness}

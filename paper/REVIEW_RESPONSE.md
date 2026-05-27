@@ -360,9 +360,12 @@ draft inglés, pero el archivo con ese contenido es `paper_ieee_en.tex`
 (71 KB); el `paper_ieee.tex` actual (37 KB) es una versión paralela en
 español. Las ediciones de tuning de la Parte 7 se aplicaron a
 **`paper_ieee_en.tex`** (el archivo que realmente contiene R6 y θ_stated).
-**Decisión pendiente del usuario:** confirmar cuál `.tex` es el target
-de submission y si el español se retira o se mantiene como versión de
-conferencia local.
+**Decisión del usuario (2026-05-27):** el target de submission es
+**`paper/paper_ieee_en.tex`** (inglés). Es el archivo canónico; todas
+las ediciones del programa de tuning se aplican ahí. El
+`paper/paper_ieee.tex` (español) queda como versión paralela/local, no
+se mantiene en sync (candidato a archivar; no se borró sin instrucción
+explícita).
 
 ### Resultados de los tunings ejecutados
 

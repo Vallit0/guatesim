@@ -678,14 +678,34 @@ independent anchor years.
   `--anchor-csv` flag added to `irl_b3_human_anchor.py`. Verdict: ROBUST
   (direction preserved both years, p=0.0003).
 
-## Multiplicity note
+## Multiplicity note — Holm-Bonferroni DONE (2026-05-27)
 
-Two invalidations fired (T1.1 direction, T3.1 coder). Neither is a
-p-value test, so Holm-Bonferroni (reserved for the p-value-based
-headline family {T2.1, T2.3, T2.4, T3.2, T3.3}) does not apply to them;
-T3.1 is a measurement-validity check outside the headline family. Holm
-will be applied to the p-value family once T2.3/T2.4/T3.2/T3.3 are
-complete.
+The pre-registered invalidations T1.1 (direction), T1.2 (z-score),
+T2.4 (Claude choices), T3.1 (coder) are **threshold-based** (cosine /
+agreement), not p-value tests, so Holm-Bonferroni does not gate them —
+each is governed by its own pre-registered threshold.
+
+The **p-value family that the reviewer flagged** (the cross-layer
+multiplicity: the 13 seed-paired Wilcoxon contrasts of the main 20-seed
+audit, §V.B) was corrected with Holm-Bonferroni at FWER α=0.05
+(`scripts/holm_bonferroni.py` → `..._irl_multiseed/holm_bonferroni.csv`):
+
+- **9 / 13 survive.** The chain breaks at the overall IRD cosine
+  difference (raw 0.017 → Holm 0.069); `w[anti_deuda]` also drops
+  (0.033 → 0.098). Both were the weakest unadjusted rejections.
+- **Load-bearing contrasts survive comfortably:** reasoning–policy
+  cosine gap (Holm 2.5e-5), `w[anti_pobreza]` (3.8e-5), recovery norm,
+  all three harm dims, `w[pro_crecimiento]`, `w[pro_confianza]`,
+  `w[anti_desviacion_inflacion]`.
+- The binary misalignment verdict (H1) is a per-model ROPE test, not a
+  paired comparison, so it is untouched. What Holm removes is only the
+  "models differ in *overall* IRD cosine" claim, which the paper no
+  longer asserts.
+
+The cross-tuning p-values (T2.1, T2.4 per-temp, T3.2, T3.3) are each at
+p≈0.0003 or at the n=5 floor; they are reported individually with their
+decision rules rather than pooled, since they test distinct hypotheses
+(menu, temperature, encoder, anchor-year) rather than one family.
 
 ## Amendments (cont.)
 
