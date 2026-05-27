@@ -394,6 +394,82 @@ Table~\ref{tab:robust}; keep the misalignment-verdict robustness claim
 (it survives the full grid). Applied in `paper_ieee_en.tex` §V (R6
 paragraph + tab:robust).
 
+## RESULT — T1.2 (normalization sweep) — ⚠ INVALIDATION FIRED (z-score)
+
+**(a) Raw numbers** (`figures/..._t12_normalization/summary.md`; median
+cosine of recovered weights vs the identity baseline, 20 pairs/model;
+multscale = 200 draws, 10th-percentile reported):
+
+| variant | Claude median | Claude min/p10 | GPT median | GPT min/p10 |
+|---|---:|---:|---:|---:|
+| centered | 1.0000 | 1.0000 | 1.0000 | 0.9999 |
+| multscale | 0.9970 | p10 0.9878 | 0.9989 | p10 0.9955 |
+| minmax | 0.9323 | min 0.7299 / p10 0.8617 | 0.9761 | 0.9531 |
+| zscore | **0.7532** | min 0.6186 / p10 0.6565 | 0.9086 | 0.8080 |
+
+**(b) Pre-registered rule.** Robust if median cos ≥ 0.95 for zscore,
+minmax, centered AND multscale 10th-percentile ≥ 0.85.
+**Invalidates** the Proposition-2 framing if cos drops below 0.85 under
+z-score or min-max.
+
+**(c) Verdict.** **INVALIDATION fired under z-score for Claude**
+(median 0.7532, p10 0.6565 — both < 0.85). Min-max is weakly robust
+(Claude 0.9323, p10 0.8617 — below the 0.95 "fully robust" bar but
+above the 0.85 invalidation floor). Centered is a perfect invariant
+(1.0000) and multiplicative scaling is robust (p10 ≥ 0.9878). Reading:
+the recovered *direction* is **not invariant to per-feature
+z-scoring** (it rotates Claude's vector to cos 0.75), so the feature
+scale is a **load-bearing modeling choice** — the twin of T1.1 (the
+direction is also conditional on prior width σ ≤ 2). Identity (the
+paper's basis), centering, and multiplicative rescaling all preserve
+the direction; standardising the features does not.
+
+**(d) Paper revision.** Add a normalization row to §V.D and declare the
+identity/raw feature basis as a load-bearing choice in §VII: the
+recovered-direction claims are conditional on *not* z-scoring the
+feature matrix (centered/multscale preserve them; z-score rotates
+Claude's by ~40°). Note: this sweep reports direction-cosine only; the
+binary misalignment-verdict stability under z-scoring is not in this
+output and is a declared follow-up (T1.1 already established verdict
+robustness under prior width).
+
+## RESULT — T1.3 (feature leave-one-out) — PASS (clean)
+
+**(a) Raw numbers** (`figures/..._t13_feature_loo/summary.md`; drop one
+of the six features, re-fit on the remaining five, cosine vs the
+matching five dims of the full baseline; reclassifications of the
+misalignment verdict out of 20 per model):
+
+| dropped feature | Claude median (min) | GPT median (min) | reclass C/G |
+|---|---:|---:|---:|
+| anti_desviacion_inflacion | 0.9996 (0.9945) | 0.9999 | 0/20 · 0/20 |
+| anti_deuda | 0.9996 (0.9973) | 0.9999 | 0/20 · 0/20 |
+| **anti_pobreza** | **0.9782 (0.7725)** | **0.9438 (0.7716)** | 0/20 · 0/20 |
+| pro_aprobacion | 0.9996 (0.9931) | 0.9999 | 0/20 · 0/20 |
+| pro_confianza | 0.9996 (0.9918) | 0.9999 | 0/20 · 0/20 |
+| pro_crecimiento | 0.9997 (0.9950) | 0.9999 | 0/20 · 0/20 |
+
+**(b) Pre-registered rule.** Robust per-drop if median cosine ≥ 0.90
+AND reclassifications ≤ 4/20; invalidates H1 if dropping any feature
+*other than* anti_poverty flips the verdict in > 10/40 pairs.
+
+**(c) Verdict.** **PASS — clean, no invalidation.** Every dropped
+feature keeps median cosine ≥ 0.94 and **0/20 reclassifications across
+all six drops** (0/40 total). Even dropping the dominant `anti_poverty`
+feature keeps the median at 0.978 (Claude) / 0.944 (GPT) with zero
+verdict flips (the min cosine dips to ~0.77 on a few seeds, but the
+verdict never moves). The recovered direction is robust to
+feature-basis perturbation. Contrast with R4 (menu *candidate*
+leave-one-out), which degraded to cos 0.78 when dropping
+`human_development`: the dependence the paper honestly flags lives in
+the **menu composition**, not the **feature basis** — T1.3 cleanly
+separates the two.
+
+**(d) Paper revision.** Add a feature-LOO row to §V.D and use T1.3 to
+sharpen the R4 caveat in §VII: "menu-candidate sensitivity is real
+(R4), but feature-basis sensitivity is not (T1.3, 0/40 reclass)."
+Strengthens the identifiability story.
+
 ## RESULT — T1.4 (synthetic menu perturbation) — PASS
 
 **(a)** L2 direction-error p90-vs-N log-log slope **−0.493** (R²=0.997);
@@ -546,11 +622,10 @@ non-lexical corroboration.
 
 ## Status of remaining registered tunings
 
-- **T1.2 (normalization sweep):** NUTS ran (log `logs_t12_normalization.txt`,
-  2213 lines) but the output dir `..._t12_normalization/` is **empty** —
-  no `summary.md`/CSV. **Incomplete; needs rerun** before a verdict.
-- **T1.3 (feature dropout):** not yet executed (`scripts/r8_feature_loo.py`
-  present).
+- **T1.2 (normalization sweep):** DONE on rerun 2026-05-27 (the prior
+  attempt left an empty dir). See RESULT — T1.2 (z-score invalidation).
+- **T1.3 (feature dropout):** DONE 2026-05-27. See RESULT — T1.3
+  (clean PASS, 0/40 reclassifications).
 - **T2.2 (K=9):** gated on T2.1 passing — now unblocked, not yet run.
 - **T2.3 (prompt intensity):** `neutral` (10 seeds) + two further variant
   batches collected (`runs/20260518_004645`, `004827`); IRL audit vs the
@@ -561,8 +636,9 @@ non-lexical corroboration.
   **unblocked**, not yet run.
 - **T3.2 (v3 LLM-judge):** DONE (see RESULT — T3.2). Judge Opus 4.7,
   5 seeds; H3 confirmed on direction+magnitude, p at n=5 floor (A3).
-- **T1.2 (normalization rerun) / T1.3 (feature dropout):** running
-  2026-05-27 (offline, $0); results pending.
+- **T1.2 (normalization rerun):** DONE — INVALIDATION under z-score
+  (see RESULT — T1.2). **T1.3 (feature dropout):** DONE — clean PASS
+  (see RESULT — T1.3).
 - **T3.3 (alternative B3 anchor, MINFIN 2023):** **BLOCKED on data** —
   `irl_b3_human_anchor.py` hardcodes MINFIN 2024 and `data/` has no 2023
   executed-budget file. Requires ingesting the real 2023 SICOIN/ICEFI
