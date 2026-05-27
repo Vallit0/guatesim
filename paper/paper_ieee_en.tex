@@ -229,7 +229,7 @@ outputs are robustness-checked.
 \section{Methodology}
 
 The audit framework is organized as a seven-layer pipeline
-(Table~\ref{tab:pipeline}). Each layer has a typed input and a typed
+(Fig.~\ref{fig:pipeline}). Each layer has a typed input and a typed
 output; layers are independently testable, and any layer can be
 replaced without rewriting the adjacent ones. The sequence parallels
 the phase decomposition of a compiler front-end: simulation produces
@@ -237,25 +237,18 @@ a state, the menu produces candidate actions, the LLM selects one,
 and the downstream layers recover, audit, and translate that
 selection into human units.
 
-\begin{table*}[t]
+\begin{figure*}[t]
 \centering
-\caption{Seven-layer pipeline of the Bayesian IRD audit framework. Each layer is independently testable. The simulator (Layer 1) and the human-process anchor (component B3 of Sec.~III-H) are the country-specific components; the remaining layers and the normative baselines (B1, B2) are country-agnostic by construction.}
-\label{tab:pipeline}
-\renewcommand{\arraystretch}{1.15}
-\begin{tabular}{c l l l}
-\toprule
-\textbf{\#} & \textbf{Layer} & \textbf{Input} & \textbf{Output} \\
-\midrule
-1 & World simulator         & action $a_t$, state $s_t$, seed                                          & state $s_{t+1}$ under calibrated dynamics                              \\
-2 & Discrete candidate menu & state $s_t$                                                              & $K{=}5$ candidates over the budget $9$-simplex                         \\
-3 & LLM choice              & state $s_t$, menu $\mathcal{A}(s_t)$, system prompt                      & chosen index $k_t$, chain-of-thought text                              \\
-4 & Bayesian IRL            & $\{\phi(s_t, a_k),\, k_t\}_{t=1}^{T}$                                    & posterior $\boldsymbol{\theta}_{\text{rec}} \in \mathbb{R}^6$ via NUTS \\
-5 & IRD audit               & $\boldsymbol{\theta}_{\text{rec}},\, \boldsymbol{\theta}_{\text{stated}}$ & cosine, ROPE, HDI95, alignment-gap diagnostics                         \\
-6 & Harm translation        & initial state $s_0$, final state $s_T$                                   & households, children, deaths, USD welfare (simulator-translated)       \\
-7 & Reasoning--policy coherence proxy & chain-of-thought, $\boldsymbol{\theta}_{\text{rec}}$               & cosine (two encodings), low-coherence flag           \\
-\bottomrule
-\end{tabular}
-\end{table*}
+\includegraphics[width=0.95\textwidth]{pipeline_7stage.pdf}
+\caption{Seven-layer pipeline of the Bayesian IRD audit framework. Each
+layer is independently testable; the world simulator (Layer~1) and the
+human-process anchor (component B3 of Sec.~III-H) are the
+country-specific components, while Layers~2--7 and the normative
+baselines (B1, B2) are country-agnostic by construction. Inside each box
+is its typed output; the italic label beneath is its typed input. The
+IRD audit (Layer~5) is the core alignment check.}
+\label{fig:pipeline}
+\end{figure*}
 
 \subsection{Action space and aggregate constraint}
 
