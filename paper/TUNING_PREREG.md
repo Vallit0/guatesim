@@ -620,6 +620,40 @@ floor)". Recommend extending to ≥ 6 seeds if a sub-0.05 p is needed for
 a referee; the v1–v2 lexical caveat in §VII can now cite v3 as the
 non-lexical corroboration.
 
+## RESULT — T3.3 (alternative B3 anchor, MINFIN 2023) — ROBUST (PASS)
+
+**(a) Raw numbers** (same 20-seed batch `20260503_181558_dceacd`, B3
+recomputed against the 2023 anchor; `figures/..._b3_anchor_2023/` vs
+`_b3_anchor_2024/`):
+
+| anchor | Claude L1 median (pp) | GPT L1 median | paired diff (C−G) | p | cos Claude / GPT |
+|---|---:|---:|---:|---:|---:|
+| MINFIN 2024 | 59.10 | 60.60 | **−1.50** | 0.0003 | 0.791 / 0.767 |
+| MINFIN 2023 | 62.52 | 64.90 | **−2.38** | 0.0003 | 0.761 / 0.737 |
+
+**(b) Pre-registered rule.** Robust if the direction (Claude closer to
+MINFIN, lower L1) survives with p < 0.05; **invalidates** H2 framing if
+the direction reverses with p < 0.05.
+
+**(c) Verdict.** **ROBUST — clean PASS.** The "Claude is closer to the
+human-process anchor" direction survives the anchor-year swap: Claude's
+L1 is lower in both years (−1.50 pp in 2024, −2.38 pp in 2023), both at
+p = 0.0003, and the cosine ordering (Claude > GPT) is preserved. The
+direction does not reverse; the gap is, if anything, slightly larger
+against the 2023 anchor. The H2 cross-reference reversal claim is
+therefore not anchor-year-conditional.
+
+**(d) Caveats / paper revision.** The 2023 anchor was assembled from
+two ICEFI PDFs and **user-verified** (2026-05-27): social finalidades
+(salud/educación/protección social) from Tabla 8 executed 2023; entity
+lines (seguridad/infra/agro/deuda) from Tabla 7 *aprobado* 2023 (a
+basis difference vs the 2024 *vigente*); `justicia` an estimate; total
+ejecutado 2023 ≈ Q114,989 MM. Add an "Anchor-year sensitivity" note to
+§V (B3) reporting both years and the preserved ordering; cite the
+basis caveats (`data/minfin_2023_ejecutado.csv` notes). H2's stated
+reversal (GPT closer to B1, Claude closer to B3) thus holds under two
+independent anchor years.
+
 ## Status of remaining registered tunings
 
 - **T1.2 (normalization sweep):** DONE on rerun 2026-05-27 (the prior
@@ -639,10 +673,10 @@ non-lexical corroboration.
 - **T1.2 (normalization rerun):** DONE — INVALIDATION under z-score
   (see RESULT — T1.2). **T1.3 (feature dropout):** DONE — clean PASS
   (see RESULT — T1.3).
-- **T3.3 (alternative B3 anchor, MINFIN 2023):** **BLOCKED on data** —
-  `irl_b3_human_anchor.py` hardcodes MINFIN 2024 and `data/` has no 2023
-  executed-budget file. Requires ingesting the real 2023 SICOIN/ICEFI
-  figures (cannot be fabricated) plus an `--anchor-year` flag.
+- **T3.3 (alternative B3 anchor, MINFIN 2023):** DONE 2026-05-27 (see
+  RESULT — T3.3). Data assembled from ICEFI PDFs and user-verified;
+  `--anchor-csv` flag added to `irl_b3_human_anchor.py`. Verdict: ROBUST
+  (direction preserved both years, p=0.0003).
 
 ## Multiplicity note
 

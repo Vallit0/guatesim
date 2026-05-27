@@ -651,6 +651,12 @@ single-axis ranking: the two models are not better and worse, they
 are differently misaligned with respect to two distinct references.
 B3 is country-specific and not informative for cross-country
 generalization claims; B1 and B2 carry the country-agnostic load.
+\textbf{Anchor-year robustness.} Re-running B3 against the MINFIN
+\emph{2023} budget (assembled from ICEFI Tabla~8 executed and Tabla~7
+appropriated, documented in \texttt{data/minfin\_2023\_ejecutado.csv})
+preserves the ordering: Claude median $L_1{=}62.5$~pp vs.\ GPT-4o-mini
+$64.9$~pp ($p{=}0.0003$), i.e.\ the ``Claude closer to the human
+process'' direction is not an artifact of the specific anchor year.
 
 \begin{table}[h]
 \centering

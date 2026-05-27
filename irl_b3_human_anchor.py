@@ -80,11 +80,17 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--batch-dir", type=Path, required=True)
     ap.add_argument("--out", type=Path, required=True)
+    ap.add_argument("--anchor-csv", type=Path, default=None,
+                    help="Anchor budget CSV (partida,share_pct,nota). "
+                         "Default: data/minfin_2024_ejecutado.csv. "
+                         "Use data/minfin_2023_ejecutado.csv for T3.3.")
+    ap.add_argument("--anchor-label", type=str, default="MINFIN 2024",
+                    help="Human-readable anchor label for the report.")
     args = ap.parse_args()
 
     args.out.mkdir(parents=True, exist_ok=True)
 
-    bl = load_minfin_baseline()
+    bl = load_minfin_baseline(csv_path=args.anchor_csv)
     minfin_vec = np.asarray(
         [bl.presupuesto.model_dump()[k] for k in PARTIDAS_ORDEN], dtype=float
     )
@@ -118,11 +124,11 @@ def main() -> None:
     w_cos = wilcoxon(pivot_cos["claude"], pivot_cos["openai"])
 
     lines: list[str] = []
-    lines.append("# B3 — Human-process anchor (MINFIN 2024) vs LLM trajectories")
+    lines.append(f"# B3 — Human-process anchor ({args.anchor_label}) vs LLM trajectories")
     lines.append("")
     lines.append(
         "Per-seed mean budget allocation across the 8 quarterly turns "
-        "compared to the MINFIN 2024 appropriated/executed shares "
+        f"compared to the {args.anchor_label} appropriated/executed shares "
         "(ICEFI Tables 7 + 8, primary SICOIN data)."
     )
     lines.append("")
@@ -158,7 +164,7 @@ def main() -> None:
     lines.append("")
     mean_rows = []
     for k in PARTIDAS_ORDEN:
-        row = {"partida": k, "MINFIN_2024": float(bl.presupuesto.model_dump()[k])}
+        row = {"partida": k, args.anchor_label: float(bl.presupuesto.model_dump()[k])}
         for label in ("claude", "openai"):
             col = f"w_{k}"
             row[label] = float(df[df["model"] == label][col].mean())
