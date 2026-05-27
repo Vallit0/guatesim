@@ -342,11 +342,38 @@ P(a_i \mid s_t, \boldsymbol{\theta}) = \frac{\exp(\beta\,\boldsymbol{\theta}^\to
 with temperature $\beta$ treated as a nuisance absorbed into
 $\|\boldsymbol{\theta}\|$. We place a prior $\boldsymbol{\theta} \sim
 \mathcal{N}(\mathbf{0}, \sigma^2 I)$ and sample the posterior with NUTS
-in PyMC. The six features are signed so that ``higher is always
+in PyMC (Fig.~\ref{fig:irl}; the Boltzmann choice rule of
+Eq.~\ref{eq:boltzmann} is illustrated on real data in
+Fig.~\ref{fig:choice}). The six features are signed so that ``higher is always
 better'' and weights are directly interpretable: \texttt{anti\_poverty},
 \texttt{anti\_debt}, \texttt{pro\_approval},
 \texttt{pro\_growth}, \texttt{anti\_inflation\_dev}, and
 \texttt{pro\_trust}.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{fig_llm_choice.pdf}
+\caption{Stage~3 (LLM choice), real data. For one representative turn:
+the five candidate budgets over the nine \emph{partidas}, the Boltzmann
+choice probabilities $P(k)$ under the recovered $\boldsymbol{\theta}$
+(Eq.~\ref{eq:boltzmann}), and the model's actual selection (outlined),
+with a real chain-of-thought excerpt. The chosen item is the policy mode
+here; the Boltzmann form keeps the per-turn choice stochastic, which is
+precisely what the IRL layer (Fig.~\ref{fig:irl}) inverts.}
+\label{fig:choice}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{fig_bayesian_irl.pdf}
+\caption{Stage~4 (Bayesian IRL). Left: the generative model---a Gaussian
+prior over $\boldsymbol{\theta}$ feeding a Boltzmann choice likelihood,
+plated across the $T$ turns. Right: the recovered posterior (Claude,
+pooled over twenty seeds; mean and IC95 per dimension).
+\texttt{anti\_poverty} dominates while the other five weights
+concentrate near zero.}
+\label{fig:irl}
+\end{figure}
 
 \subsection{Inverse Reward Design audit}
 
@@ -358,7 +385,21 @@ from the deployer's system prompt, computing the alignment gap
 \end{equation}
 together with per-dimension diagnostics: a 95\% highest-density
 interval (HDI95) and a region-of-practical-equivalence (ROPE)
-\cite{kruschke2013} of width 0.25 around the stated value.
+\cite{kruschke2013} of width 0.25 around the stated value
+(Fig.~\ref{fig:ird}).
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{fig_ird_radar.pdf}
+\caption{Stage~5 (IRD audit). Radar of the stated intent
+$\boldsymbol{\theta}_{\text{stated}}$ against the recovered
+constitutions of both models over the six dimensions (positive part,
+$L_1$-normalized for shape comparison). Both models collapse onto
+\texttt{anti\_poverty} relative to the broader stated profile; the
+cosine to the stated reward is $0.70$ (Claude) and $0.72$ (GPT-4o-mini),
+both flagged misaligned.}
+\label{fig:ird}
+\end{figure}
 
 \subsection{Harm quantification}
 
