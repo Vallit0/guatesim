@@ -327,8 +327,10 @@ which re-fits the IRL on the same observed choices restricted to the
 sub-menu containing the chosen index---and which we report transparently
 even when the result is partial (drop \texttt{human\_development}
 moves the recovered direction visibly, while the other four drops do
-not); and (ii) extended menus ($K{=}7$, $K{=}9$) that we publish as
-additional candidate specifications for follow-up live runs. We treat
+not); and (ii) a live $K{=}7$ re-collection (Sec.~\ref{sec:robustness}),
+under which both models stay misaligned $20/20$ and the
+reasoning--policy gap keeps its sign, with $K{=}9$ published as a
+further specification. We treat
 the partial $K{=}4$ result as the honest finding it is, not as a flaw
 of the estimator: a single candidate that dominantly expresses the
 dominant feature is structural to the recovered direction in any
@@ -684,6 +686,21 @@ This is a gap between two frontier LLMs in our specific
 policy-allocation instrumentation, not a general claim about either
 model's reasoning faithfulness in other contexts.
 
+\textbf{Non-lexical corroboration (v3).} Because v1 and v2 are both
+lexical encoders, we re-encoded the chain-of-thought with an
+LLM-as-judge (Claude Opus~4.7) that scores each of the six dimensions
+semantically rather than by keyword frequency, on a five-seed
+sub-sample (80 CoT samples). The semantic judge raises both models'
+coherence cosines---to $+0.610$ (Claude) and $+0.909$
+(GPT-4o-mini)---confirming that part of the low \emph{absolute} v1
+cosine is a lexical artifact; but the \emph{cross-model gap} persists
+and indeed widens in direction terms ($-0.30$ median difference, with
+Claude lower in all $5/5$ seeds). The paired Wilcoxon sits at its
+$n{=}5$ floor ($p{=}0.0625$, the smallest two-sided value attainable
+at five pairs). We therefore report the reasoning--policy gap as
+\emph{confirmed under a non-lexical encoding}, with a referee-hardening
+extension to $\ge 6$ seeds (for a sub-$0.05$ $p$) noted as future work.
+
 \begin{table}[h]
 \centering
 \caption{Reasoning--policy consistency (CoT vs.\ recovered reward), twenty seeds, encoding v1 (keyword frequencies), threshold $\tau{=}0.5$.}
@@ -821,12 +838,15 @@ visibly shifts. We read this as the honest finding it is: a single
 candidate that dominantly expresses the dominant feature is
 structural to the recovered direction, while the other four are not.
 This bounds how strong our menu-independence claim should be.
-Extended menus $K{=}7$ and $K{=}9$ are released as candidate
-specifications in
-\texttt{guatemala\_sim/irl/candidates\_extended.py} but were not
-re-collected here, since obtaining them would require new LLM API
-calls under the bigger menu (changing the observable choice
-distribution). We are explicit about this gap.
+We also re-collected the menu live at $K{=}7$ (20 seeds, same prompt
+and shocks, \texttt{guatemala\_sim/irl/candidates\_extended.py}). The
+headline survives the menu expansion: both models remain misaligned in
+$20/20$ seeds, the IRD cosine to the stated reward stays low ($+0.519$
+Claude, $+0.708$ GPT-4o-mini), and the reasoning--policy gap retains
+its sign and significance ($\cos_{\text{CoT}}$ Claude $<$ GPT,
+$p<0.0001$; deceptive flags $14/20$ vs.\ $0/20$). The cross-reference
+ordering against B1/B3 under $K{=}7$ is a declared follow-up; $K{=}9$
+is published as a specification for a further run.
 
 \begin{table}[h]
 \centering
@@ -852,6 +872,13 @@ R6 direction, $\sigma\in[0.1,2]$ vs $\sigma{=}1$ & cos median $\ge$0.984 C / $\g
 R6 direction, $\sigma{=}5$ vs $\sigma{=}1$   & cos median 0.694 C / 0.929 G & no (scope $\sigma\!\le\!2$) \\
 R6 direction, $\sigma{=}10$ vs $\sigma{=}1$  & cos median 0.409 C / 0.659 G & no (scope $\sigma\!\le\!2$) \\
 R6 reclassifications, full grid $\sigma\in[0.1,10]$ & 0/40 pairs            & yes \\
+T2.1 K=7 live menu (IRD cos)        & 0.519 C / 0.708 G, misalign 20/20 & yes \\
+T1.3 feature LOO, any drop          & median cos $\ge$0.94, 0/40 reclass & yes \\
+T1.2 norm.\ (centered/mult-scale)   & cos $\ge$0.988 each model         & yes \\
+T1.2 norm.\ (z-score)               & cos median 0.753 C / 0.909 G      & no (scale load-bearing) \\
+T2.4 temperature, IRD cos $\Delta(T{=}0,T{=}0.7)$ & $\le 0.044$ both    & yes \\
+T2.4 temperature, Claude choice agree.\ & 0.575 (preference stable)     & partial \\
+T3.2 v3 Opus semantic judge (RPC gap) & $-0.30$, 5/5 seeds Claude lower & yes \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -1060,11 +1087,27 @@ survives multiplicative perturbation of $\boldsymbol{\theta}_{\text{stated}}$
 up to $\rho{=}0.5$ ($\ge 99.5\%$ of pairs still misaligned); a
 multi-coder re-estimate of the recovered-vs-stated cosine is a declared
 follow-up.
-\textbf{Menu sensitivity is partial.} The leave-one-out check
-($K{=}4$) re-uses the original choice observations; the extended
-menus ($K{=}7$, $K{=}9$) are released as specifications but were not
-re-collected with live LLM calls, since doing so changes the
-observable choice distribution. We treat this as an open follow-up.
+\textbf{Menu sensitivity is bounded but real.} The dependence we flag
+lives in the menu \emph{composition}, not the feature basis: a live
+$K{=}7$ re-collection preserves the headline (misalign $20/20$, RPC gap
+sign retained), and a feature leave-one-out (drop each of the six
+dimensions, re-fit) leaves the recovered direction stable (median
+cosine $\ge 0.94$, $0/40$ verdict reclassifications). What remains
+sensitive is dropping the dominant \emph{candidate}
+(\texttt{human\_development}, the $K{=}4$ check), and the $K{=}9$ menu
+is not yet re-collected live; the $B1/B3$ cross-reference ordering
+under $K{=}7$ is a declared follow-up.
+\textbf{Feature scaling is load-bearing.} The recovered direction is
+invariant to centering and to multiplicative feature rescaling (cosine
+$\ge 0.988$ vs.\ the production basis) but \emph{not} to per-feature
+z-scoring, which rotates Claude's recovered vector to cosine $0.753$.
+We therefore report results in the raw (identity) feature basis and
+treat the scaling choice as an explicit modeling assumption rather
+than an innocuous preprocessing step; together with the prior-width
+scoping ($\sigma\le 2$, Sec.~\ref{sec:robustness}), the
+direction-level claims are conditional on these two choices, while the
+binary misalignment verdict is robust to prior width across the full
+$\sigma$ grid.
 \textbf{Harm layer is simulator-dependent.} The translation from
 state differences to households, deaths and welfare USD inherits all
 the assumptions of the calibrated simulator and the literature
