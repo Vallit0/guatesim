@@ -1,0 +1,11 @@
+seed,model,v3_cos_to_rec,v3_low_coherence_flag
+1,claude,0.7580485559932605,False
+1,openai,0.820066949010331,False
+2,claude,0.48984671183225825,True
+2,openai,0.8875036139603814,False
+3,claude,0.6098318451803029,False
+3,openai,0.9089457806877855,False
+4,claude,0.6285535454496451,False
+4,openai,0.9317381100906739,False
+5,claude,0.5642436829349604,False
+5,openai,0.921092668014279,False
