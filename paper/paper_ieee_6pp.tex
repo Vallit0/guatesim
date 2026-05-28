@@ -83,7 +83,7 @@ country-agnostic; the calibration, not the method, is country-specific,
 supporting an ``AI safety from the Global South'' agenda.
 
 % =====================================================================
-\section{Method}
+\section{Methodology}
 BRCA is a seven-layer audit (Table~\ref{tab:layers}) with two phases
 (Fig.~\ref{fig:arch}): an \emph{online} rollout in which a calibrated
 simulator and the LLM interact for $T$ turns to produce a trajectory
@@ -244,8 +244,7 @@ horizon $T$, prior width $\sigma$, MC samples $N$
 \end{algorithmic}
 \end{algorithm}
 
-% =====================================================================
-\section{Experimental setup}
+\textbf{Experimental setup.}
 We instantiate the simulator with Guatemalan macro-fiscal calibration
 and compare \emph{Claude Haiku~4.5} and \emph{GPT-4o-mini} over twenty
 seeds of eight quarterly turns under identical shocks (menu mode,
@@ -350,20 +349,35 @@ Anchor year MINFIN 2023 & $L_1$ $62.5$ vs.\ $64.9$ & yes \\
 \end{tabular}
 \end{table}
 
-\textbf{What a deployer should take away.} Three operational lessons.
-First, \emph{audit the revealed constitution, not the stated one}: both
-models follow the instructions in prose yet diverge in revealed
-behavior, so a budget-decision deployer should test choices, not claims.
-Second, \emph{there is no scalar safety score}: the B1/B3 reversal means
-``which model is safer'' has no answer independent of the reference one
-privileges---the stated brief or the existing human process. Third,
-\emph{disclose what is conditional}: the binary misalignment verdict is
-robust, but the exact recovered direction depends on the prior width and
-the feature scaling, and BRCA reports these dependencies explicitly
-rather than collapsing them into a single number.
-
 % =====================================================================
-\section{Limitations}\label{sec:lim}
+\section{Discussion}
+\textbf{Why the reversal matters.} The two models swap order between B1
+(the optimum of the \emph{stated} reward) and B3 (the \emph{executed}
+national budget): GPT-4o-mini scores ``safer'' on the deployer's own
+brief yet sits farther from the country's actual fiscal process, while
+Claude does the opposite. Alignment measured against a single reference
+is therefore under-determined---a scalar ``safety score'' would hide the
+reversal that the B1/B2/B3 triangulation exposes. This is the central
+methodological claim: the two models are not better and worse, they are
+\emph{differently} misaligned.
+
+\textbf{Revealed vs.\ stated behavior.} Both models pass
+instruction-following in prose, yet over eight quarters they concentrate
+the recovered reward on \texttt{anti\_poverty}, zeroing the secondary
+objectives the brief also requested. This revealed-preference
+gap---invisible to capability or toxicity benchmarks---is precisely what
+BRCA is built to surface, and it is why a budget-decision deployer should
+audit \emph{choices}, not \emph{claims}.
+
+\textbf{What a deployer should take away.} Operationally: (i) test the
+revealed constitution, not the stated one; (ii) demand the reference
+triangulation rather than a single number, since ``which model is
+safer'' depends on the reference privileged; and (iii) require disclosure
+of what is \emph{conditional}---the binary misalignment verdict is
+robust, but the recovered direction depends on the prior width and the
+feature scaling, which BRCA reports explicitly.
+
+\subsection{Limitations}\label{sec:lim}
 Claims hold \emph{under this instrumentation}.
 \textbf{(i)}~$\boldsymbol{\theta}_{\text{stated}}$ is a coder-dependent
 projection (min $\kappa{=}-0.20$); the binary verdict is defended by the
@@ -381,7 +395,7 @@ coherence proxy is lexical; the LLM-judge mitigates but does not close
 this, and we avoid deceptive-alignment language.
 
 % =====================================================================
-\section{Conclusion}
+\section{Conclusions}
 BRCA measures what an LLM policy-maker \emph{reveals} it values, not what
 it is told to value. Under a Guatemala calibration, two frontier models
 both diverge from the stated deployer intent, yet a cross-reference
