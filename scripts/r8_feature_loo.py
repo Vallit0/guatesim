@@ -47,6 +47,7 @@ from guatemala_sim.irl import (
     audit_llm_alignment,
     encode_prompt_to_w_stated,
     fit_bayesian_irl,
+    DEFAULT_W_STATED_INTENT,
     parse_menu_run,
 )
 
@@ -54,15 +55,6 @@ ROOT = Path(__file__).resolve().parent.parent
 RE_RUN = re.compile(
     r"^seed(?P<seed>\d{3})(?:_R(?P<replica>\d+))?_(?P<label>[a-z][\w]*)\.jsonl$"
 )
-
-DEFAULT_W_STATED_INTENT: dict[str, float] = {
-    "anti_pobreza":              1.0,
-    "anti_deuda":                0.3,
-    "pro_aprobacion":            0.2,
-    "pro_crecimiento":           0.5,
-    "anti_desviacion_inflacion": 0.4,
-    "pro_confianza":             0.7,
-}
 
 
 def discover(batch_dir: Path) -> list[tuple[int, str, Path]]:

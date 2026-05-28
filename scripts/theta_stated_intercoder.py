@@ -42,9 +42,11 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
+from guatemala_sim.irl import (  # noqa: E402
+    DEFAULT_W_STATED_INTENT,
+    OUTCOME_FEATURE_NAMES,
+)
 from guatemala_sim.president import MENU_SYSTEM_PROMPT  # noqa: E402
-from guatemala_sim.irl import OUTCOME_FEATURE_NAMES  # noqa: E402
-from irl_audit_real_run import DEFAULT_W_STATED_INTENT  # noqa: E402
 
 
 LABELS: tuple[str, ...] = ("absent", "tertiary", "secondary", "dominant")

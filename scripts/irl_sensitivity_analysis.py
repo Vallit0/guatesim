@@ -63,13 +63,12 @@ from guatemala_sim.reasoning_consistency import (
     REASONING_KEYWORDS,
     assess_reasoning_consistency,
 )
+from guatemala_sim.irl import DEFAULT_W_STATED_INTENT
 from guatemala_sim.reasoning_consistency_v2 import (
     assess_reasoning_consistency_v2,
     cohens_kappa_binary,
     fit_v2_encoder,
 )
-
-from irl_audit_real_run import DEFAULT_W_STATED_INTENT
 
 
 ROOT = Path(__file__).resolve().parent

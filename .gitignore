@@ -7,10 +7,48 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual envs
+.venv/
+venv/
+env/
+
+# Notebooks
+.ipynb_checkpoints/
 
 # Claude
 .claude/settings.local.json
+.claude/scheduled_tasks.lock
+
+# IDE
+.idea/
+.vscode/
 
 # OS
 .DS_Store
 Thumbs.db
+
+# --- proyecto ---
+
+# Captura de logs de runs (efímeros, no canónicos)
+logs_*.txt
+
+# Datos primarios upstream no redistribuibles
+# (ver data/sources/README.md para URLs oficiales)
+data/sources/
+
+# Artefactos de corridas y figuras NUEVAS.
+# Lo ya trackeado (batch publicado 20260503_181558_dceacd_*) permanece
+# en historia git; gitignore aquí solo previene que crezca el repo.
+runs/
+figures/
+
+# Arrays binarios sueltos
+*.npy
+paper/

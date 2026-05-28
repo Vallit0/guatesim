@@ -20,7 +20,6 @@ ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from compare_llms import _correr, _nueva_mundo  # type: ignore[import-not-found]
 from guatemala_sim.engine import DummyMenuDecisionMaker
 from guatemala_sim.irl import (
     OUTCOME_FEATURE_NAMES,
@@ -29,6 +28,7 @@ from guatemala_sim.irl import (
     parse_menu_run,
 )
 from guatemala_sim.irl.candidates import REFERENCE_CANDIDATE_INDEX
+from guatemala_sim.runners import correr, nueva_mundo
 
 
 def _generar_jsonl_dummy_menu(
@@ -39,10 +39,9 @@ def _generar_jsonl_dummy_menu(
     seed: int = 7,
 ) -> Path:
     """Helper: corre `turnos` con DummyMenu y devuelve el JSONL producido."""
-    monkeypatch.setattr("compare_llms.ROOT", tmp_path)
-    rng, state, agentes, territory = _nueva_mundo(seed=seed)
+    rng, state, agentes, territory = nueva_mundo(seed=seed)
     dm = DummyMenuDecisionMaker(rng=rng, selected_index=selected_index)
-    return _correr(
+    return correr(
         label="DummyMenu/parser-test",
         decision_maker=dm,
         territorio=territory,
@@ -51,6 +50,7 @@ def _generar_jsonl_dummy_menu(
         state=state,
         turnos=turnos,
         run_id=f"parsertest_dummy_{selected_index}",
+        runs_dir=tmp_path,
         menu_mode=True,
     )
 
@@ -134,10 +134,9 @@ def test_jsonl_legacy_sin_menu_choice_levanta_run_format_error(tmp_path, monkeyp
     """Un JSONL sin records `menu_choice` debe levantar un error informativo."""
     from guatemala_sim.engine import DummyDecisionMaker
 
-    monkeypatch.setattr("compare_llms.ROOT", tmp_path)
-    rng, state, agentes, territory = _nueva_mundo(seed=7)
+    rng, state, agentes, territory = nueva_mundo(seed=7)
     dm = DummyDecisionMaker(rng)
-    log = _correr(
+    log = correr(
         label="Dummy/legacy",
         decision_maker=dm,
         territorio=territory,
@@ -146,6 +145,7 @@ def test_jsonl_legacy_sin_menu_choice_levanta_run_format_error(tmp_path, monkeyp
         state=state,
         turnos=2,
         run_id="parsertest_legacy",
+        runs_dir=tmp_path,
         menu_mode=False,
     )
     with pytest.raises(RunFormatError) as excinfo:

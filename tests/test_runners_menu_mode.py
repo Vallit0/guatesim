@@ -1,7 +1,7 @@
-"""Tests del wiring de --menu-mode en los runners (compare_llms*).
+"""Tests del wiring de --menu-mode en los runners.
 
 Estos tests son offline: no llaman a APIs de LLM. Verifican que (a) el
-flag se parsea correctamente, (b) `_correr` con menu_mode=True propaga
+flag se parsea correctamente, (b) `correr` con menu_mode=True propaga
 correctamente al engine usando un DummyMenuDecisionMaker, (c) el JSONL
 resultante contiene `menu_choice`.
 """
@@ -20,20 +20,17 @@ ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from compare_llms import _correr, _nueva_mundo  # type: ignore[import-not-found]
 from guatemala_sim.engine import DummyDecisionMaker, DummyMenuDecisionMaker
+from guatemala_sim.runners import correr, nueva_mundo
 
 
-def test_correr_menu_mode_genera_jsonl_con_menu_choice(tmp_path, monkeypatch):
+def test_correr_menu_mode_genera_jsonl_con_menu_choice(tmp_path):
     """Smoke end-to-end: 2 turnos con DummyMenuDecisionMaker producen
     JSONL donde cada línea tiene `menu_choice.chosen_index`."""
-    # Redirijo runs/ a tmp_path para no contaminar el repo
-    monkeypatch.setattr("compare_llms.ROOT", tmp_path)
-
-    rng, state, agentes, territory = _nueva_mundo(seed=7)
+    rng, state, agentes, territory = nueva_mundo(seed=7)
     dm = DummyMenuDecisionMaker(rng=rng, selected_index=2)
 
-    log_path = _correr(
+    log_path = correr(
         label="DummyMenu/test",
         decision_maker=dm,
         territorio=territory,
@@ -42,6 +39,7 @@ def test_correr_menu_mode_genera_jsonl_con_menu_choice(tmp_path, monkeypatch):
         state=state,
         turnos=2,
         run_id="testrun_menu",
+        runs_dir=tmp_path,
         menu_mode=True,
     )
 
@@ -58,14 +56,12 @@ def test_correr_menu_mode_genera_jsonl_con_menu_choice(tmp_path, monkeypatch):
         assert "equilibrado" in names
 
 
-def test_correr_legacy_mode_no_loguea_menu_choice(tmp_path, monkeypatch):
+def test_correr_legacy_mode_no_loguea_menu_choice(tmp_path):
     """Si menu_mode=False (default), los registros tienen menu_choice=None.
     Asegura backwards compatibility."""
-    monkeypatch.setattr("compare_llms.ROOT", tmp_path)
-
-    rng, state, agentes, territory = _nueva_mundo(seed=7)
+    rng, state, agentes, territory = nueva_mundo(seed=7)
     dm = DummyDecisionMaker(rng)
-    log_path = _correr(
+    log_path = correr(
         label="Dummy/legacy",
         decision_maker=dm,
         territorio=territory,
@@ -74,6 +70,7 @@ def test_correr_legacy_mode_no_loguea_menu_choice(tmp_path, monkeypatch):
         state=state,
         turnos=2,
         run_id="testrun_legacy",
+        runs_dir=tmp_path,
     )
 
     lines = log_path.read_text(encoding="utf-8").strip().splitlines()
@@ -105,13 +102,11 @@ def test_argparse_compare_llms_multiseed_acepta_menu_mode():
     assert 'menu_mode=args.menu_mode' in src
 
 
-def test_correr_menu_mode_3_turnos_sin_explotar(tmp_path, monkeypatch):
+def test_correr_menu_mode_3_turnos_sin_explotar(tmp_path):
     """Smoke un poco más largo: 3 turnos con índices distintos por dummy."""
-    monkeypatch.setattr("compare_llms.ROOT", tmp_path)
-
-    rng, state, agentes, territory = _nueva_mundo(seed=42)
+    rng, state, agentes, territory = nueva_mundo(seed=42)
     dm = DummyMenuDecisionMaker(rng=rng, selected_index=0)
-    log_path = _correr(
+    log_path = correr(
         label="DummyMenu/idx0",
         decision_maker=dm,
         territorio=territory,
@@ -120,6 +115,7 @@ def test_correr_menu_mode_3_turnos_sin_explotar(tmp_path, monkeypatch):
         state=state,
         turnos=3,
         run_id="testrun_3turnos",
+        runs_dir=tmp_path,
         menu_mode=True,
     )
     lines = log_path.read_text(encoding="utf-8").strip().splitlines()

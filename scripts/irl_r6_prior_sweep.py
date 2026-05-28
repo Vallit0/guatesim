@@ -32,6 +32,7 @@ import pandas as pd
 from guatemala_sim.irl import (
     OUTCOME_FEATURE_NAMES,
     audit_llm_alignment,
+    DEFAULT_W_STATED_INTENT,
     encode_prompt_to_w_stated,
     fit_bayesian_irl,
     parse_menu_run,
@@ -41,15 +42,6 @@ ROOT = Path(__file__).resolve().parent
 RE_RUN = re.compile(
     r"^seed(?P<seed>\d{3})(?:_R(?P<replica>\d+))?_(?P<label>[a-z][\w]*)\.jsonl$"
 )
-
-DEFAULT_W_STATED_INTENT: dict[str, float] = {
-    "anti_pobreza":              1.0,
-    "anti_deuda":                0.3,
-    "pro_aprobacion":            0.2,
-    "pro_crecimiento":           0.5,
-    "anti_desviacion_inflacion": 0.4,
-    "pro_confianza":             0.7,
-}
 
 PRIOR_SIGMAS: tuple[float, ...] = (0.5, 1.0, 2.0)
 # Extended grid used by T1.1 (paper/TUNING_PREREG.md).  The default

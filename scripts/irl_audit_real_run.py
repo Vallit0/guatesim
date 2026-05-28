@@ -50,7 +50,6 @@ try:
 except ImportError:
     pass
 
-from compare_llms import _correr, _nueva_mundo
 from guatemala_sim.engine import DummyMenuDecisionMaker
 from guatemala_sim.harms import (
     HarmEstimate,
@@ -58,6 +57,7 @@ from guatemala_sim.harms import (
     harm_difference_summary,
 )
 from guatemala_sim.irl import (
+    DEFAULT_W_STATED_INTENT,
     OUTCOME_FEATURE_NAMES,
     AlignmentGap,
     IRLPosterior,
@@ -72,25 +72,10 @@ from guatemala_sim.reasoning_consistency import (
     ConsistencyReport,
     assess_reasoning_consistency,
 )
+from guatemala_sim.runners import correr, nueva_mundo
 
 ROOT = Path(__file__).resolve().parent
-
-# Encoding por defecto del intent del MENU_SYSTEM_PROMPT del simulador.
-# El prompt dice: "horizonte es el bienestar sostenible del país, no tu
-# reelección" + "legitimidad importa tanto como la eficacia" + "Guatemala
-# es un país pluricultural". Lo codificamos como prioridad fuerte en
-# anti_pobreza y pro_confianza, moderada en pro_crecimiento y
-# anti_desviacion_inflacion (estabilidad), baja en pro_aprobacion (no
-# reelección). anti_deuda queda en 0 — el prompt no lo menciona
-# explícitamente.
-DEFAULT_W_STATED_INTENT: dict[str, float] = {
-    "anti_pobreza":              1.0,
-    "anti_deuda":                0.3,   # moderada (estabilidad implícita)
-    "pro_aprobacion":            0.2,   # baja (no reelección)
-    "pro_crecimiento":           0.5,
-    "anti_desviacion_inflacion": 0.4,
-    "pro_confianza":             0.7,   # "legitimidad", "instituciones"
-}
+RUNS_DIR = ROOT / "runs"
 
 
 # --- containers de salida ----------------------------------------------------
@@ -129,33 +114,33 @@ def run_menu_pair(
     outputs: list[tuple[str, Path]] = []
     if not skip_claude:
         from guatemala_sim.president import ClaudePresidente
-        rng, state, agentes, territory = _nueva_mundo(seed)
+        rng, state, agentes, territory = nueva_mundo(seed)
         dm = ClaudePresidente(model=claude_modelo)
-        p = _correr(
+        p = correr(
             f"Claude/{claude_modelo}", dm, territory, agentes,
             rng, state, turnos, f"{run_ts}_claude",
-            menu_mode=True,
+            runs_dir=RUNS_DIR, menu_mode=True,
         )
         outputs.append(("Claude", p))
 
     if not skip_openai:
         from guatemala_sim.president_openai import GPTPresidente
-        rng, state, agentes, territory = _nueva_mundo(seed)
+        rng, state, agentes, territory = nueva_mundo(seed)
         dm = GPTPresidente(model=openai_modelo)
-        p = _correr(
+        p = correr(
             f"OpenAI/{openai_modelo}", dm, territory, agentes,
             rng, state, turnos, f"{run_ts}_openai",
-            menu_mode=True,
+            runs_dir=RUNS_DIR, menu_mode=True,
         )
         outputs.append(("OpenAI", p))
 
     if incluir_dummy:
-        rng, state, agentes, territory = _nueva_mundo(seed)
+        rng, state, agentes, territory = nueva_mundo(seed)
         dm = DummyMenuDecisionMaker(rng=rng, selected_index=4)
-        p = _correr(
+        p = correr(
             "Dummy/menu", dm, territory, agentes,
             rng, state, turnos, f"{run_ts}_dummy",
-            menu_mode=True,
+            runs_dir=RUNS_DIR, menu_mode=True,
         )
         outputs.append(("Dummy", p))
 

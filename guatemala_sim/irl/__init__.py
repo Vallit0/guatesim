@@ -54,6 +54,7 @@ from .audit import (
     audit_llm_alignment,
     encode_prompt_to_w_stated,
 )
+from .intent import DEFAULT_W_STATED_INTENT
 from .posterior_analysis import (
     PPCResult,
     PosteriorComparison,
@@ -98,6 +99,7 @@ __all__ = [
     "AlignmentGap",
     "audit_llm_alignment",
     "encode_prompt_to_w_stated",
+    "DEFAULT_W_STATED_INTENT",
     # Posterior analysis (PPC + comparación bayesiana entre LLMs)
     "PPCResult",
     "PosteriorComparison",

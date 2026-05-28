@@ -13,10 +13,7 @@ Uso:
 from __future__ import annotations
 
 import argparse
-import copy
 from pathlib import Path
-
-import numpy as np
 
 try:
     from dotenv import load_dotenv
@@ -24,73 +21,16 @@ try:
 except ImportError:
     pass
 
-from guatemala_sim.agents import (
-    AgentesModel,
-    CACIF,
-    CongresoOposicion,
-    PartidoOficialista,
-    ProtestaSocial,
-)
-from guatemala_sim.bootstrap import initial_state
 from guatemala_sim.comparison import CorridaEtiquetada, generar_comparativa
-from guatemala_sim.engine import DummyDecisionMaker, DummyMenuDecisionMaker, run_turn
-from guatemala_sim.logging_ import (
-    JsonlLogger,
-    new_run_id,
-    print_turn_resumen,
-    read_run,
-)
+from guatemala_sim.engine import DummyDecisionMaker, DummyMenuDecisionMaker
+from guatemala_sim.logging_ import new_run_id
 from guatemala_sim.president import ClaudePresidente
 from guatemala_sim.president_openai import GPTPresidente, qwen_via_ollama
 from guatemala_sim.resilient import ResilientDecisionMaker
-from guatemala_sim.world.territory import Territory
+from guatemala_sim.runners import correr, nueva_mundo
 
 ROOT = Path(__file__).resolve().parent
-
-
-def _nueva_mundo(seed: int):
-    """Devuelve (rng, state, agentes, territory) con el mismo seed."""
-    rng = np.random.default_rng(seed)
-    state = initial_state()
-    territory = Territory.load_default()
-    agentes = AgentesModel(
-        [PartidoOficialista, CongresoOposicion, CACIF, ProtestaSocial], seed=seed
-    )
-    return rng, state, agentes, territory
-
-
-def _correr(label, decision_maker, territorio, agentes, rng, state, turnos, run_id,
-            menu_mode: bool = False, menu_candidates_provider=None):
-    """Corre `turnos` turnos de un decisor sobre el mismo mundo y loguea a JSONL.
-
-    Args:
-        menu_mode: si True, usa el modo menu-choice (`run_turn(menu_mode=True)`).
-            El decisor debe implementar `choose_from_menu(state, candidates)`.
-        menu_candidates_provider: callable opcional que devuelve la lista de
-            `Candidate` cuando `menu_mode=True`.  Se usa para switchear entre
-            K=5 (default) y K=7/K=9 (T2.1/T2.2 del TUNING_PLAN).
-    """
-    if hasattr(decision_maker, "territory_provider"):
-        decision_maker.territory_provider = lambda: territorio.summary().as_dict()
-    log_path = ROOT / "runs" / f"{run_id}.jsonl"
-    print(f"\n=== corrida: {label}  run_id={run_id}"
-          f"{'  [menu-mode]' if menu_mode else ''} ===")
-    with JsonlLogger(log_path) as lg:
-        def hook(record):
-            lg.log(record)
-            print_turn_resumen(record)
-            extra = getattr(record, "extra", {}) or {}
-            if hasattr(decision_maker, "ultimos_eventos"):
-                decision_maker.ultimos_eventos = extra.get("eventos_agentes", [])
-
-        for _ in range(turnos):
-            state, _rec = run_turn(
-                state, decision_maker, rng,
-                hooks=[hook], agentes=agentes, territorio=territorio,
-                menu_mode=menu_mode,
-                menu_candidates_provider=menu_candidates_provider,
-            )
-    return log_path
+RUNS_DIR = ROOT / "runs"
 
 
 def main() -> None:
@@ -118,19 +58,19 @@ def main() -> None:
 
     # Cada corrida con mundo independiente pero seed idéntico → shocks idénticos.
     if not args.skip_claude:
-        rng, state, agentes, territory = _nueva_mundo(args.seed)
+        rng, state, agentes, territory = nueva_mundo(args.seed)
         dm = ClaudePresidente(model=args.claude_modelo)
-        p = _correr(f"Claude/{args.claude_modelo}", dm, territory, agentes,
-                    rng, state, args.turnos, f"{ts}_claude",
-                    menu_mode=args.menu_mode)
+        p = correr(f"Claude/{args.claude_modelo}", dm, territory, agentes,
+                   rng, state, args.turnos, f"{ts}_claude",
+                   runs_dir=RUNS_DIR, menu_mode=args.menu_mode)
         outputs.append(("Claude", p))
 
     if not args.skip_openai:
-        rng, state, agentes, territory = _nueva_mundo(args.seed)
+        rng, state, agentes, territory = nueva_mundo(args.seed)
         dm = GPTPresidente(model=args.openai_modelo)
-        p = _correr(f"OpenAI/{args.openai_modelo}", dm, territory, agentes,
-                    rng, state, args.turnos, f"{ts}_openai",
-                    menu_mode=args.menu_mode)
+        p = correr(f"OpenAI/{args.openai_modelo}", dm, territory, agentes,
+                   rng, state, args.turnos, f"{ts}_openai",
+                   runs_dir=RUNS_DIR, menu_mode=args.menu_mode)
         outputs.append(("OpenAI", p))
 
     if args.qwen_url:
@@ -138,7 +78,7 @@ def main() -> None:
             print("[qwen] WARNING: --menu-mode no soportado para Qwen via Resilient. "
                   "Skipping Qwen en esta corrida.")
         else:
-            rng, state, agentes, territory = _nueva_mundo(args.seed)
+            rng, state, agentes, territory = nueva_mundo(args.seed)
             qwen = qwen_via_ollama(
                 model=args.qwen_modelo,
                 base_url=args.qwen_url,
@@ -150,8 +90,9 @@ def main() -> None:
                 fallback=DummyDecisionMaker(rng),
                 label=f"Qwen/{args.qwen_modelo}",
             )
-            p = _correr(f"Qwen/{args.qwen_modelo}", dm, territory, agentes,
-                        rng, state, args.turnos, f"{ts}_qwen")
+            p = correr(f"Qwen/{args.qwen_modelo}", dm, territory, agentes,
+                       rng, state, args.turnos, f"{ts}_qwen",
+                       runs_dir=RUNS_DIR)
             outputs.append((f"Qwen-{args.qwen_modelo}", p))
             print(f"\n[qwen] tasa de fallo: {dm.n_fallos}/{dm.n_llamadas} "
                   f"({dm.tasa_fallo:.1f}%)")
@@ -161,12 +102,12 @@ def main() -> None:
                     print(f"  - {fl[:180]}")
 
     if args.incluir_dummy:
-        rng, state, agentes, territory = _nueva_mundo(args.seed)
+        rng, state, agentes, territory = nueva_mundo(args.seed)
         # En menu-mode el dummy debe usar choose_from_menu; auto-swap.
         dm = DummyMenuDecisionMaker(rng) if args.menu_mode else DummyDecisionMaker(rng)
-        p = _correr("Dummy/baseline", dm, territory, agentes,
-                    rng, state, args.turnos, f"{ts}_dummy",
-                    menu_mode=args.menu_mode)
+        p = correr("Dummy/baseline", dm, territory, agentes,
+                   rng, state, args.turnos, f"{ts}_dummy",
+                   runs_dir=RUNS_DIR, menu_mode=args.menu_mode)
         outputs.append(("Dummy", p))
 
     if len(outputs) < 2:

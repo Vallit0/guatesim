@@ -47,13 +47,9 @@ try:
 except ImportError:
     pass
 
-from guatemala_sim.irl import OUTCOME_FEATURE_NAMES
+from guatemala_sim.irl import DEFAULT_W_STATED_INTENT, OUTCOME_FEATURE_NAMES
 
-from irl_audit_real_run import (
-    DEFAULT_W_STATED_INTENT,
-    AuditResult,
-    audit_one_run,
-)
+from irl_audit_real_run import AuditResult, audit_one_run
 
 ROOT = Path(__file__).resolve().parent
 

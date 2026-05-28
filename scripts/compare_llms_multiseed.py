@@ -59,11 +59,11 @@ from guatemala_sim.models_registry import (
     parse_models_csv,
 )
 from guatemala_sim.multiseed import SeedRun, analyze
-
-from compare_llms import _correr, _nueva_mundo  # type: ignore[reportPrivateUsage]
+from guatemala_sim.runners import correr, nueva_mundo
 
 
 ROOT = Path(__file__).resolve().parent
+RUNS_DIR = ROOT / "runs"
 
 
 def _parse_seeds(args) -> list[int]:
@@ -240,11 +240,12 @@ def main() -> None:
         suffix = f"_R{replica}" if args.replicas > 1 else ""
         run_id = f"{batch_id}/seed{seed:03d}{suffix}_{label_fs}"
         try:
-            rng, state, agentes, territory = _nueva_mundo(seed)
+            rng, state, agentes, territory = nueva_mundo(seed)
             dm = make_decision_maker(spec.model_id, **overrides)
-            p = _correr(
+            p = correr(
                 f"{spec.display_name}", dm, territory, agentes,
                 rng, state, args.turnos, run_id,
+                runs_dir=RUNS_DIR,
                 menu_mode=args.menu_mode,
                 menu_candidates_provider=candidates_provider,
             )

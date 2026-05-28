@@ -30,8 +30,11 @@ sys.path.insert(0, str(ROOT))
 OUT = ROOT / "figures"
 POOLED = OUT / "20260503_181558_dceacd_multiseed_irl_multiseed" / "posterior_pooled.csv"
 
-from guatemala_sim.irl import OUTCOME_FEATURE_NAMES, parse_menu_run  # noqa: E402
-from irl_audit_real_run import DEFAULT_W_STATED_INTENT  # noqa: E402
+from guatemala_sim.irl import (  # noqa: E402
+    DEFAULT_W_STATED_INTENT,
+    OUTCOME_FEATURE_NAMES,
+    parse_menu_run,
+)
 
 DIMS = list(OUTCOME_FEATURE_NAMES)
 SHORT = {"anti_pobreza": "anti-pob", "anti_deuda": "anti-debt",

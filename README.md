@@ -235,10 +235,9 @@ random, B3 human process) dan triangulación en lugar de un solo eje de juicio.
 | 7. Baseline MINFIN (B3) | `guatemala_sim/minfin_ingest.py` | 🟢 Validado vs ICEFI Tabla 7+8 (SICOIN) |
 | + Baselines B1/B2 | derivados del menú | 🟢 Constrained-optimum + random sintéticos |
 
-Detalle conceptual y matemático completo en
-[`paper/metodologia.md`](paper/metodologia.md). Versión IEEE en
-[`paper/paper_ieee_en.tex`](paper/paper_ieee_en.tex). Estrategia de venue IEEE
-en [`paper/ieee_reframing.md`](paper/ieee_reframing.md).
+Detalle conceptual y matemático completo en el paper IEEE (en preparación
+para venue). Una descripción accesible del método llegará en
+*"The Illustrated BRCA"* (ver sección abajo).
 
 ---
 
@@ -258,14 +257,14 @@ pip install -e .                                     # vía pyproject.toml
 
 ```bash
 python -m pytest                      # 443 tests pasan offline
-python irl_recovery_curve.py          # validación sintética 1/√N
-python minfin_baseline_plot.py        # baseline MINFIN vs candidatos
+python scripts/irl_recovery_curve.py          # validación sintética 1/√N
+python scripts/minfin_baseline_plot.py        # baseline MINFIN vs candidatos
 ```
 
 ### Una corrida real (1 modelo, 8 turnos, ~$1)
 
 ```bash
-python irl_audit_real_run.py --skip-openai --turnos 8 --seed 11
+python scripts/irl_audit_real_run.py --skip-openai --turnos 8 --seed 11
 # → figures/<run_id>_irl_audit/Claude/{posterior,audit,harms,consistency}.csv
 # → figures/<run_id>_irl_audit/reporte.md
 ```
@@ -274,18 +273,18 @@ python irl_audit_real_run.py --skip-openai --turnos 8 --seed 11
 
 ```bash
 # fase 1: corridas API (Claude + OpenAI, 20 seeds × 8 turnos × 2 modelos)
-python compare_llms_multiseed.py \
+python scripts/compare_llms_multiseed.py \
     --seeds-from 1 --seeds-to 20 \
     --turnos 8 --menu-mode --continuar-si-falla
 
 # fase 2: audit IRL bayesiano sobre todos los jsonls (~15 min, sin API)
-python irl_audit_multiseed.py --batch-dir runs/<batch_id>_multiseed/
+python scripts/irl_audit_multiseed.py --batch-dir runs/<batch_id>_multiseed/
 
 # fase 3: ablations (B1/B2 baselines, B3 anchor, R6 prior, faithfulness)
-python irl_baselines.py --batch-dir runs/<batch_id>_multiseed/
-python irl_b3_human_anchor.py --batch-dir runs/<batch_id>_multiseed/
-python irl_r6_prior_sweep.py --batch-dir runs/<batch_id>_multiseed/
-python reasoning_consistency_v3.py --batch-dir runs/<batch_id>_multiseed/
+python scripts/irl_baselines.py --batch-dir runs/<batch_id>_multiseed/
+python scripts/irl_b3_human_anchor.py --batch-dir runs/<batch_id>_multiseed/
+python scripts/irl_r6_prior_sweep.py --batch-dir runs/<batch_id>_multiseed/
+python scripts/reasoning_consistency_v3.py --batch-dir runs/<batch_id>_multiseed/
 ```
 
 Outputs:
@@ -306,7 +305,7 @@ El estudio reportado arriba corresponde al batch
 las tablas main sin gastar API:
 
 ```bash
-python irl_audit_multiseed.py \
+python scripts/irl_audit_multiseed.py \
     --batch-dir runs/20260503_181558_dceacd_multiseed/
 ```
 
@@ -340,7 +339,7 @@ de calibración, no una nueva metodología.
 
 ## Threat model
 
-`paper/threat_model.md` formaliza el riesgo siguiendo NIST SP 800-30 adaptado
+El threat model (formalizado en el paper IEEE) sigue NIST SP 800-30 adaptado
 a LLM-as-policymaker:
 
 | Componente | Para este caso |
@@ -385,29 +384,30 @@ guatemala-sim/
 │   ├── models_registry.py # registro de modelos frontier
 │   ├── multiseed.py       # análisis multi-seed (outcomes)
 │   ├── president.py       # cliente Claude (tool_use)
-│   └── president_openai.py # cliente OpenAI (json_schema strict)
-├── compare_llms.py            # corrida 1-shot single-seed
-├── compare_llms_multiseed.py  # batch multi-seed
-├── irl_audit_real_run.py      # audit IRL single-run (capas 4-7)
-├── irl_audit_multiseed.py     # audit IRL multi-seed con tests pareados
-├── irl_baselines.py           # B1/B2 baselines
-├── irl_b3_human_anchor.py     # B3 anchor MINFIN
-├── irl_r6_prior_sweep.py      # R6 prior sensitivity
-├── reasoning_consistency_v3.py # encoder v3 batch
-├── irl_recovery_curve.py      # validación 1/√N sintética
-├── minfin_baseline_plot.py    # baseline humano vs candidatos
-├── demo_hierarchical_real.py  # demo modelo jerárquico
-├── paper/
-│   ├── metodologia.md         # método completo (LaTeX-ready)
-│   ├── paper_ieee.tex         # versión IEEE conference (es)
-│   ├── paper_ieee_en.tex      # versión IEEE conference (en) — canónica
-│   ├── ieee_reframing.md      # estrategia venue IEEE
-│   ├── threat_model.md
-│   ├── constituciones_reveladas.md
-│   └── README.md
-├── runs/                      # JSONL de cada corrida
-├── figures/                   # CSVs y reportes generados
+│   ├── president_openai.py # cliente OpenAI (json_schema strict)
+│   ├── runners.py         # nueva_mundo() + correr() — seed-emparejado
+│   └── irl/intent.py      # DEFAULT_W_STATED_INTENT (single-coder baseline)
+├── scripts/                       # entry points ejecutables
+│   ├── compare_llms.py            # corrida 1-shot single-seed
+│   ├── compare_llms_multiseed.py  # batch multi-seed
+│   ├── irl_audit_real_run.py      # audit IRL single-run (capas 4-7)
+│   ├── irl_audit_multiseed.py     # audit IRL multi-seed con tests pareados
+│   ├── irl_baselines.py           # B1/B2 baselines
+│   ├── irl_b3_human_anchor.py     # B3 anchor MINFIN
+│   ├── irl_r6_prior_sweep.py      # R6 prior sensitivity
+│   ├── reasoning_consistency_v3.py # encoder v3 batch
+│   ├── irl_recovery_curve.py      # validación 1/√N sintética
+│   ├── minfin_baseline_plot.py    # baseline humano vs candidatos
+│   ├── demo_hierarchical_real.py  # demo modelo jerárquico
+│   ├── fig_methods.py / fig_pipeline.py / fig_architecture.py  # figuras del paper
+│   ├── theta_stated_intercoder.py # inter-rater κ del w_stated
+│   ├── r7_normalization_sweep.py  # R7 ablation
+│   ├── r8_feature_loo.py          # R8 ablation
+│   └── ...
+├── runs/                      # JSONL de cada corrida (batch publicado en historia git)
+├── figures/                   # CSVs y reportes generados (batch publicado en historia git)
 ├── tests/                     # 443 tests offline
+├── conftest.py                # añade scripts/ a sys.path para tests
 └── data/                      # WB 2024, MINFIN/ICEFI, prompts
 ```
 
@@ -437,8 +437,7 @@ python -m pytest -k consistency # encoders v1/v2/v3 + κ
    `state.memoria_presidencial` serializado.
 4. **MDP no backtesteado contra MINFIN 2015–2024**: backtesting cuantitativo
    es bloqueante identificado y pendiente — ver
-   [`paper/ieee_reframing.md`](paper/ieee_reframing.md) y el plan de
-   ejecución.
+   el plan de ejecución del paper IEEE.
 5. **Reasoning consistency NO es verdict de faithfulness**: el flag deceptive
    alignment no sobrevive validación multi-encoder limpiamente (v3 vs v1/v2).
    Se reporta como **screening signal**, no como detección causal de
@@ -469,7 +468,7 @@ python -m pytest -k consistency # encoders v1/v2/v3 + κ
 
 Bibliografía completa (~30 referencias entre Samuelson 1938 y Hadfield-Menell
 2017, métodos estadísticos, frameworks AI Safety institucional, AI policy
-LatAm) en [`paper/paper_ieee_en.tex`](paper/paper_ieee_en.tex).
+LatAm) en el paper IEEE (en preparación).
 
 ---
 

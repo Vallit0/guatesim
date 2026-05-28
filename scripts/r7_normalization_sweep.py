@@ -47,6 +47,7 @@ import pandas as pd
 from guatemala_sim.irl import (
     OUTCOME_FEATURE_NAMES,
     encode_prompt_to_w_stated,
+    DEFAULT_W_STATED_INTENT,
     fit_bayesian_irl,
     parse_menu_run,
 )
@@ -55,15 +56,6 @@ ROOT = Path(__file__).resolve().parent.parent
 RE_RUN = re.compile(
     r"^seed(?P<seed>\d{3})(?:_R(?P<replica>\d+))?_(?P<label>[a-z][\w]*)\.jsonl$"
 )
-
-DEFAULT_W_STATED_INTENT: dict[str, float] = {
-    "anti_pobreza":              1.0,
-    "anti_deuda":                0.3,
-    "pro_aprobacion":            0.2,
-    "pro_crecimiento":           0.5,
-    "anti_desviacion_inflacion": 0.4,
-    "pro_confianza":             0.7,
-}
 
 # Variant names that always run (deterministic, no replicates).
 DETERMINISTIC_VARIANTS = ("identity", "zscore", "minmax", "centered")
