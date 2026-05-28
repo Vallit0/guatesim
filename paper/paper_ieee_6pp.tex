@@ -8,6 +8,8 @@
 \IEEEoverridecommandlockouts
 \usepackage{cite}
 \usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
 \usepackage{graphicx}
 \graphicspath{{../figures/}{./figures/}}
 \usepackage{textcomp}
@@ -82,15 +84,40 @@ supporting an ``AI safety from the Global South'' agenda.
 
 % =====================================================================
 \section{Method}
-BRCA is a seven-layer audit with two phases (Fig.~\ref{fig:arch}): an
-\emph{online} rollout in which a calibrated simulator and the LLM
-interact for $T$ turns to produce a trajectory $\tau$, and an
-\emph{offline}, black-box audit of $\tau$. A single Bayesian-IRL
-posterior feeds three heads---IRD audit, harm translation, and a
-reasoning--policy coherence proxy---with the normative baselines
-(B1,~B2) and the human-process anchor (B3) supplying references. The
-world simulator (Layer~1) and B3 are the only country-specific
-components; the rest is country-agnostic.
+BRCA is a seven-layer audit (Table~\ref{tab:layers}) with two phases
+(Fig.~\ref{fig:arch}): an \emph{online} rollout in which a calibrated
+simulator and the LLM interact for $T$ turns to produce a trajectory
+$\tau$, and an \emph{offline}, black-box audit of $\tau$. Each layer has
+a typed input and output and is independently testable. A single
+Bayesian-IRL posterior (Layer~4) feeds three heads---IRD audit, harm
+translation, and a reasoning--policy coherence proxy (Layers 5--7)---with
+the normative baselines (B1,~B2) and the human-process anchor (B3)
+supplying references. The world simulator (Layer~1) and B3 are the only
+country-specific components; the rest is country-agnostic, so porting
+BRCA to another country means swapping the calibration of Layer~1 and the
+anchor B3, not rewriting the audit.
+
+\begin{table}[t]
+\centering
+\caption{The seven typed layers of BRCA. Layer~1 (simulator) and the
+B3 anchor are country-specific; the rest is country-agnostic.}
+\label{tab:layers}
+\footnotesize
+\renewcommand{\arraystretch}{1.18}
+\begin{tabular}{@{}c l p{2.05cm} p{2.35cm}@{}}
+\toprule
+\# & Layer & Input & Output \\
+\midrule
+1 & World simulator   & $a_t,s_t$, seed                       & $s_{t+1}$ (calibrated dynamics) \\
+2 & Candidate menu    & $s_t$                                  & $K{=}5$ over the 9-simplex \\
+3 & LLM choice        & menu, system prompt                    & $k_t$, chain-of-thought \\
+4 & Bayesian IRL      & $\{\phi(s_t,a_k),k_t\}_{t=1}^{T}$       & posterior $\boldsymbol{\theta}_{\text{rec}}\!\in\!\mathbb{R}^6$ \\
+5 & IRD audit         & $\boldsymbol{\theta}_{\text{rec}},\boldsymbol{\theta}_{\text{stated}}$ & cosine, ROPE, HDI95 \\
+6 & Harm translation  & $s_0,s_T$                              & households, USD (illustrative) \\
+7 & RPC proxy         & CoT, $\boldsymbol{\theta}_{\text{rec}}$ & coherence cosine, flag \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \begin{figure*}[t]
 \centering
@@ -183,15 +210,55 @@ and screen reasoning--policy coherence via a cosine between a
 text-encoded $\boldsymbol{\theta}_{\text{CoT}}$ and
 $\boldsymbol{\theta}_{\text{rec}}$ \cite{lanham2023}.
 
+\textbf{The full procedure} is summarized in Algorithm~\ref{alg:brca}:
+Phase~A collects the trajectory by rolling the simulator forward under
+the LLM's menu choices; Phase~B extracts features, fits one Bayesian-IRL
+posterior per seed, audits it against the stated reward, and finally
+aggregates across seeds with a multiplicity-corrected paired test.
+
+\begin{algorithm}[t]
+\caption{BRCA: behavioral audit of an LLM policy-maker}
+\label{alg:brca}
+\small
+\begin{algorithmic}[1]
+\Require LLM policy $\pi$, simulator $M$, menu generator $\mathcal{A}$,
+stated reward $\boldsymbol{\theta}_{\text{stated}}$, seeds $\mathcal{S}$,
+horizon $T$, prior width $\sigma$, MC samples $N$
+\Ensure per-seed posteriors, alignment verdicts, cross-model tests
+\For{each seed $s \in \mathcal{S}$}\Comment{Phase A: online rollout}
+  \State $s_0 \gets \textsc{Init}(M,s)$
+  \For{$t = 0$ \textbf{to} $T-1$}
+     \State $\mathcal{A}_t \gets \mathcal{A}(s_t)$ \Comment{$K$ feasible budgets on the 9-simplex}
+     \State $(k_t,\mathrm{CoT}_t) \gets \pi(s_t,\mathcal{A}_t,\text{prompt})$ \Comment{LLM picks one}
+     \State $s_{t+1} \gets M(s_t,\mathcal{A}_t[k_t],\omega_t)$
+  \EndFor
+  \For{each turn $t$, each candidate $a_k$}\Comment{Phase B: offline audit}
+     \State $\phi(s_t,a_k) \gets \frac{1}{N}\sum_{i=1}^{N}\mathrm{outcome}(s_t,a_k,\omega_i)$ \Comment{MC features}
+  \EndFor
+  \State $\phi \gets \textsc{SubtractReference}(\phi)$
+  \State $\boldsymbol{\theta}_{\text{rec}}^{s} \gets \textsc{NUTS}\big(\text{Boltzmann-IRL}(\phi,k_{1:T});\,\sigma\big)$ \Comment{posterior, Eq.~\eqref{eq:boltzmann}}
+  \State $\mathrm{gap}^{s} \gets \textsc{IRD-Audit}(\boldsymbol{\theta}_{\text{rec}}^{s},\boldsymbol{\theta}_{\text{stated}},\text{ROPE}{=}0.25)$
+\EndFor
+\State paired Wilcoxon across $\mathcal{S}$ per metric; \textsc{Holm--Bonferroni} at FWER $0.05$
+\State \Return verdicts, effect sizes, corrected $p$-values
+\end{algorithmic}
+\end{algorithm}
+
 % =====================================================================
 \section{Experimental setup}
 We instantiate the simulator with Guatemalan macro-fiscal calibration
 and compare \emph{Claude Haiku~4.5} and \emph{GPT-4o-mini} over twenty
 seeds of eight quarterly turns under identical shocks (menu mode,
-$K{=}5$). $\boldsymbol{\theta}_{\text{stated}}$ is a single-coder
-projection of the system prompt; an inter-coder check (two LLM coders)
-yields low agreement (min weighted $\kappa{=}-0.20$), so we treat the
-extraction as coder-dependent (Sec.~\ref{sec:lim}).
+$K{=}5$). The deployer brief weights \texttt{anti\_poverty} highest
+($1.0$), then \texttt{pro\_trust} ($0.7$), \texttt{pro\_growth} ($0.5$),
+\texttt{anti\_inflation\_dev} ($0.4$), \texttt{anti\_debt} ($0.3$) and
+\texttt{pro\_approval} ($0.2$)---i.e.\ poverty-first but explicitly
+multi-objective. $\boldsymbol{\theta}_{\text{stated}}$ is a single-coder
+projection of that prompt; an inter-coder check (two LLM coders) yields
+low agreement (min weighted $\kappa{=}-0.20$), so we treat the extraction
+as coder-dependent (Sec.~\ref{sec:lim}). Each run emits, per turn, the
+chosen index $k_t$ and the chain-of-thought, which together with the
+menu features feed Layers 4--7.
 
 % =====================================================================
 \section{Results}
@@ -205,6 +272,19 @@ $20/20$ seeds (recovered weights outside the ROPE), with median cosine
 to the stated reward of $0.689$ (Claude) and $0.725$ (GPT-4o-mini); both
 over-concentrate on \texttt{anti\_poverty} relative to the broader
 stated profile (Fig.~\ref{fig:ird}).
+
+\textbf{A concrete reading.} What does one audit look like in practice?
+The deployer's brief weights poverty most heavily but also asks for
+growth, institutional trust and inflation control. Over eight quarters
+Claude repeatedly selects the human-development-heavy budget, and the IRL
+recovers a $\boldsymbol{\theta}_{\text{rec}}$ that places almost all of
+its positive mass on \texttt{anti\_poverty} while collapsing growth,
+trust and debt to near zero (Fig.~\ref{fig:feat}). The cosine to the
+stated vector is $0.70$ (a $46^\circ$ gap) and three of six dimensions
+sit outside the ROPE. A procurement officer reads this as: \emph{whatever
+the model says in prose, in practice it will trade away the secondary
+objectives to push the poverty metric}---a revealed behavior that a
+capability or toxicity benchmark cannot surface.
 
 \textbf{Cross-reference reversal.} Against B1, GPT-4o-mini is closer to
 the stated-reward optimum (lower regret); against the executed budget
@@ -269,6 +349,18 @@ Anchor year MINFIN 2023 & $L_1$ $62.5$ vs.\ $64.9$ & yes \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+\textbf{What a deployer should take away.} Three operational lessons.
+First, \emph{audit the revealed constitution, not the stated one}: both
+models follow the instructions in prose yet diverge in revealed
+behavior, so a budget-decision deployer should test choices, not claims.
+Second, \emph{there is no scalar safety score}: the B1/B3 reversal means
+``which model is safer'' has no answer independent of the reference one
+privileges---the stated brief or the existing human process. Third,
+\emph{disclose what is conditional}: the binary misalignment verdict is
+robust, but the exact recovered direction depends on the prior width and
+the feature scaling, and BRCA reports these dependencies explicitly
+rather than collapsing them into a single number.
 
 % =====================================================================
 \section{Limitations}\label{sec:lim}
