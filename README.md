@@ -1,4 +1,4 @@
-# guatemala-sim
+# Bayesian Revealed Constitution Analysis
 
 > **Auditoría bayesiana de LLM-como-decisor en el Sur Global**, calibrada
 > contra Guatemala. Mide lo que un LLM frontera *prefiere* cuando elige
